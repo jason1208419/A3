@@ -1,10 +1,11 @@
 package cs.group11.models;
 
-import cs.group11.interfaces.Validatable;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cs.group11.helpers.InvalidDataException;
+import cs.group11.interfaces.Validatable;
 
 public class Auction implements Validatable {
 
@@ -64,7 +65,7 @@ public class Auction implements Validatable {
     }
 
     @Override
-    public void validate() throws IllegalArgumentException {
+    public void validate() throws InvalidDataException {
         // TODO: validate maxBids, reservePrice
     }
 }

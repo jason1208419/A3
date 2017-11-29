@@ -1,5 +1,6 @@
 package cs.group11.models;
 
+import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
 
 public class Address implements Validatable {
@@ -35,7 +36,7 @@ public class Address implements Validatable {
     }
 
     @Override
-    public void validate() throws IllegalArgumentException {
+    public void validate() throws InvalidDataException {
 
     }
 }

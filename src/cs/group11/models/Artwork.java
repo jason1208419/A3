@@ -1,5 +1,6 @@
 package cs.group11.models;
 
+import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
 import javafx.scene.image.Image;
 
@@ -42,7 +43,7 @@ public abstract class Artwork implements Validatable {
     }
 
     @Override
-    public void validate() throws IllegalArgumentException {
+    public void validate() throws InvalidDataException {
         // TODO: Validate name, description, artist and creationYear
     }
 }

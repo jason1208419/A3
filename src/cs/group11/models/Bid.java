@@ -1,8 +1,9 @@
 package cs.group11.models;
 
-import cs.group11.interfaces.Validatable;
-
 import java.util.Date;
+
+import cs.group11.helpers.InvalidDataException;
+import cs.group11.interfaces.Validatable;
 
 public class Bid implements Validatable {
 
@@ -39,17 +40,17 @@ public class Bid implements Validatable {
     }
 
     @Override
-    public void validate() throws IllegalArgumentException {
+    public void validate() throws InvalidDataException {
         if (this.price <= this.auction.getReservePrice()) {
-            throw new IllegalArgumentException("Bid price cannot be below the Reserve price");
+            throw new InvalidDataException("Bid price cannot be below the Reserve price");
         } else if (this.auction.getBids().size() > 0) {
             Bid lastBid = this.auction.getBids().get(auction.getBids().size() - 1);
 
             if (this.price <= lastBid.getPrice()) {
-                throw new IllegalArgumentException("Bid price cannot be below the last Bid price");
+                throw new InvalidDataException("Bid price cannot be below the last Bid price");
             }
         } else if (this.auction.isCompleted()) {
-            throw new IllegalArgumentException("Cannot add a Bid to a completed Auction");
+            throw new InvalidDataException("Cannot add a Bid to a completed Auction");
         }
     }
 }

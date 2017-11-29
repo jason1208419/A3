@@ -1,11 +1,12 @@
 package cs.group11.models;
 
-import cs.group11.interfaces.Validatable;
-import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cs.group11.helpers.InvalidDataException;
+import cs.group11.interfaces.Validatable;
+import javafx.scene.image.Image;
 
 public class User implements Validatable {
 
@@ -120,7 +121,7 @@ public class User implements Validatable {
     }
 
     @Override
-    public void validate() throws IllegalArgumentException {
+    public void validate() throws InvalidDataException {
         // TODO: Validate username, firstname, lastname, telNo
     }
 }

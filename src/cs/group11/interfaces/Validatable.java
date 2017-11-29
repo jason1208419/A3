@@ -1,5 +1,7 @@
 package cs.group11.interfaces;
 
+import cs.group11.helpers.InvalidDataException;
+
 public interface Validatable {
-    void validate() throws IllegalArgumentException;
+    public void validate() throws InvalidDataException;
 }
