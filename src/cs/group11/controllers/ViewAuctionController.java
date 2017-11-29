@@ -83,9 +83,9 @@ public class ViewAuctionController {
 
         this.currentPrice.setText(""); // TODO: Add the current bid price
         this.startingPrice.setText(""); // TODO: Add the starting auction price
-        //material
-        //depth
-
+        //material                          TODO: Add the material
+        //depth                             TODO: Add the depth
+        //remaining bids                    TODO: Add remaining bids
 
 //Gets the Width
         double artWidth = 0;
