@@ -17,4 +17,12 @@ public final class Validator {
 		return value <= upperBound && value >= lowerBound;
 	}
 
+	public static boolean isPositive(double value) {
+		return value >= 0D;
+	}
+
+	public static boolean isNegative(double value) {
+		return value < 0D;
+	}
+
 }
