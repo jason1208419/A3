@@ -64,13 +64,18 @@ public class AuctionCellController {
         this.setArtImage(artwork.getImage());
         this.setArtTitle(artwork.getName());
 
-        int lastBidIndex = auction.getBids().size() - 1;
-        this.setArtCurPrice(auction.getBids().get(lastBidIndex).getPrice());
+        if (auction.getBids().size() == 0) {
+            this.setArtCurPrice(0);
+        } else {
+            int lastBidIndex = auction.getBids().size() - 1;
+            this.setArtCurPrice(auction.getBids().get(lastBidIndex).getPrice());
+        }
         this.setArtType(artwork.getClass().getName());
         this.setArtistName(artwork.getArtist());
-        this.setStartPrice(auction.getReservePrice());
+        this.setStartPrice(auction.getBids().get(0).getPrice());
         this.setBidsLeft(auction.getMaxBids() - auction.getBids().size());
     }
+
 
 
 }

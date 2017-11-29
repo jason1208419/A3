@@ -79,7 +79,7 @@ public class Auction implements Validatable {
 		if (Validator.isNull(creator)) {
 			throw new InvalidDataException("No creator specified for auction!");
 		}
-		if (Validator.isIntValid(maxBids, Integer.MAX_VALUE, 1)) {
+		if (!Validator.isIntValid(maxBids, Integer.MAX_VALUE, 1)) {
 			throw new InvalidDataException("Invalid number of maximum bids! Value must be >= 1");
 		}
 		if (Validator.isNegative(reservePrice)) {
