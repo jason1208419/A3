@@ -1,42 +1,56 @@
 package cs.group11.models;
 
+import java.util.regex.Pattern;
+
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
 
 public class Address implements Validatable {
 
-    private String[] lines;
-    private String postcode;
+	private static final int MINIMUM_ADDRESS_LINES = 1;
+	private static final Pattern UK_ADDRESS_REGEX = Pattern.compile("([A-Z0-9]{2,4} ?){2}", Pattern.CASE_INSENSITIVE);
+	
+	private String[] lines;
+	private String postcode;
 
-    public Address(String[] lines, String postcode) {
-        this.lines = lines;
-        this.postcode = postcode;
+	public Address(String[] lines, String postcode) {
+		this.lines = lines;
+		this.postcode = postcode;
 
-        this.validate();
-    }
+		this.validate();
+	}
 
-    public String getPostcode() {
-        return postcode;
-    }
+	public String getPostcode() {
+		return postcode;
+	}
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
 
-    public String[] getLines() {
-        return lines;
-    }
+	public String[] getLines() {
+		return lines;
+	}
 
-    public String getLine(int number) {
-        return this.lines[number - 1];
-    }
+	public String getLine(int number) {
+		return this.lines[number - 1];
+	}
 
-    public void setLine(int number, String line) {
-        this.lines[number - 1] = line;
-    }
+	public void setLine(int number, String line) {
+		this.lines[number - 1] = line;
+	}
 
-    @Override
-    public void validate() throws InvalidDataException {
+	@Override
+	public void validate() throws InvalidDataException {
+		if (postcode == null) {
+			throw new InvalidDataException("No postcode set!");
+		}
+		if (!UK_ADDRESS_REGEX.matcher(postcode.trim()).matches()) {
+			throw new InvalidDataException("Invalid postcode format! The postcode must be a valid UK postcode.");
+		}
+		if (lines == null || lines.length < MINIMUM_ADDRESS_LINES) {
+			throw new InvalidDataException("Too few address lines!");
+		}
 
-    }
+	}
 }
