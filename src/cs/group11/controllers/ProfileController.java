@@ -1,6 +1,11 @@
 package cs.group11.controllers;
 
-import cs.group11.models.*;
+import java.io.IOException;
+
+import cs.group11.models.Address;
+import cs.group11.models.Auction;
+import cs.group11.models.Bid;
+import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -14,9 +19,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-
-import java.io.IOException;
-import java.util.List;
 
 public class ProfileController {
 

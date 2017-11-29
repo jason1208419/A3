@@ -1,11 +1,10 @@
 package cs.group11.models.artworks;
 
+import java.util.List;
+
 import cs.group11.interfaces.Validatable;
 import cs.group11.models.Artwork;
 import javafx.scene.image.Image;
-
-import java.io.File;
-import java.util.List;
 
 public class Sculpture extends Artwork implements Validatable {
     private double width;
