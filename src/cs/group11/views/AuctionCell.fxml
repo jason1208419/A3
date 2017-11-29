@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="300.0"
+      xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.AuctionCellController">
+    <children>
+        <ImageView fx:id="artImage" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"/>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <Label fx:id="artTitle" text="Title"/>
+                <Label fx:id="artCurPrice" layoutX="10.0" layoutY="10.0" text="Current price (£)"/>
+                <Label fx:id="artType" layoutX="10.0" layoutY="27.0" text="Artwork type"/>
+                <Label fx:id="artistName" layoutX="10.0" layoutY="44.0" text="Artist name"/>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <Label fx:id="startPrice" text="Starting price (£)"/>
+                <Label fx:id="bidsLeft" layoutX="10.0" layoutY="10.0" text="Bids remaining"/>
+            </children>
+        </VBox>
+    </children>
+</HBox>
