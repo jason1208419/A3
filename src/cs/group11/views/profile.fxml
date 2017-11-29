@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.ProfileController">
+    <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" />
+        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <ImageView fx:id="avatarImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                            <image>
+                                <Image url="@../../../res/avatars/creeper.jpg" />
+                            </image>
+                        </ImageView>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label fx:id="username" text="Username" />
+                                <Label fx:id="firstname" layoutX="10.0" layoutY="10.0" text="Firstname" />
+                                <Label fx:id="lastname" layoutX="10.0" layoutY="27.0" text="Lastname" />
+                                <Label fx:id="phoneNumber" layoutX="10.0" layoutY="44.0" text="Phone Number" />
+                                <VBox fx:id="addressLines" />
+                                <Label fx:id="postcode" text="Postcode" />
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" text="Edit Profile" textAlignment="CENTER" />
+                    </children>
+                </HBox>
+                <Label text="Bid History" />
+                <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Bids Won:" />
+                                <ListView fx:id="bidsWon" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Bids Made:" />
+                                <ListView fx:id="bidsMade" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Bids Received:" />
+                                <ListView fx:id="bidsReceived" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            <Label layoutX="10.0" layoutY="210.0" text="Favourites" />
+            <HBox layoutX="10.0" layoutY="245.0" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Favourite Users:" />
+                        <ListView fx:id="favouriteUsers" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Favourite Artworks:" />
+                        <ListView fx:id="favouriteAuctions" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

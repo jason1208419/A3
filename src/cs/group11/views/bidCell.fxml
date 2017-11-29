@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="300.0"
+      xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.BidCellController">
+    <children>
+        <ImageView fx:id="artworkImageView" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"/>
+        <Label fx:id="artworkName" alignment="CENTER" maxWidth="Infinity" text="Name" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="bidPrice" alignment="CENTER" maxWidth="Infinity" text="Price" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="bidDate" alignment="CENTER" maxWidth="Infinity" text="Bid Date" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="bidderUsername" alignment="CENTER" maxWidth="Infinity" text="Username" HBox.hgrow="ALWAYS"/>
+    </children>
+</HBox>
