@@ -55,4 +55,10 @@ public final class MegaDB {
 		return artworks.add(toAdd);
 	}
 
+	/*
+	 * TODO:
+	 * 	Implement search function(s) to searc based on a specific value through the 
+	 * database (Users/Artworks/Auctions)
+	 */
+	
 }
