@@ -1,9 +1,9 @@
 package cs.group11.helpers;
 
-public class Validator {
+public final class Validator {
 
-	private Validator() {
-	}// Make Validator uninstantiatable.
+	private Validator() {// Make Validator uninstantiatable.
+	}
 
 	public static boolean isStringEmpty(String s) {
 		return isNull(s) || s.trim().isEmpty();

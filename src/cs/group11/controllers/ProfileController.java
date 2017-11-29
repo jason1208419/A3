@@ -59,9 +59,9 @@ public class ProfileController {
         favouriteUsers.setItems(favouriteUsersList);
         favouriteAuctions.setItems(favouriteAuctionsList);
 
-        bidsWon.setCellFactory(param -> new bidListCell());
-        bidsMade.setCellFactory(param -> new bidListCell());
-        bidsReceived.setCellFactory(param -> new bidListCell());
+        bidsWon.setCellFactory(param -> new BidListCell());
+        bidsMade.setCellFactory(param -> new BidListCell());
+        bidsReceived.setCellFactory(param -> new BidListCell());
 
         favouriteUsers.setCellFactory(param -> null); // FIXME
         favouriteAuctions.setCellFactory(param -> null); // FIXME
@@ -133,11 +133,11 @@ public class ProfileController {
         favouriteAuctionsList.addAll(user.getFavouriteAuctions());
     }
 
-    private class bidListCell extends ListCell<Bid> {
+    private class BidListCell extends ListCell<Bid> {
         private Node node;
         private BidCellController controller;
 
-        public bidListCell() {
+        public BidListCell() {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/bidCell.fxml"));
                 node = loader.load();
