@@ -56,6 +56,8 @@ public class EditProfileController {
         //removeFavouriteAuctions.setCellFactory(param -> null); // FIXME
     }
 
+    //TODO: make table
+
     public void setUser(User user) {
         this.user = user;
         this.avatar.setImage(user.getAvatar());
