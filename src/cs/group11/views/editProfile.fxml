@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.Node?>
-<?import javafx.scene.control.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="517.0" prefWidth="752.0" HBox.hgrow="ALWAYS"
       xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.EditProfileController">
@@ -15,28 +20,38 @@
                 <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                     <children>
                         <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true"
-                                   preserveRatio="true" HBox.hgrow="ALWAYS"/>
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="browseAuctions" mnemonicParsing="false" text="Browse Auctions"
-                                HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="createAuction" mnemonicParsing="false" text="Create Auction"
-                                HBox.hgrow="ALWAYS"/>
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true">
+                                   preserveRatio="true" HBox.hgrow="ALWAYS">
                             <image>
                                 <Image url="@../../../res/avatars/creeper.jpg"/>
                             </image>
                         </ImageView>
-                        <VBox fillWidth="false" prefHeight="50.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="browseAuctions" mnemonicParsing="false" onAction="#browseAuctionsClick"
+                                text="Browse Auctions" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="createAuction" mnemonicParsing="false" onAction="#createAuctionsClick"
+                                text="Create Auction" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="profile" mnemonicParsing="false" onAction="#profileClick">
+                            <graphic>
+                                <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../res/avatars/creeper.jpg"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
+                              HBox.hgrow="NEVER">
                             <children>
                                 <Label fx:id="username1" text="username"/>
-                                <Button fx:id="logout" mnemonicParsing="false" text="Logout"/>
+                                <Button fx:id="logout" mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
                             </children>
                         </VBox>
                     </children>
@@ -48,12 +63,19 @@
                 <VBox prefHeight="257.0" prefWidth="354.0" HBox.hgrow="ALWAYS">
                     <children>
                         <Label text="Edit Avatar"/>
-                        <ImageView fx:id="avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                        <ImageView fx:id="avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../../../res/avatars/creeper.jpg"/>
                             </image>
                         </ImageView>
-                        <Button fx:id="upload" mnemonicParsing="false" text="Upload"/>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadClick" text="Upload"/>
+                                <Button fx:id="drawAvatar" mnemonicParsing="false" onAction="#drawAvatarClick"
+                                        text="Draw Avatar"/>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
                 <VBox HBox.hgrow="ALWAYS">
@@ -103,8 +125,8 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="354.0" HBox.hgrow="ALWAYS"
                               VBox.vgrow="ALWAYS">
                             <children>
-                                <Button fx:id="submit" mnemonicParsing="false" text="Submit"/>
-                                <Button fx:id="cancel" mnemonicParsing="false" text="Cancel"/>
+                                <Button fx:id="submit" mnemonicParsing="false" onAction="#submitClick" text="Submit"/>
+                                <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancelClick" text="Cancel"/>
                             </children>
                         </HBox>
                     </children>
