@@ -61,7 +61,6 @@ public class AuctionListController {
 
         Auction testAuc = new Auction(test,12,11.00, painting);
         Bid testBid = new Bid (15.25, test, testAuc);
-
         this.currentAuctions.add(testAuc);
     }
 
