@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
+import cs.group11.models.Bid;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,13 +17,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class EditProfileController {
     @FXML
@@ -38,6 +40,24 @@ public class EditProfileController {
     private TableView<Auction> removeFavouriteAuctions;
     @FXML
     private TableView<User> removeFavouriteUsers;
+    @FXML
+    private TableColumn tablePic;
+    @FXML
+    private TableColumn tableName;
+    @FXML
+    private TableColumn tablePrice;
+    @FXML
+    private TableColumn tableRemoveArt;
+    @FXML
+    private TableColumn tableAvatar;
+    @FXML
+    private TableColumn tableUsername;
+    @FXML
+    private TableColumn tableFirstName;
+    @FXML
+    private TableColumn tableLastName;
+    @FXML
+    private TableColumn tableRemoveUser;
 
     private User user;
 
@@ -46,97 +66,83 @@ public class EditProfileController {
 
     @FXML
     protected void initialize() {
-        favouriteUsersList = FXCollections.observableArrayList();
-        favouriteAuctionsList = FXCollections.observableArrayList();
-
-        removeFavouriteUsers.setItems(favouriteUsersList);
-        removeFavouriteAuctions.setItems(favouriteAuctionsList);
-
-        //removeFavouriteUsers.setCellFactory(param -> null); // FIXME
-        //removeFavouriteAuctions.setCellFactory(param -> null); // FIXME
-    }
-
-    //TODO: make table
-
-    public void setUser(User user) {
-        this.user = user;
-
         Image avatarImage = new Image(user.getAvatarPath());
         this.avatar.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
         this.username1.setText(user.getUsername());
         this.username2.setText(user.getUsername());
 
-        favouriteUsersList.addAll(user.getFavouriteUsers());
-        favouriteAuctionsList.addAll(user.getFavouriteAuctions());
+        final ObservableList<User> data = FXCollections.observableArrayList(
+                new User("admin", "Nasir", "Al Jabbouri", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "res/avatars/creeper.jpg")
+        );
+
+        tableAvatar.setCellValueFactory(
+                new PropertyValueFactory<User, String>("avatarPath")
+        );
+        tableAvatar.setCellFactory(new Callback<TableColumn<, User>, TableCell<User, String>>() {
+            @Override
+            public TableCell<User, String> call(TableColumn<User, String> param) {
+                TableCell<User, String> cell = new TableCell<User, String>() {
+                    @Override
+                    public void updateItem(User user, boolean empty) {
+                        super.updateItem(user, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            ImageView node = new ImageView();
+
+                            Image image = new Image(user.getAvatarPath());
+                            node.setImage(image);
+                            setGraphic(node);
+                        }
+                    }
+                };
+                System.out.println(cell.getIndex());
+                return cell;
+            }
+        });
+
+        tableUsername.setCellValueFactory(
+                new PropertyValueFactory<User, String>("username")
+        );
+        tableFirstName.setCellValueFactory(
+                new PropertyValueFactory<User, String>("firstname")
+        );
+        tableLastName.setCellValueFactory(
+                new PropertyValueFactory<User, String>("lastname")
+        );
+        removeFavouriteUsers.setItems(data);
+//        removeFavouriteUsers.getColumns().addAll(tableAvatar,tableUsername,tableFirstName,tableLastName);
+
+//        favouriteUsersList.addAll(user.getFavouriteUsers());
+//        favouriteAuctionsList.addAll(user.getFavouriteAuctions());
     }
 
-    public void createAuctionsClick(ActionEvent actionEvent) throws Exception {
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/createAuction.fxml"));
-        Parent root = loader.load();
+    //TODO: make table
 
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Create Auction");
-        stage.show();
+
+    public void setUser(User user) {
+        this.user = user;
     }
+/*
+    public class ImageListCell extends TableCell {
 
-    public void browseAuctionsClick(ActionEvent actionEvent) throws Exception {
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/auctionList.fxml"));
-        Parent root = loader.load();
+        private ImageView element = new ImageView();
 
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Auction");
-        stage.show();
-    }
+        @Override
+        protected void updateItem(Object object, boolean empty) {
+            super.updateItem(object, empty);
 
-    public void logoutClick(ActionEvent actionEvent) throws Exception {
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/signIn.fxml"));
-        Parent root = loader.load();
+            if (empty) {
+                setGraphic(null);
+            } else {
+                User u = (User) object;
 
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Login");
-        stage.show();
-    }
-
-    public void profileClick(ActionEvent actionEvent) throws Exception {
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
-        Parent root = loader.load();
-
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Profile");
-        stage.show();
-    }
-
-    public void uploadClick(ActionEvent actionEvent) throws Exception {
-    }
-
-    public void drawAvatarClick(ActionEvent actionEvent) throws Exception {
-    }
-
-    public void submitClick(ActionEvent actionEvent) throws Exception {
-    }
-
-    public void cancelClick(ActionEvent actionEvent) throws Exception {
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
-        Parent root = loader.load();
-
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Profile");
-        stage.show();
-    }
+                Image image = new Image(u.getAvatarPath());
+                element.setImage(image);
+                setGraphic(element);
+            }
+        }
+    }*/
 }

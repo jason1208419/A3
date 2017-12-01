@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -12,9 +11,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="517.0" prefWidth="752.0"
-      HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121"
-      fx:controller="cs.group11.controllers.EditProfileController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="517.0" prefWidth="752.0" HBox.hgrow="ALWAYS"
+      xmlns="http://javafx.com/javafx/8.0.121">
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
             <children>
@@ -30,15 +28,15 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button fx:id="browseAuctions" mnemonicParsing="false" onAction="#browseAuctionsClick"
-                                text="Browse Auctions" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="createAuction" mnemonicParsing="false" onAction="#createAuctionsClick"
-                                text="Create Auction" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="browseAuctions" mnemonicParsing="false" text="Browse Auctions"
+                                HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="createAuction" mnemonicParsing="false" text="Create Auction"
+                                HBox.hgrow="ALWAYS"/>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button fx:id="profile" mnemonicParsing="false" onAction="#profileClick">
+                        <Button fx:id="profile" mnemonicParsing="false">
                             <graphic>
                                 <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
                                            preserveRatio="true">
@@ -52,7 +50,7 @@
                               HBox.hgrow="NEVER">
                             <children>
                                 <Label fx:id="username1" text="username"/>
-                                <Button fx:id="logout" mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
+                                <Button fx:id="logout" mnemonicParsing="false" text="Logout"/>
                             </children>
                         </VBox>
                     </children>
@@ -72,9 +70,8 @@
                         </ImageView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadClick" text="Upload"/>
-                                <Button fx:id="drawAvatar" mnemonicParsing="false" onAction="#drawAvatarClick"
-                                        text="Draw Avatar"/>
+                                <Button fx:id="upload" mnemonicParsing="false" text="Upload"/>
+                                <Button fx:id="drawAvatar" mnemonicParsing="false" text="Draw Avatar"/>
                             </children>
                         </HBox>
                     </children>
@@ -126,8 +123,8 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="354.0" HBox.hgrow="ALWAYS"
                               VBox.vgrow="ALWAYS">
                             <children>
-                                <Button fx:id="submit" mnemonicParsing="false" onAction="#submitClick" text="Submit"/>
-                                <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancelClick" text="Cancel"/>
+                                <Button fx:id="submit" mnemonicParsing="false" text="Submit"/>
+                                <Button fx:id="cancel" mnemonicParsing="false" text="Cancel"/>
                             </children>
                         </HBox>
                     </children>
@@ -139,42 +136,30 @@
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                     <children>
                         <Label text="Remove Favourite Artworks"/>
-                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                            <children>
-                                <TableView fx:id="removeFavouriteAuctions" prefHeight="157.0" prefWidth="362.0"
-                                           HBox.hgrow="ALWAYS">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="Picture"/>
-                                        <TableColumn prefWidth="75.0" text="Name"/>
-                                        <TableColumn prefWidth="75.0" text="Price (£)"/>
-                                        <TableColumn prefWidth="75.0" text="Remove"/>
-                                    </columns>
-                                </TableView>
-                                <ScrollBar orientation="VERTICAL" HBox.hgrow="ALWAYS"/>
-                            </children>
-                        </HBox>
-                        <ScrollBar/>
+                        <TableView fx:id="removeFavouriteAuctions" prefHeight="157.0" prefWidth="362.0"
+                                   VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="tablePic" prefWidth="75.0" text="Picture"/>
+                                <TableColumn fx:id="tableName" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="tablePrice" prefWidth="75.0" text="Price (£)"/>
+                                <TableColumn fx:id="tableRemoveArt" prefWidth="75.0" text="Remove"/>
+                            </columns>
+                        </TableView>
                     </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                     <children>
                         <Label text="Remove Favourite Users"/>
-                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                            <children>
-                                <TableView fx:id="removeFavouriteUsers" prefHeight="200.0" prefWidth="200.0"
-                                           HBox.hgrow="ALWAYS">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="Avatar"/>
-                                        <TableColumn prefWidth="75.0" text="Username"/>
-                                        <TableColumn prefWidth="75.0" text="First Name"/>
-                                        <TableColumn prefWidth="75.0" text="Last Name"/>
-                                        <TableColumn prefWidth="75.0" text="Remove"/>
-                                    </columns>
-                                </TableView>
-                                <ScrollBar orientation="VERTICAL"/>
-                            </children>
-                        </HBox>
-                        <ScrollBar/>
+                        <TableView fx:id="removeFavouriteUsers" prefHeight="200.0" prefWidth="200.0"
+                                   VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="tableAvatar" prefWidth="75.0" text="Avatar"/>
+                                <TableColumn fx:id="tableUsername" prefWidth="75.0" text="Username"/>
+                                <TableColumn fx:id="tableFirstName" prefWidth="75.0" text="First Name"/>
+                                <TableColumn fx:id="tableLastName" prefWidth="75.0" text="Last Name"/>
+                                <TableColumn fx:id="tableRemoveUser" prefWidth="75.0" text="Remove"/>
+                            </columns>
+                        </TableView>
                     </children>
                 </VBox>
             </children>
