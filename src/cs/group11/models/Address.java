@@ -3,6 +3,7 @@ package cs.group11.models;
 import java.util.regex.Pattern;
 
 import cs.group11.helpers.InvalidDataException;
+import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 
 public class Address implements Validatable {
@@ -42,7 +43,7 @@ public class Address implements Validatable {
 
 	@Override
 	public void validate() throws InvalidDataException {
-		if (postcode == null) {
+		if (Validator.isStringEmpty(postcode)) {
 			throw new InvalidDataException("No postcode set!");
 		}
 		if (!UK_ADDRESS_REGEX.matcher(postcode.trim()).matches()) {
