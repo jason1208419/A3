@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="300.0"
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="111.0" prefWidth="380.0"
       xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.AuctionCellController">
     <children>
         <ImageView fx:id="artImage" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"/>
-        <VBox prefHeight="200.0" prefWidth="100.0">
+        <VBox prefHeight="111.0" prefWidth="153.0">
             <children>
                 <Label fx:id="artTitle" text="Title"/>
                 <Label fx:id="artCurPrice" layoutX="10.0" layoutY="10.0" text="Current price (£)"/>
@@ -17,7 +17,7 @@
                 <Label fx:id="artistName" layoutX="10.0" layoutY="44.0" text="Artist name"/>
             </children>
         </VBox>
-        <VBox prefHeight="200.0" prefWidth="100.0">
+        <VBox prefHeight="111.0" prefWidth="178.0">
             <children>
                 <Label fx:id="startPrice" text="Starting price (£)"/>
                 <Label fx:id="bidsLeft" layoutX="10.0" layoutY="10.0" text="Bids remaining"/>

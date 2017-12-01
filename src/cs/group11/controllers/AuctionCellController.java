@@ -2,6 +2,7 @@ package cs.group11.controllers;
 
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
+import cs.group11.models.artworks.Sculpture;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -71,7 +72,15 @@ public class AuctionCellController {
             int lastBidIndex = auction.getBids().size() - 1;
             this.setArtCurPrice(auction.getBids().get(lastBidIndex).getPrice());
         }
-        this.setArtType(artwork.getClass().getName());
+
+        String type;
+        if (artwork instanceof Sculpture) {
+            type = "Sculpture";
+        } else {
+            type = "Painting";
+        }
+
+        this.setArtType(type);
         this.setArtistName(artwork.getArtist());
 
         if (emptyAuction) {
