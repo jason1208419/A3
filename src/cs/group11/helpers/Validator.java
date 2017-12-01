@@ -8,7 +8,7 @@ public final class Validator {
 	}
 
 	public static boolean isStringEmpty(String s) {
-		return !(isNull(s) && s.trim().isEmpty());
+		return isNull(s) || s.trim().isEmpty();
 	}
 
 	public static boolean isNull(Object s) {
