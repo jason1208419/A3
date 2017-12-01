@@ -1,5 +1,6 @@
 package cs.group11.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,119 +8,145 @@ import java.util.List;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
-import javafx.scene.image.Image;
 
-public class User implements Validatable {
+public class User implements Validatable, Serializable {
+    private static final long serialVersionUID = 1L;
 
 	private int id;
 	private Date lastLogin;
 
-	private String username;
-	private String firstname;
-	private String lastname;
-	private String telNo;
-	private Address address;
-	private Image avatar;
+    private String username;
+    private String firstname;
+    private String lastname;
+    private String telNo;
+    private Address address;
+    private String avatarPath;
 
 	private List<User> favouriteUsers;
 	private List<Auction> favouriteAuctions;
 
-	public User(String username, String firstname, String lastname, String telNo, Address address, Image avatar) {
-		this.id = 0;
-		this.lastLogin = new Date();
+    public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
+        this.id = 0;
+        this.lastLogin = new Date();
 
-		this.username = username;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.telNo = telNo;
-		this.address = address;
-		this.avatar = avatar;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.telNo = telNo;
+        this.address = address;
+        this.avatarPath = avatarPath;
 
-		this.validate();
+        this.validate();
 
-		this.favouriteUsers = new ArrayList<>();
-		this.favouriteAuctions = new ArrayList<>();
-	}
+        this.favouriteUsers = new ArrayList<>();
+        this.favouriteAuctions = new ArrayList<>();
+    }
 
-	public int getId() {
-		return id;
-	}
+    public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
+        this.id = id;
+        this.lastLogin = lastLogin;
 
-	public Date getLastLogin() {
-		return lastLogin;
-	}
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.telNo = telNo;
+        this.address = address;
+        this.avatarPath = avatarPath;
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+        this.validate();
 
-	public String getUsername() {
-		return username;
-	}
+        this.favouriteUsers = new ArrayList<>();
+        this.favouriteAuctions = new ArrayList<>();
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public static User login(String username) {
+        // set users lastLogin to "new Date()"
+        return null;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public Date getLastLogin() {
+        return lastLogin;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getTelNo() {
-		return telNo;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setTelNo(String telNo) {
-		this.telNo = telNo;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public Image getAvatar() {
-		return avatar;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setAvatar(Image avatar) {
-		this.avatar = avatar;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public List<Auction> getFavouriteAuctions() {
-		return favouriteAuctions;
-	}
+    public String getTelNo() {
+        return telNo;
+    }
 
-	public List<User> getFavouriteUsers() {
-		return favouriteUsers;
-	}
+    public void setTelNo(String telNo) {
+        this.telNo = telNo;
+    }
 
-	public void addFavouriteUser(User user) {
-		this.favouriteUsers.add(user);
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public void removeFavouriteUser(User user) {
-		this.favouriteUsers.remove(user);
-	}
+    public String getAvatarPath() {
+        return avatarPath;
+    }
 
-	public void addFavouriteAuction(Auction auction) {
-		this.favouriteAuctions.add(auction);
-	}
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
 
-	public void removeFavouriteAuction(Auction auction) {
-		this.favouriteAuctions.remove(auction);
-	}
+    public List<Auction> getFavouriteAuctions() {
+        return favouriteAuctions;
+    }
+
+    public List<User> getFavouriteUsers() {
+        return favouriteUsers;
+    }
+
+    public void addAllFavouriteUsers(List<User> users) {
+        this.favouriteUsers.addAll(users);
+    }
+
+    public void addFavouriteUser(User user) {
+        this.favouriteUsers.add(user);
+    }
+
+    public void removeFavouriteUser(User user) {
+        this.favouriteUsers.remove(user);
+    }
+
+    public void addFavouriteAuction(Auction auction) {
+        this.favouriteAuctions.add(auction);
+    }
+
+    public void removeFavouriteAuction(Auction auction) {
+        this.favouriteAuctions.remove(auction);
+    }
 
 	@Override
 	public void validate() throws InvalidDataException {
@@ -135,7 +162,7 @@ public class User implements Validatable {
 		if (Validator.isStringEmpty(telNo)) {
 			throw new InvalidDataException("No telephone number provided!");
 		}
-		if (Validator.isNull(avatar)) {
+		if (Validator.isStringEmpty(avatarPath)) {
 			throw new InvalidDataException("No avatar has been selected!");
 		}
 		if (Validator.isNull(address)) {
