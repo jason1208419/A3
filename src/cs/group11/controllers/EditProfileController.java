@@ -60,8 +60,10 @@ public class EditProfileController {
 
     public void setUser(User user) {
         this.user = user;
-        this.avatar.setImage(user.getAvatar());
-        this.avatar1.setImage(user.getAvatar());
+
+        Image avatarImage = new Image(user.getAvatarPath());
+        this.avatar.setImage(avatarImage);
+        this.avatar1.setImage(avatarImage);
         this.username1.setText(user.getUsername());
         this.username2.setText(user.getUsername());
 

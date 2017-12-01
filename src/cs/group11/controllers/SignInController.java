@@ -33,21 +33,19 @@ public class SignInController {
 
         users = new ArrayList<User>();
 
-        Image image1 = new Image("https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg");
+        String imagePath = "https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg";
         Address address1 = new Address(new String[]{"313 Presli", "Singleton Park", "Swansea"}, "SA1 4PU");
-        User user1 = new User("Admin", "Kieran", "Phillips", "075828471938", address1, image1);
+        User user1 = new User("Admin", "Kieran", "Phillips", "075828471938", address1, imagePath);
 
         users.add(user1);
 
-        Image image2 = new Image("https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg");
         Address address2 = new Address(new String[]{"43 Kings Road", "Singleton Park", "Cardiff"}, "CF33 6GH");
-        User user2 = new User("Kings head", "Oliver", "Bourne", "032502353325", address2, image2);
+        User user2 = new User("Kings head", "Oliver", "Bourne", "032502353325", address2, imagePath);
 
         users.add(user2);
 
-        Image image3 = new Image("https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg");
         Address address3 = new Address(new String[]{"313 Presli", "fafasfafds", "Swadsfsddsnsea"}, "SA1 4PUfsfsddsf");
-        User user3 = new User("User", "Kieransdfsfsd", "Phillipssdfsf", "07582847193843664", address1, image1);
+        User user3 = new User("User", "Kieransdfsfsd", "Phillipssdfsf", "07582847193843664", address1, imagePath);
 
         users.add(user3);
 

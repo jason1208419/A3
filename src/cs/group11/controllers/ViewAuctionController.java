@@ -6,6 +6,7 @@ import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.text.DateFormat;
@@ -79,7 +80,8 @@ public class ViewAuctionController {
         this.author.setText(artwork.getArtist());
 
         this.sellerUsername.setText(auction.getCreator().getUsername());
-        this.sellerAvatarImageView.setImage(auction.getCreator().getAvatar());
+        Image avatarImage = new Image(auction.getCreator().getAvatarPath());
+        this.sellerAvatarImageView.setImage(avatarImage);
 
         this.currentPrice.setText(""); // TODO: Add the current bid price
         this.startingPrice.setText(""); // TODO: Add the starting auction price

@@ -66,6 +66,23 @@ public class ProfileController {
         favouriteUsers.setCellFactory(param -> null); // FIXME
         favouriteAuctions.setCellFactory(param -> null); // FIXME
 
+        Image avatar = new Image(user.getAvatarPath());
+        this.avatarImageView.setImage(avatar);
+        this.username.setText(user.getUsername());
+        this.firstname.setText(user.getFirstname());
+        this.lastname.setText(user.getLastname());
+        this.phoneNumber.setText(user.getTelNo());
+
+        for (String addressLine : user.getAddress().getLines()) {
+            Label label = new Label(addressLine);
+            this.addressLines.getChildren().add(label);
+        }
+
+        this.postcode.setText(user.getAddress().getPostcode());
+
+        favouriteUsersList.addAll(user.getFavouriteUsers());
+        favouriteAuctionsList.addAll(user.getFavouriteAuctions());
+
         ChangeListener<Bid> onBidClick = (observable, oldValue, newValue) -> {
             Auction auction = newValue.getAuction();
             System.out.println("Clicked on " + auction.getArtwork().getName());
@@ -105,9 +122,8 @@ public class ProfileController {
         Painting painting = new Painting("Starry Night", description, artworkImage, "Vincent Van Gogh", 1889, 200, 300);
         Auction auction = new Auction(creator, 7, 10.00, painting);
 
-        Image bidderAvatar = new Image("/res/avatars/creeper.jpg");
         Address bidderAddress = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
-        User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, bidderAvatar);
+        User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
 
         Bid bid = new Bid(11.21, bidder, auction);
         this.bidsWonList.add(bid);
@@ -115,22 +131,6 @@ public class ProfileController {
 
     public void setUser(User user) {
         this.user = user;
-
-        this.avatarImageView.setImage(user.getAvatar());
-        this.username.setText(user.getUsername());
-        this.firstname.setText(user.getFirstname());
-        this.lastname.setText(user.getLastname());
-        this.phoneNumber.setText(user.getTelNo());
-
-        for (String addressLine : user.getAddress().getLines()) {
-            Label label = new Label(addressLine);
-            this.addressLines.getChildren().add(label);
-        }
-
-        this.postcode.setText(user.getAddress().getPostcode());
-
-        favouriteUsersList.addAll(user.getFavouriteUsers());
-        favouriteAuctionsList.addAll(user.getFavouriteAuctions());
     }
 
     private class BidListCell extends ListCell<Bid> {

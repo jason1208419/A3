@@ -48,12 +48,11 @@ public class AuctionListController {
     }
 
     private void addTestAuctions() {
-        Image avatar = new Image("res/avatars/creeper.jpg");
         String[] adr = new String[2];
         adr[0] = "Testdata";
         adr[1] = "Also test data";
         Address testAdr = new Address(adr,"SA14LU");
-        User test = new User("Test","TestA", "TestB","999",testAdr,avatar);
+        User test = new User("Test","TestA", "TestB","999",testAdr,"res/avatars/creeper.jpg");
 
         Image artworkImage = new Image("https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
         Painting painting = new Painting("Starry Night", "TestDesc", artworkImage, "Vincent Van Gogh", 1889, 200, 300);

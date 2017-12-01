@@ -18,15 +18,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
-        Parent root = loader.load();
-        ProfileController controller = loader.getController();
-
-        Image avatar = new Image("res/avatars/creeper.jpg");
         Address address = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
-        User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, avatar);
+        User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
 
+        ProfileController controller = new ProfileController();
         controller.setUser(creator);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
+        loader.setController(controller);
+        Parent root = loader.load();
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 550));
