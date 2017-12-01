@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class AuctionListController {
     @FXML
-    private ListView aucList;
+    private ListView<Auction> aucList;
 
 
     @FXML
@@ -38,12 +38,24 @@ public class AuctionListController {
         currentAuctions = FXCollections.observableArrayList();
         aucList.setItems(currentAuctions);
         aucList.setCellFactory(param -> new AuctionCell());
+
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
             // TODO REDIRECT USER TO INDIVIDUAL AUCTION PAGE
         };
+
+        paintBTN.setOnAction((event) -> {
+            System.out.println("Painting filter clicked, isTicked = " + paintBTN.isSelected());
+        });
+
+        sculptBTN.setOnAction((event) -> {
+            System.out.println("Sculpture filter clicked, isTicked = " + sculptBTN.isSelected());
+        });
+        //TODO IMPLEMENT FILTER
+
         aucList.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
+
         addTestAuctions();
     }
 
@@ -63,7 +75,6 @@ public class AuctionListController {
         this.currentAuctions.add(testAuc);
     }
 
-    //TODO ADD FILTER FUNCTIONALITY
 
     private class AuctionCell extends ListCell<Auction> {
         private Node node;
