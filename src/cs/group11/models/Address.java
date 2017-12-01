@@ -15,7 +15,7 @@ public class Address implements Validatable {
 
 	public Address(String[] lines, String postcode) {
 		this.lines = lines;
-		this.postcode = postcode;
+		this.postcode = postcode.toUpperCase();
 
 		this.validate();
 	}
