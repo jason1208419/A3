@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="517.0" prefWidth="752.0" HBox.hgrow="ALWAYS"
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="517.0" prefWidth="807.0" HBox.hgrow="ALWAYS"
       xmlns="http://javafx.com/javafx/8.0.121">
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
@@ -39,11 +39,7 @@
                         <Button fx:id="profile" mnemonicParsing="false">
                             <graphic>
                                 <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
-                                           preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../res/avatars/creeper.jpg"/>
-                                    </image>
-                                </ImageView>
+                                           preserveRatio="true"/>
                             </graphic>
                         </Button>
                         <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
@@ -63,11 +59,7 @@
                     <children>
                         <Label text="Edit Avatar"/>
                         <ImageView fx:id="avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true">
-                            <image>
-                                <Image url="@../../../res/avatars/creeper.jpg"/>
-                            </image>
-                        </ImageView>
+                                   preserveRatio="true"/>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
                                 <Button fx:id="upload" mnemonicParsing="false" text="Upload"/>
@@ -136,13 +128,14 @@
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                     <children>
                         <Label text="Remove Favourite Artworks"/>
-                        <TableView fx:id="removeFavouriteAuctions" prefHeight="157.0" prefWidth="362.0"
+                        <TableView fx:id="removeFavouriteArtworks" prefHeight="157.0" prefWidth="362.0"
                                    VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="tablePic" prefWidth="75.0" text="Picture"/>
                                 <TableColumn fx:id="tableName" prefWidth="75.0" text="Name"/>
-                                <TableColumn fx:id="tablePrice" prefWidth="75.0" text="Price (£)"/>
-                                <TableColumn fx:id="tableRemoveArt" prefWidth="75.0" text="Remove"/>
+                                <TableColumn fx:id="tableArtist" prefWidth="75.0" text="Artist"/>
+                                <TableColumn fx:id="tableCreationYear" prefWidth="97.0" text="Creation Year"/>
+                                <TableColumn fx:id="tableRemoveArt" prefWidth="78.0" text="Remove"/>
                             </columns>
                         </TableView>
                     </children>

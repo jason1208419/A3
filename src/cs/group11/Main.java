@@ -42,7 +42,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         primaryStage.setTitle("Edit Profile");
-        primaryStage.setScene(new Scene(root, 650, 650));
+        primaryStage.setScene(new Scene(root, 750, 650));
         primaryStage.show();
     }
 }

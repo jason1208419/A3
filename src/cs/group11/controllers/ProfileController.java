@@ -2,10 +2,7 @@ package cs.group11.controllers;
 
 import java.io.IOException;
 
-import cs.group11.models.Address;
-import cs.group11.models.Auction;
-import cs.group11.models.Bid;
-import cs.group11.models.User;
+import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -35,7 +32,8 @@ public class ProfileController {
     @FXML private ListView<Bid> bidsReceived;
 
     @FXML private ListView<User> favouriteUsers;
-    @FXML private ListView<Auction> favouriteAuctions;
+    @FXML
+    private ListView<Artwork> favouriteArtworks;
 
     private User user;
     private ObservableList<Bid> bidsWonList;
@@ -43,7 +41,7 @@ public class ProfileController {
     private ObservableList<Bid> bidsReceivedList;
 
     private ObservableList<User> favouriteUsersList;
-    private ObservableList<Auction> favouriteAuctionsList;
+    private ObservableList<Artwork> favouriteArtworksList;
 
     @FXML
     protected void initialize() {
@@ -51,20 +49,20 @@ public class ProfileController {
         bidsMadeList = FXCollections.observableArrayList();
         bidsReceivedList = FXCollections.observableArrayList();
         favouriteUsersList = FXCollections.observableArrayList();
-        favouriteAuctionsList = FXCollections.observableArrayList();
+        favouriteArtworksList = FXCollections.observableArrayList();
 
         bidsWon.setItems(bidsWonList);
         bidsMade.setItems(bidsMadeList);
         bidsReceived.setItems(bidsReceivedList);
         favouriteUsers.setItems(favouriteUsersList);
-        favouriteAuctions.setItems(favouriteAuctionsList);
+        favouriteArtworks.setItems(favouriteArtworksList);
 
         bidsWon.setCellFactory(param -> new BidListCell());
         bidsMade.setCellFactory(param -> new BidListCell());
         bidsReceived.setCellFactory(param -> new BidListCell());
 
         favouriteUsers.setCellFactory(param -> null); // FIXME
-        favouriteAuctions.setCellFactory(param -> null); // FIXME
+        favouriteArtworks.setCellFactory(param -> null); // FIXME
 
         Image avatar = new Image(user.getAvatarPath());
         this.avatarImageView.setImage(avatar);
@@ -81,7 +79,7 @@ public class ProfileController {
         this.postcode.setText(user.getAddress().getPostcode());
 
         favouriteUsersList.addAll(user.getFavouriteUsers());
-        favouriteAuctionsList.addAll(user.getFavouriteAuctions());
+        favouriteArtworksList.addAll(user.getFavouriteArtworks());
 
         ChangeListener<Bid> onBidClick = (observable, oldValue, newValue) -> {
             Auction auction = newValue.getAuction();
@@ -96,8 +94,8 @@ public class ProfileController {
             // TODO: Change to user page
         };
 
-        ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on " + newValue.getArtwork().getName());
+        ChangeListener<Artwork> onArtworkClick = (observable, oldValue, newValue) -> {
+            System.out.println("Clicked on " + newValue.getName());
 
             // TODO: Change to auction page
         };
@@ -106,7 +104,7 @@ public class ProfileController {
         bidsMade.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         bidsReceived.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         favouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
-        favouriteAuctions.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
+        favouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onArtworkClick);
 
         addTestBids();
     }

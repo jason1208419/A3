@@ -23,7 +23,7 @@ public class User implements Validatable, Serializable {
     private String avatarPath;
 
 	private List<User> favouriteUsers;
-	private List<Auction> favouriteAuctions;
+    private List<Artwork> favouriteArtworks;
 
     public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
         this.id = 0;
@@ -39,7 +39,7 @@ public class User implements Validatable, Serializable {
         this.validate();
 
         this.favouriteUsers = new ArrayList<>();
-        this.favouriteAuctions = new ArrayList<>();
+        this.favouriteArtworks = new ArrayList<>();
     }
 
     public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
@@ -56,7 +56,7 @@ public class User implements Validatable, Serializable {
         this.validate();
 
         this.favouriteUsers = new ArrayList<>();
-        this.favouriteAuctions = new ArrayList<>();
+        this.favouriteArtworks = new ArrayList<>();
     }
 
     public static User login(String username) {
@@ -120,8 +120,8 @@ public class User implements Validatable, Serializable {
         this.avatarPath = avatarPath;
     }
 
-    public List<Auction> getFavouriteAuctions() {
-        return favouriteAuctions;
+    public List<Artwork> getFavouriteArtworks() {
+        return favouriteArtworks;
     }
 
     public List<User> getFavouriteUsers() {
@@ -144,12 +144,12 @@ public class User implements Validatable, Serializable {
         this.favouriteUsers.remove(user);
     }
 
-    public void addFavouriteAuction(Auction auction) {
-        this.favouriteAuctions.add(auction);
+    public void addFavouriteArtwork(Artwork artwork) {
+        this.favouriteArtworks.add(artwork);
     }
 
-    public void removeFavouriteAuction(Auction auction) {
-        this.favouriteAuctions.remove(auction);
+    public void removeFavouriteArtwork(Artwork artwork) {
+        this.favouriteArtworks.remove(artwork);
     }
 
 	@Override
