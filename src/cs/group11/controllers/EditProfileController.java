@@ -112,7 +112,6 @@ public class EditProfileController {
                         }
                     }
                 };
-                System.out.println(cell.getIndex());
                 return cell;
             }
         });
@@ -136,7 +135,7 @@ public class EditProfileController {
                 setGraphic(remove);
                 remove.setOnAction(
                         event -> {
-                            getTableView().getItems().remove(art);
+                            favouriteArtworkList.remove(art);
                             user.removeFavouriteArtwork(art);
                             printFavouriteAuction();
                         }
@@ -172,7 +171,6 @@ public class EditProfileController {
                         }
                     }
                 };
-                System.out.println(cell.getIndex());
                 return cell;
             }
         });
@@ -194,7 +192,7 @@ public class EditProfileController {
                 setGraphic(remove);
                 remove.setOnAction(
                         event -> {
-                            getTableView().getItems().remove(user1);
+                            favouriteUsersList.remove(user1);
                             user.removeFavouriteUser(user1);
                             printFavouriteUsers();
                         }
