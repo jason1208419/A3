@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="555.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.CreateAuctionV2Controller">
+   <center>
+      <HBox prefHeight="255.0" prefWidth="656.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Title:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="title" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Reserve Price: ">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="startPrice" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Max Bids:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="maxBids" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Artist:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="artist" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Width:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="width" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Length:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="length" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Creation Date:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <DatePicker fx:id="creationDate" prefHeight="25.0" prefWidth="149.0" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="TOP_RIGHT" columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Description:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextArea fx:id="description" prefHeight="97.0" prefWidth="148.0" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </FlowPane>
+               </children>
+               <opaqueInsets>
+                  <Insets left="10.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <FlowPane columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Depth:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="depth" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </FlowPane>
+                  <FlowPane columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="Material:">
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                        </Label>
+                        <TextField fx:id="material" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </FlowPane>
+                  <FlowPane columnHalignment="CENTER" rowValignment="TOP" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="103.0" text="Extra Images:">
+                                 <opaqueInsets>
+                                    <Insets left="10.0" />
+                                 </opaqueInsets>
+                              </Label>
+                              <Button fx:id="addExtraImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" VBox.vgrow="ALWAYS" />
+                              <Button fx:id="removeImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <ListView fx:id="extraImages" prefHeight="130.0" prefWidth="155.0" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </FlowPane>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <top>
+      <HBox BorderPane.alignment="TOP_LEFT">
+         <children>
+            <VBox prefHeight="71.0" prefWidth="100.0">
+               <children>
+                  <RadioButton fx:id="sculptureRadio" mnemonicParsing="false" selected="true" text="Sculpture">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting" />
+               </children>
+            </VBox>
+            <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <bottom>
+      <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Create Auction" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" top="10.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+</BorderPane>
