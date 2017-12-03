@@ -1,28 +1,24 @@
 package cs.group11.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import cs.group11.models.Address;
 import cs.group11.models.Artwork;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class EditProfileController {
@@ -60,14 +56,33 @@ public class EditProfileController {
     private TableColumn<User, User> tableRemoveUser = new TableColumn<>("Remove");
     @FXML
     private TableColumn<Artwork, Artwork> tableRemoveArt = new TableColumn<>("Remove");
+    @FXML
+    private VBox rootBox;
+    @FXML
+    private BorderPane rootPane;
+    @FXML
+    private TextField firstNameIn;
+    @FXML
+    private TextField lastNameIn;
+    @FXML
+    private TextField phoneIn;
+    @FXML
+    private TextArea addressIn;
+    @FXML
+    private TextField postcodeIn;
 
     private User user;
 
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Artwork> favouriteArtworkList;
 
+    private ProfileController profileCon;
+
     @FXML
     protected void initialize() {
+        Address address = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
+        User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
+        setUser(creator);
         Image avatarImage = new Image(user.getAvatarPath());
         this.avatar.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
@@ -79,9 +94,6 @@ public class EditProfileController {
         setupFavouriteArtTable();
         setupFavouriteUserTable();
     }
-
-    //TODO: make table
-
 
     public void setUser(User user) {
         this.user = user;
@@ -119,9 +131,7 @@ public class EditProfileController {
         tableName.setCellValueFactory(new PropertyValueFactory<Artwork, String>("name"));
         tableArtist.setCellValueFactory(new PropertyValueFactory<Artwork, Double>("artist"));
         tableCreationYear.setCellValueFactory(new PropertyValueFactory<Artwork, Integer>("creationYear"));
-        tableRemoveArt.setCellValueFactory(
-                param -> new ReadOnlyObjectWrapper<>(param.getValue())
-        );
+        tableRemoveArt.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         tableRemoveArt.setCellFactory(param -> new TableCell<Artwork, Artwork>() {
             private final Button remove = new Button("Remove");
 
@@ -233,5 +243,79 @@ public class EditProfileController {
         for (int i = 0; i < user.getFavouriteArtworks().size(); i++) {
             System.out.println(user.getFavouriteArtworks().get(i).getName());
         }
+    }
+
+    //TODO: A user logs in to the program and performs actions which are saved locally to disk on that machine
+
+    @FXML
+    private void cancelClick(ActionEvent actionEvent) throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/profile.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void avatarClick(ActionEvent actionEvent) throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/profile.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void viewAuctionClick(ActionEvent actionEvent) throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/auctionList.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void createAuctionClick(ActionEvent actionEvent) throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/createAuction.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void logoutClick(ActionEvent actionEvent) throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void uploadClick(ActionEvent actionEvent) {
+    }
+
+    public void drawAvatarClick(ActionEvent actionEvent) {
+    }
+
+    public void submitClick(ActionEvent actionEvent) throws IOException {
+        printUser();
+        //TODO:validate input
+        if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
+            this.user.setFirstname(firstNameIn.getText());
+        }
+        if (lastNameIn.getText() != null && !lastNameIn.getText().isEmpty()) {
+            this.user.setLastname(lastNameIn.getText());
+        }
+        if (phoneIn.getText() != null && !phoneIn.getText().isEmpty()) {
+            this.user.setTelNo(phoneIn.getText());
+        }
+        if (addressIn.getText() != null && !addressIn.getText().isEmpty()) {
+            ArrayList<String> address = new ArrayList<>();
+            for (String line : addressIn.getText().split("\\n")) {
+                address.add(line);
+            }
+            String[] lines = new String[address.size()];
+            lines = address.toArray(lines);
+            this.user.getAddress().setLines(lines);
+        }
+        if (postcodeIn.getText() != null && !postcodeIn.getText().isEmpty()) {
+            System.out.println(postcodeIn.getText());
+            this.user.getAddress().setPostcode(postcodeIn.getText());
+        }
+        printUser();
+
+        profileCon.setUser(this.user);
+        VBox box = FXMLLoader.load(getClass().getResource("../views/profile.fxml"));
+        rootBox.getChildren().setAll(box);
+    }
+
+    private void printUser() {
+        System.out.println("Username: " + this.user.getUsername() + "\nFirst Name: " + this.user.getFirstname() + "\nLast Name: " + this.user.getLastname() + "\nPhone Number: " + this.user.getTelNo() + "\nAddress:");
+        for (int i = 0; i < this.user.getAddress().getLines().length; i++) {
+            System.out.println(this.user.getAddress().getLine(i + 1));
+        }
+        System.out.println(this.user.getAddress().getPostcode());
     }
 }

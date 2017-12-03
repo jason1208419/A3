@@ -31,14 +31,7 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();*/
-        Address address = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
-        User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
-
-        EditProfileController controller = new EditProfileController();
-        controller.setUser(creator);
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/editProfile.fxml"));
-        loader.setController(controller);
         Parent root = loader.load();
 
         primaryStage.setTitle("Edit Profile");

@@ -33,6 +33,10 @@ public class Address implements Validatable {
 		return lines;
 	}
 
+	public void setLines(String[] lines) {
+		this.lines = lines;
+	}
+
 	public String getLine(int number) {
 		return this.lines[number - 1];
 	}
