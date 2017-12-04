@@ -1,5 +1,6 @@
 package cs.group11.controllers;
 
+import cs.group11.AucListTest;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
@@ -15,10 +16,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,15 +48,35 @@ public class AuctionListController {
         filterAuc.setItems(filteredAuctions);
         filterAuc.setCellFactory(param -> new AuctionCell());
 
+
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
+
+
             if (newValue == null) {
                 return;
             }
 
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
-            // TODO REDIRECT USER TO INDIVIDUAL AUCTION PAGE
+
+            //TODO GET SCREEN SWITCHING WORKING
+            /*
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/viewAuction.fxml"));
+                Parent root = loader.load();
+
+                ViewAuctionController controller = loader.getController();
+                Scene viewAuc = new Scene(root,600,500);
+                Stage primaryStage = AucListTest.getPrimaryStage();
+                primaryStage.setScene(viewAuc);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            */
         };
+
 
 
         EventHandler<ActionEvent> onCheckboxClick = (ActionEvent event) -> {
@@ -82,6 +108,7 @@ public class AuctionListController {
         paintBtn.setOnAction(onCheckboxClick);
         sculptBtn.setOnAction(onCheckboxClick);
 
+
         filterAuc.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
 
         addTestAuctions();
@@ -94,8 +121,8 @@ public class AuctionListController {
         Address testAdr = new Address(adr, "SA14LU");
         User test = new User("Test", "TestA", "TestB", "999", testAdr, "res/avatars/creeper.jpg");
 
-        Image artworkImage = new Image("https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
-        Painting painting = new Painting("Starry Night", "TestDesc", artworkImage, "Vincent Van Gogh", 1889, 200, 300);
+        String imagePath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
+        Painting painting = new Painting("Starry Night", "TestDesc", imagePath, "Vincent Van Gogh", 1889, 200, 300);
 
 
         Auction testAuc = new Auction(test, 12, 11.00, painting);
@@ -104,16 +131,16 @@ public class AuctionListController {
 
 
         String[] adr2 = new String[2];
-        adr[0] = "A";
+        adr2[0] = "A";
         adr2[1] = "B";
         Address testAdr2 = new Address(adr2, "SA27QG");
         User test2 = new User("Test1", "TestA", "TestB", "911", testAdr2, "res/avatars/creeper.jpg");
-        Image artworkImage2 = new Image("res/avatars/creeper.jpg");
-        ArrayList<Image> images = new ArrayList<>();
-        images.add(artworkImage2);
+        String imagePath2 = "res/avatars/creeper.jpg";
+        ArrayList<String> imageLocations = new ArrayList<>();
+        imageLocations.add(imagePath2);
 
-        Sculpture s = new Sculpture("Creeper", "Sample text", artworkImage2, "Fillipos",
-                2017, 342, 201, 300, "Green stuff", images);
+        Sculpture s = new Sculpture("Creeper", "Sample text", imagePath2, "Fillipos",
+                2017, 342, 201, 300, "Green stuff", imageLocations);
 
         Auction testAuc2 = new Auction(test2, 15, 12.25, s);
         Bid testBid2 = new Bid(12.76, test2, testAuc2);
