@@ -2,6 +2,7 @@ package cs.group11;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,19 +30,19 @@ public final class MegaDB {
 	}
 
 	public static Collection<Auction> getAuctions() {
-		return auctions;
+		return Collections.unmodifiableCollection(auctions);
 	}
 
 	public static Collection<User> getUsers() {
-		return users;
+		return Collections.unmodifiableCollection(users);
 	}
 
 	public static Collection<Artwork> getArtworks() {
-		return artworks;
+		return Collections.unmodifiableCollection(artworks);
 	}
 
 	public static boolean addAuction(Auction toAdd) {
-		toAdd.validate();
+		toAdd.validate();// Only store valid data in the databse
 		return auctions.add(toAdd);
 	}
 
@@ -55,10 +56,23 @@ public final class MegaDB {
 		return artworks.add(toAdd);
 	}
 
+	public static Collection<Artwork> searchArtwork(String input) {
+		Set<Artwork> results = new HashSet<>();
+		for (Artwork a : artworks) {
+			if (a.getArtist().contains(input) 
+					|| a.getDescription().contains(input) 
+					|| a.getName().contains(input)
+					|| String.valueOf(a.getCreationYear()).contains(input)) {
+				results.add(a);//Add to results if one of the attributes in Artwork contains 
+							   //the input string.
+			}
+		}
+		return results;
+	}
+
 	/*
-	 * TODO:
-	 * 	Implement search function(s) to searc based on a specific value through the 
-	 * database (Users/Artworks/Auctions)
+	 * TODO: Implement search function(s) to searc based on a specific value through
+	 * the database (Users/Artworks/Auctions)
 	 */
-	
+
 }
