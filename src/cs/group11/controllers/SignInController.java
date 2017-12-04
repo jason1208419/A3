@@ -44,7 +44,7 @@ public class SignInController {
 
         users.add(user2);
 
-        Address address3 = new Address(new String[]{"313 Presli", "fafasfafds", "Swadsfsddsnsea"}, "SA1 4PUfsfsddsf");
+        Address address3 = new Address(new String[]{"313 Presli", "fafasfafds", "Swadsfsddsnsea"}, "SA1 4PU");
         User user3 = new User("User", "Kieransdfsfsd", "Phillipssdfsf", "07582847193843664", address1, imagePath);
 
         users.add(user3);
