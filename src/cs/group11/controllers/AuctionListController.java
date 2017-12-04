@@ -1,5 +1,6 @@
 package cs.group11.controllers;
 
+import cs.group11.AucListTest;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
@@ -58,13 +59,14 @@ public class AuctionListController {
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
 
-            //TODO GET SCREEN SWITCHING WORKING
-            /*
+            //TODO MAKE GUI NEATER
+
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("views/viewAuction.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
                 Parent root = loader.load();
 
                 ViewAuctionController controller = loader.getController();
+                controller.setAuction(auction);
                 Scene viewAuc = new Scene(root,600,500);
                 Stage primaryStage = AucListTest.getPrimaryStage();
                 primaryStage.setScene(viewAuc);
@@ -73,7 +75,7 @@ public class AuctionListController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            */
+
         };
 
 
