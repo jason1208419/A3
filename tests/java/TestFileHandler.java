@@ -74,10 +74,14 @@ public class TestFileHandler {
 
         this.artworks = new HashMap<>();
 
-        String imagePath = "http://static.wixstatic.com/media/04f896_3adcbbe369db4b1a9644238fa0176175.jpg_256";
-        Painting painting = new Painting(2, "Flowers", null, imagePath, "Van Gogh", 2009, 10, 40);
+        String imagePath = "http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png";
+        Painting painting = new Painting(2, "Flowers", null, imagePath, "Van Gogh", 1993, 100, 200);
+
+        String imagePath2 = "https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg";
+        Sculpture sculpture = new Sculpture(1, "dill", null, imagePath2, "Vin Diesel", 2007, 300, 10, 4, "plants", new ArrayList<>());
 
         this.artworks.put(2, painting);
+        this.artworks.put(1, sculpture);
 
         return this.artworks;
     }
@@ -431,6 +435,43 @@ public class TestFileHandler {
             assertThat(loadedBid.getCreationDate().getTime(), is(expectedBid.getCreationDate().getTime()));
             assertThat(loadedBid.getUser().getId(), is(expectedBid.getUser().getId()));
             assertThat(loadedBid.getUser().getUsername(), is(expectedBid.getUser().getUsername()));
+        }
+    }
+
+    @Test
+    public void testReadArtworks() {
+        HashMap<Integer, Artwork> expectedArtworks = getArtworksList();
+
+        File file = new File(getClass().getResource("artworks.csv").getFile());
+        HashMap<Integer, Artwork> loadedArtworks = null;
+
+        try {
+            loadedArtworks = FileHandler.readArtworks(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Artwork loadedArtwork : loadedArtworks.values()) {
+            Artwork expectedArtwork = expectedArtworks.get(loadedArtwork.getId());
+            assertThat(loadedArtwork, is(instanceOf(expectedArtwork.getClass())));
+            assertThat(loadedArtwork.getArtist(), is(expectedArtwork.getArtist()));
+            assertThat(loadedArtwork.getId(), is(expectedArtwork.getId()));
+            assertThat(loadedArtwork.getImagePath(), is(expectedArtwork.getImagePath()));
+
+            if (loadedArtwork instanceof Sculpture) {
+                Sculpture loadedSculpture = (Sculpture) loadedArtwork;
+                Sculpture expectedSculpture = (Sculpture) expectedArtwork;
+
+                assertThat(loadedSculpture.getMaterial(), is(expectedSculpture.getMaterial()));
+                assertThat(loadedSculpture.getDepth(), is(expectedSculpture.getDepth()));
+                assertThat(loadedSculpture.getPhotos().size(), is(expectedSculpture.getPhotos().size()));
+            } else if (loadedArtwork instanceof Painting) {
+                Painting loadedPainting = (Painting) loadedArtwork;
+                Painting expectedPainting = (Painting) expectedArtwork;
+
+                assertThat(loadedPainting.getHeight(), is(expectedPainting.getHeight()));
+                assertThat(loadedPainting.getWidth(), is(expectedPainting.getWidth()));
+            }
         }
     }
 }

@@ -75,8 +75,6 @@ public final class FileHandler {
 
         return auctions;
     }
-
-    // TODO: Test
     public static HashMap<Integer, Bid> readBids(File file, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) throws IOException {
         HashMap<Integer, Bid> bids = new HashMap<>();
         List<String> lines = readLines(file);
@@ -90,7 +88,6 @@ public final class FileHandler {
         return bids;
     }
 
-    // TODO: Test
     public static HashMap<Integer, Artwork> readArtworks(File file) throws IOException {
         HashMap<Integer, Artwork> artworks = new HashMap<>();
         List<String> lines = readLines(file);
@@ -278,3 +275,4 @@ public final class FileHandler {
 //
 //    }
 }
+
