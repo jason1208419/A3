@@ -12,8 +12,8 @@ import cs.group11.interfaces.Validatable;
 public class User implements Validatable, Serializable {
     private static final long serialVersionUID = 1L;
 
-	private int id;
-	private Date lastLogin;
+    private int id;
+    private Date lastLogin;
 
     private String username;
     private String firstname;
@@ -22,8 +22,8 @@ public class User implements Validatable, Serializable {
     private Address address;
     private String avatarPath;
 
-	private List<User> favouriteUsers;
-    private List<Artwork> favouriteArtworks;
+    private List<User> favouriteUsers;
+    private List<Auction> favouriteAuctions;
 
     public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
         this.id = 0;
@@ -39,7 +39,7 @@ public class User implements Validatable, Serializable {
         this.validate();
 
         this.favouriteUsers = new ArrayList<>();
-        this.favouriteArtworks = new ArrayList<>();
+        this.favouriteAuctions = new ArrayList<>();
     }
 
     public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
@@ -56,7 +56,7 @@ public class User implements Validatable, Serializable {
         this.validate();
 
         this.favouriteUsers = new ArrayList<>();
-        this.favouriteArtworks = new ArrayList<>();
+        this.favouriteAuctions = new ArrayList<>();
     }
 
     public static User login(String username) {
@@ -120,8 +120,8 @@ public class User implements Validatable, Serializable {
         this.avatarPath = avatarPath;
     }
 
-    public List<Artwork> getFavouriteArtworks() {
-        return favouriteArtworks;
+    public List<Auction> getFavouriteAuctions() {
+        return favouriteAuctions;
     }
 
     public List<User> getFavouriteUsers() {
@@ -144,34 +144,34 @@ public class User implements Validatable, Serializable {
         this.favouriteUsers.remove(user);
     }
 
-    public void addFavouriteArtwork(Artwork artwork) {
-        this.favouriteArtworks.add(artwork);
+    public void addFavouriteAuction(Auction auction) {
+        this.favouriteAuctions.add(auction);
     }
 
-    public void removeFavouriteArtwork(Artwork artwork) {
-        this.favouriteArtworks.remove(artwork);
+    public void removeFavouriteAuction(Auction auction) {
+        this.favouriteAuctions.remove(auction);
     }
 
-	@Override
-	public void validate() throws InvalidDataException {
-		if (Validator.isStringEmpty(username)) {
-			throw new InvalidDataException("No username specified!");
-		}
-		if (Validator.isStringEmpty(firstname)) {
-			throw new InvalidDataException("No firstname provided!");
-		}
-		if (Validator.isStringEmpty(lastname)) {
-			throw new InvalidDataException("No lastname specified!");
-		}
-		if (Validator.isStringEmpty(telNo)) {
-			throw new InvalidDataException("No telephone number provided!");
-		}
-		if (Validator.isStringEmpty(avatarPath)) {
-			throw new InvalidDataException("No avatar has been selected!");
-		}
-		if (Validator.isNull(address)) {
-			throw new InvalidDataException("A valid UK address has not been set.");
-		}
-		address.validate();
-	}
+    @Override
+    public void validate() throws InvalidDataException {
+        if (Validator.isStringEmpty(username)) {
+            throw new InvalidDataException("No username specified!");
+        }
+        if (Validator.isStringEmpty(firstname)) {
+            throw new InvalidDataException("No firstname provided!");
+        }
+        if (Validator.isStringEmpty(lastname)) {
+            throw new InvalidDataException("No lastname specified!");
+        }
+        if (Validator.isStringEmpty(telNo)) {
+            throw new InvalidDataException("No telephone number provided!");
+        }
+        if (Validator.isStringEmpty(avatarPath)) {
+            throw new InvalidDataException("No avatar has been selected!");
+        }
+        if (Validator.isNull(address)) {
+            throw new InvalidDataException("A valid UK address has not been set.");
+        }
+        address.validate();
+    }
 }
