@@ -28,7 +28,8 @@ public class AuctionCellController {
     private Auction auction;
 
 
-    private void setArtImage(Image image) {
+    private void setArtImagePath(String imagePath) {
+        Image image = new Image(imagePath);
         this.artImage.setImage(image);
     }
 
@@ -62,7 +63,7 @@ public class AuctionCellController {
     public void viewAuctionInfo(Auction auction) {
         this.auction = auction;
         Artwork artwork = auction.getArtwork();
-        this.setArtImage(artwork.getImage());
+        this.setArtImagePath(artwork.getImagePath());
         this.setArtTitle(artwork.getName());
 
         boolean emptyAuction = (auction.getBids().size() == 0);

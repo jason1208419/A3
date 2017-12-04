@@ -75,7 +75,8 @@ public class ViewAuctionController {
             artworkType = "Sculpture";
         }
 
-        this.artworkImageView.setImage(auction.getArtwork().getImage());
+        Image image = new Image(auction.getArtwork().getImagePath());
+        this.artworkImageView.setImage(image);
         this.artType.setText(artworkType);
         this.title.setText(artwork.getName());
         this.author.setText(artwork.getArtist());

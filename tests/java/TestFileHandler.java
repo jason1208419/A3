@@ -1,6 +1,7 @@
 import cs.group11.FileHandler;
-import cs.group11.models.Address;
-import cs.group11.models.User;
+import cs.group11.models.*;
+import cs.group11.models.artworks.Painting;
+import cs.group11.models.artworks.Sculpture;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,13 +11,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.*;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 public class TestFileHandler {
     private HashMap<Integer, User> users;
+    private HashMap<Integer, Auction> auctions;
+    private HashMap<Integer, Artwork> artworks;
+    private HashMap<Integer, Bid> bids;
 
     private int[][] favouriteUsersIds = new int[][]{ {4, 2, 3}, {0, 2}, {0}, {4}, {3, 1} };
+    private int[][] favouriteAuctionsIds = new int[][] { {0} };
+    private int[][] auctionBidsIds = new int[][] { {1, 0} };
 
     private HashMap<Integer, User> getUsersList() {
         if (this.users != null) {
@@ -52,12 +60,64 @@ public class TestFileHandler {
 
         for (int i = 0; i < this.users.size(); i++) {
             User user = this.users.get(i);
-            List<User> favouriteUsers = FileHandler.parseFavouriteUsers(this.users, favouriteUsersIds[i]);
+            List<User> favouriteUsers = FileHandler.parseFavouriteUsers(favouriteUsersIds[i], this.users);
 
             user.addAllFavouriteUsers(favouriteUsers);
         }
 
         return this.users;
+    }
+    private HashMap<Integer, Artwork> getArtworksList() {
+        if (this.artworks != null) {
+            return this.artworks;
+        }
+
+        this.artworks = new HashMap<>();
+
+        String imagePath = "http://static.wixstatic.com/media/04f896_3adcbbe369db4b1a9644238fa0176175.jpg_256";
+        Painting painting = new Painting(2, "Flowers", null, imagePath, "Van Gogh", 2009, 10, 40);
+
+        this.artworks.put(2, painting);
+
+        return this.artworks;
+    }
+    private HashMap<Integer, Auction> getAuctionsList() {
+        if (this.auctions != null) {
+            return this.auctions;
+        }
+
+        this.auctions = new HashMap<>();
+
+        HashMap<Integer, User> users = this.getUsersList();
+        User user = users.get(2);
+
+        HashMap<Integer, Artwork> artworks = this.getArtworksList();;
+        Artwork artwork = artworks.get(2);
+
+        Auction auction = new Auction(0, new Date(1512171171729L), user, 6, 10.00, artwork);
+        this.auctions.put(0, auction);
+
+        return this.auctions;
+    }
+    private HashMap<Integer, Bid> getBidsList() {
+        if (this.bids != null) {
+            return this.bids;
+        }
+
+        this.bids = new HashMap<>();
+
+        HashMap<Integer, Auction> auctions = this.getAuctionsList();
+        HashMap<Integer, User> users = this.getUsersList();
+
+        Auction auction = auctions.get(0);
+
+        Bid bid1 = new Bid(0, new Date(1512337288025L), 11.20, users.get(0), auction);
+        Bid bid2 = new Bid(1, new Date(1512337327600L), 16.29, users.get(1), auction);
+
+        bids.put(0, bid1);
+        bids.put(1, bid2);
+
+        return bids;
     }
 
     private void assertUserMatch(User user1, User user2) {
@@ -117,7 +177,7 @@ public class TestFileHandler {
         for (int i = 0; i < users.size(); i++) {
             int[] expectedFavUsers = favouriteUsersIds[i];
 
-            List<User> favUsers = FileHandler.parseFavouriteUsers(users, expectedFavUsers);
+            List<User> favUsers = FileHandler.parseFavouriteUsers(expectedFavUsers, users);
             assertThat(favUsers.size(), is(expectedFavUsers.length));
 
             for (int i2 = 0; i2 < expectedFavUsers.length; i2++) {
@@ -136,7 +196,7 @@ public class TestFileHandler {
         HashMap<Integer, User> loadedUsers = null;
 
         try {
-            loadedUsers = FileHandler.readUsers(file);
+            loadedUsers = FileHandler.readUsers(file, new HashMap<>());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,4 +237,200 @@ public class TestFileHandler {
         assertThat(user.getAddress().getPostcode(), is("SA1 4PO"));
     }
 
+    @Test
+    public void testParseAuction() {
+        String csvLine = "0,1512171171729,2,6,10.00,2,1;0";
+
+        Auction auction = FileHandler.parseAuction(csvLine, this.getUsersList(), this.getArtworksList());
+        assertThat(auction, notNullValue());
+        assertThat(auction.getCreationDate().getTime(), is(1512171171729L));
+        assertThat(auction.getMaxBids(), is(6));
+        assertThat(auction.getReservePrice(), is(10.00));
+
+        Painting expectedArtwork = (Painting) this.getArtworksList().get(2);
+        Painting actualArtwork = (Painting) auction.getArtwork();
+        assertThat(actualArtwork.getId(), is(2));
+        assertThat(actualArtwork.getName(), is(expectedArtwork.getName()));
+        assertThat(actualArtwork.getWidth(), is(expectedArtwork.getWidth()));
+        assertThat(actualArtwork.getHeight(), is(expectedArtwork.getHeight()));
+        assertThat(actualArtwork.getArtist(), is(expectedArtwork.getArtist()));
+        assertThat(actualArtwork.getCreationYear(), is(expectedArtwork.getCreationYear()));
+
+        User expectedUser = this.getUsersList().get(2);
+        User actualUser = auction.getCreator();
+        assertThat(actualArtwork.getId(), is(2));
+        assertThat(actualUser.getUsername(), is(expectedUser.getUsername()));
+        assertThat(actualUser.getFirstname(), is(expectedUser.getFirstname()));
+    }
+
+    @Test
+    public void testParseFavouriteAuctions() {
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+
+        for (int i = 0; i < auctions.size(); i++) {
+            int[] expectedFavAuctions = favouriteAuctionsIds[i];
+
+            List<Auction> favAuctions = FileHandler.parseFavouriteAuctions(expectedFavAuctions, auctions);
+            assertThat(favAuctions.size(), is(expectedFavAuctions.length));
+
+            for (int i2 = 0; i2 < expectedFavAuctions.length; i2++) {
+                Auction favAuction = favAuctions.get(i2);
+                int expectedFavAuctionId = expectedFavAuctions[i2];
+                assertThat(favAuction.getId(), is(expectedFavAuctionId));
+            }
+        }
+    }
+
+    @Test
+    public void testParseAuctionBids() {
+        HashMap<Integer, Bid> bids = getBidsList();
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+
+        for (int i = 0; i < auctions.size(); i++) {
+            int[] expectedBidsIds = auctionBidsIds[i];
+
+            List<Bid> auctionBids = FileHandler.parseAuctionBids(expectedBidsIds, bids);
+            assertThat(auctionBids.size(), is(expectedBidsIds.length));
+
+            for (int i2 = 0; i2 < expectedBidsIds.length; i2++) {
+                Bid bid = auctionBids.get(i2);
+                int expectedBidId = expectedBidsIds[i2];
+                assertThat(bid.getId(), is(expectedBidId));
+            }
+        }
+    }
+
+    @Test
+    public void testParseBid() {
+        HashMap<Integer, User> users = getUsersList();
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+
+        String csvLine = "0,1512337288025,0,11.20,0";
+
+        Bid bid = FileHandler.parseBid(csvLine, users, auctions);
+
+        assertThat(bid.getId(), is(0));
+        assertThat(bid.getCreationDate().getTime(), is(1512337288025L));
+        assertThat(bid.getUser().getId(), is(0));
+        assertThat(bid.getUser().getUsername(), is("Admin"));
+        assertThat(bid.getPrice(), is(11.20));
+        assertThat(bid.getAuction().getId(), is(0));
+        assertThat(bid.getAuction().getReservePrice(), is(10.00));
+    }
+
+    @Test
+    public void testParseArtwork() {
+        String csvLine1 = "painting,0,flowers,,http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png,Van Gogh,1993,100,200";
+        String csvLine2 = "sculpture,1,dill,,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,;";
+
+        Artwork artwork1 = FileHandler.parseArtwork(csvLine1);
+        assertThat(artwork1, is(instanceOf(Painting.class)));
+
+        Artwork artwork2 = FileHandler.parseArtwork(csvLine2);
+        assertThat(artwork2, is(instanceOf(Sculpture.class)));
+    }
+
+    @Test
+    public void testParsePainting() {
+        String csvLine = "painting,0,flowers,,http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png,Van Gogh,1993,100,200";
+
+        Painting painting = (Painting) FileHandler.parseArtwork(csvLine);
+
+        assertThat(painting.getId(), is(0));
+        assertThat(painting.getName(), is("flowers"));
+        assertThat(painting.getDescription(), is(""));
+        assertThat(painting.getImagePath(), is("http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png"));
+        assertThat(painting.getArtist(), is("Van Gogh"));
+        assertThat(painting.getCreationYear(), is(1993));
+        assertThat(painting.getWidth(), is(100.0));
+        assertThat(painting.getHeight(), is(200.0));
+    }
+
+    @Test
+    public void testParseSculpture() {
+        String csvLine = "sculpture,1,dill,,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,;";
+
+        Sculpture sculpture = (Sculpture) FileHandler.parseArtwork(csvLine);
+
+        assertThat(sculpture.getId(), is(1));
+        assertThat(sculpture.getName(), is("dill"));
+        assertThat(sculpture.getDescription(), is(""));
+        assertThat(sculpture.getImagePath(), is("https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg"));
+        assertThat(sculpture.getArtist(), is("Vin Diesel"));
+        assertThat(sculpture.getCreationYear(), is(2007));
+        assertThat(sculpture.getWidth(), is(300.0));
+        assertThat(sculpture.getHeight(), is(10.0));
+        assertThat(sculpture.getDepth(), is(4.0));
+        assertThat(sculpture.getMaterial(), is("plants"));
+        assertThat(sculpture.getPhotos().size(), is(0));
+    }
+
+    @Test
+    public void testReadAuction() {
+        HashMap<Integer, User> users = getUsersList();
+        HashMap<Integer, Artwork> artworks = getArtworksList();
+        HashMap<Integer, Bid> bids = getBidsList();
+        HashMap<Integer, Auction> expectedAuctions = getAuctionsList();
+
+        File file = new File(getClass().getResource("auctions.csv").getFile());
+        HashMap<Integer, Auction> loadedAuctions = null;
+
+        try {
+            loadedAuctions = FileHandler.readAuction(file, users, bids, artworks);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Auction loadedAuction: loadedAuctions.values()) {
+            Auction expectedAuction = expectedAuctions.get(loadedAuction.getId());
+            assertThat(loadedAuction.getId(), is(expectedAuction.getId()));
+            assertThat(loadedAuction.getCreationDate().getTime(), is(expectedAuction.getCreationDate().getTime()));
+            assertThat(loadedAuction.getCreator().getId(), is(expectedAuction.getCreator().getId()));
+            assertThat(loadedAuction.getCreator().getUsername(), is(expectedAuction.getCreator().getUsername()));
+            assertThat(loadedAuction.getReservePrice(), is(expectedAuction.getReservePrice()));
+            assertThat(loadedAuction.getArtwork().getArtist(), is(expectedAuction.getArtwork().getArtist()));
+
+            List<Bid> loadedBids = loadedAuction.getBids();
+            List<Bid> expectedBids = expectedAuction.getBids();
+
+            assertThat(loadedBids.size(), is(expectedBids.size()));
+
+            for (Bid loadedBid : loadedBids) {
+                Bid expectedBid = expectedBids.get(loadedBid.getId());
+                assertThat(loadedBid.getId(), is(expectedBid.getId()));
+                assertThat(loadedBid.getPrice(), is(expectedBid.getPrice()));
+            }
+        }
+    }
+
+    @Test
+    public void testReadBids() {
+        HashMap<Integer, User> users = getUsersList();
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+        HashMap<Integer, Bid> expectedBids = getBidsList();
+
+        File file = new File(getClass().getResource("bids.csv").getFile());
+        HashMap<Integer, Bid> loadedBids = null;
+
+        try {
+            loadedBids = FileHandler.readBids(file, users, auctions);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Bid loadedBid : loadedBids.values()) {
+            Bid expectedBid = expectedBids.get(loadedBid.getId());
+            assertThat(loadedBid.getId(), is(expectedBid.getId()));
+            assertThat(loadedBid.getPrice(), is(expectedBid.getPrice()));
+            assertThat(loadedBid.getAuction().getId(), is(expectedBid.getAuction().getId()));
+
+            long actualCreationDate = loadedBid.getAuction().getCreationDate().getTime();
+            long expectedCreationDate = expectedBid.getAuction().getCreationDate().getTime();
+            assertThat(actualCreationDate, is(expectedCreationDate));
+
+            assertThat(loadedBid.getCreationDate().getTime(), is(expectedBid.getCreationDate().getTime()));
+            assertThat(loadedBid.getUser().getId(), is(expectedBid.getUser().getId()));
+            assertThat(loadedBid.getUser().getUsername(), is(expectedBid.getUser().getUsername()));
+        }
+    }
 }

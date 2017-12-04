@@ -1,59 +1,107 @@
 package cs.group11;
 
 import cs.group11.models.*;
-import cs.group11.models.artworks.Painting;
-import cs.group11.models.artworks.Sculpture;
+import cs.group11.models.artworks.*;
 
 import java.io.*;
 import java.util.*;
 
 public final class FileHandler {
 
-    public static HashMap<Integer, User> readUsers(File file) throws IOException {
+    public static List<String> readLines(File file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        List<String> lines = new ArrayList<>();
+
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            lines.add(line);
+        }
+        br.close();
+
+        return lines;
+    }
+    public static HashMap<Integer, User> readUsers(File file, HashMap<Integer, Auction> auctions) throws IOException {
         HashMap<Integer, User> users = new HashMap<>();
         List<String> lines = readLines(file);
 
+        // Add users
         for (String line : lines) {
             User user = parseUser(line);
             users.put(user.getId(), user);
         }
 
+        // Add favourite users
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             String line = lines.get(i);
 
             String[] csvLine = line.split(",");
+
             String[] favouriteUsersId = csvLine[9].split(";");
-            List<User> favouriteUsers = parseFavouriteUsers(users, favouriteUsersId);
-
+            List<User> favouriteUsers = parseFavouriteUsers(favouriteUsersId, users);
             user.addAllFavouriteUsers(favouriteUsers);
-        }
 
-        // TODO: Add favourite auctions
-
-        return users;
-    }
-
-    public static List<User> parseFavouriteUsers(HashMap<Integer, User> users, int[] favouriteUsersId) {
-        List<User> favouriteUsers = new ArrayList<>();
-
-        for(int id : favouriteUsersId ) {
-            User favouriteUser = users.get(id);
-
-            if (favouriteUser != null) {
-                favouriteUsers.add(favouriteUser);
-            } else {
-                throw new RuntimeException("Could not find a user with ID:" + id);
+            // TODO: Test favourite auctions
+            if (csvLine.length == 11) {
+                String[] favouriteAuctionsId = csvLine[10].split(";");
+                List<Auction> favouriteAuctions = parseFavouriteAuctions(favouriteAuctionsId, auctions);
+                user.addAllFavouriteAuctions(favouriteAuctions);
             }
         }
 
-        return favouriteUsers;
+        return users;
+    }
+    public static HashMap<Integer, Auction> readAuction(File file, HashMap<Integer, User> users, HashMap<Integer, Bid> bids, HashMap<Integer, Artwork> artworks) throws IOException {
+        HashMap<Integer, Auction> auctions = new HashMap<>();
+        List<String> lines = readLines(file);
+
+        // Add auctions
+        for (String line : lines) {
+            Auction auction = parseAuction(line, users, artworks);
+            auctions.put(auction.getId(), auction);
+        }
+
+        // Add bids to auctions
+        for (int i = 0; i < auctions.size(); i++) {
+            Auction auction = auctions.get(i);
+            String line = lines.get(i);
+
+            String[] csvLine = line.split(",");
+            String[] bidsIds = csvLine[6].split(";");
+            List<Bid> auctionBids = parseAuctionBids(bidsIds, bids);
+
+            auction.addAllBids(auctionBids);
+        }
+
+        return auctions;
     }
 
-    public static List<User> parseFavouriteUsers(HashMap<Integer, User> users, String[] favouriteUsersId) {
-        int[] ids = Arrays.stream(favouriteUsersId).mapToInt(Integer::parseInt).toArray();
+    // TODO: Test
+    public static HashMap<Integer, Bid> readBids(File file, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) throws IOException {
+        HashMap<Integer, Bid> bids = new HashMap<>();
+        List<String> lines = readLines(file);
 
-        return parseFavouriteUsers(users, ids);
+        // Add bids
+        for (String line : lines) {
+            Bid bid = parseBid(line, users, auctions);
+            bids.put(bid.getId(), bid);
+        }
+
+        return bids;
+    }
+
+    // TODO: Test
+    public static HashMap<Integer, Artwork> readArtworks(File file) throws IOException {
+        HashMap<Integer, Artwork> artworks = new HashMap<>();
+        List<String> lines = readLines(file);
+
+        // Add Artworks
+        for (String line : lines) {
+            Artwork artwork = parseArtwork(line);
+            artworks.put(artwork.getId(), artwork);
+        }
+
+        return artworks;
     }
 
     public static User parseUser(String line) {
@@ -72,33 +120,147 @@ public final class FileHandler {
 
         return new User(userId, lastLogin, username, firstname, lastname, telNo, address, avatarPath);
     }
+    public static List<User> parseFavouriteUsers(int[] favouriteUsersId, HashMap<Integer, User> users) {
+        List<User> favouriteUsers = new ArrayList<>();
 
+        for(int id : favouriteUsersId ) {
+            User favouriteUser = users.get(id);
 
-//    public static List<Auction> parseFavouriteAuctions(HashMap<Integer, Auction>, int[] favouriteAuctionsId) {
-//
-//    }
-
-    public static List<String> readLines(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        List<String> lines = new ArrayList<>();
-
-        String line = "";
-        while ((line = br.readLine()) != null) {
-            lines.add(line);
+            if (favouriteUser != null) {
+                favouriteUsers.add(favouriteUser);
+            } else {
+                throw new RuntimeException("Could not find a user with ID:" + id);
+            }
         }
-        br.close();
 
-        return lines;
+        return favouriteUsers;
+    }
+    public static List<User> parseFavouriteUsers(String[] favouriteUsersId, HashMap<Integer, User> users) {
+        int[] ids = Arrays.stream(favouriteUsersId).mapToInt(Integer::parseInt).toArray();
+        return parseFavouriteUsers(ids, users);
     }
 
-//
-//    public static List<Artwork> readArtworks(File file) {
-//
-//    }
-//
-//    public static HashMap<Integer, Auction> readAuction(File file) {
-//
-//    }
+    public static List<Auction> parseFavouriteAuctions(int[] favouriteAuctionsId, HashMap<Integer, Auction> auctions) {
+        List<Auction> favouriteAuctions = new ArrayList<>();
+
+        for(int id : favouriteAuctionsId) {
+            Auction favouriteAuction = auctions.get(id);
+
+            if (favouriteAuction != null) {
+                favouriteAuctions.add(favouriteAuction);
+            } else {
+                throw new RuntimeException("Could not find a auction with ID:" + id);
+            }
+        }
+
+        return favouriteAuctions;
+    }
+    public static List<Auction> parseFavouriteAuctions(String[] favouriteAuctionsId, HashMap<Integer, Auction> auctions) {
+        int[] ids = Arrays.stream(favouriteAuctionsId).mapToInt(Integer::parseInt).toArray();
+        return parseFavouriteAuctions(ids, auctions);
+    }
+
+    public static Auction parseAuction(String line, HashMap<Integer, User> users, HashMap<Integer, Artwork> artworks) {
+        String[] csvLine = line.split(",");
+
+        int auctionId = Integer.parseInt(csvLine[0]);
+        Date lastLogin = new Date(Long.parseLong(csvLine[1]));
+
+        int creatorId = Integer.parseInt(csvLine[2]);
+        User creator = users.get(creatorId);
+
+        int maxBids = Integer.parseInt(csvLine[3]);
+        double reservePrice = Double.parseDouble(csvLine[4]);
+
+        int artworkId = Integer.parseInt(csvLine[5]);
+        Artwork artwork = artworks.get(artworkId);
+
+        return new Auction(auctionId, lastLogin, creator, maxBids, reservePrice, artwork);
+    }
+
+    public static List<Bid> parseAuctionBids(int[] bidsIds, HashMap<Integer, Bid> bids) {
+        List<Bid> auctionBids = new ArrayList<>();
+
+        for(int id : bidsIds ) {
+            Bid bid = bids.get(id);
+
+            if (bid != null) {
+                auctionBids.add(bid);
+            } else {
+                throw new RuntimeException("Could not find a bid with ID:" + id);
+            }
+        }
+
+        return auctionBids;
+    }
+    public static List<Bid> parseAuctionBids(String[] bidsIds, HashMap<Integer, Bid> bids) {
+        int[] ids = Arrays.stream(bidsIds).mapToInt(Integer::parseInt).toArray();
+        return parseAuctionBids(ids, bids);
+    }
+
+    public static Bid parseBid(String line, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) {
+        String[] csvLine = line.split(",");
+
+        int bidId = Integer.parseInt(csvLine[0]);
+
+        Date creationDate = new Date(Long.parseLong(csvLine[1]));
+
+        int userId = Integer.parseInt(csvLine[2]);
+        User user = users.get(userId);
+
+        double price = Double.parseDouble(csvLine[3]);
+
+        int auctionId = Integer.parseInt(csvLine[4]);
+        Auction auction = auctions.get(auctionId);
+
+        return new Bid(bidId, creationDate, price, user, auction);
+    }
+
+    public static Artwork parseArtwork(String line) {
+        String[] csvLine = line.split(",");
+
+        String type = csvLine[0];
+
+        if (type.equals("painting")) {
+            return parsePainting(line);
+        } else if (type.equals("sculpture")) {
+            return parseSculpture(line);
+        } else {
+            throw new RuntimeException("Invalid Artwork type:" + type);
+        }
+    }
+    public static Painting parsePainting(String line) {
+        String[] csvLine = line.split(",");
+
+        int id = Integer.parseInt(csvLine[1]);
+        String title = csvLine[2];
+        String description = csvLine[3];
+        String imagePath = csvLine[4];
+        String artist = csvLine[5];
+        int creationYear = Integer.parseInt(csvLine[6]);
+        double width = Double.parseDouble(csvLine[7]);
+        double height = Double.parseDouble(csvLine[8]);
+
+        return new Painting(id, title, description, imagePath, artist, creationYear, width, height);
+    }
+    public static Sculpture parseSculpture(String line) {
+        String[] csvLine = line.split(",");
+
+        int id = Integer.parseInt(csvLine[1]);
+        String title = csvLine[2];
+        String description = csvLine[3];
+        String imagePath = csvLine[4];
+        String artist = csvLine[5];
+        int creationYear = Integer.parseInt(csvLine[6]);
+        double width = Double.parseDouble(csvLine[7]);
+        double height = Double.parseDouble(csvLine[8]);
+        double depth = Double.parseDouble(csvLine[9]);
+        String material = csvLine[10];
+
+        List<String> photos = Arrays.asList(csvLine[11].split(";"));
+
+        return new Sculpture(id, title, description, imagePath, artist, creationYear, width, height, depth, material, photos);
+    }
 
 //    public static void writeUsers(HashMap<Integer, User> users) throws IOException {
 //
@@ -113,18 +275,6 @@ public final class FileHandler {
 //    }
 //
 //    public static void writeArtwork (Artwork artwork) {
-//
-//    }
-
-//    private static Bid parseBid (String line) {
-//
-//    }
-//
-//    private static Painting parsePainting (String line) {
-//
-//    }
-//
-//    private static Sculpture parseSculpture (String line) {
 //
 //    }
 }

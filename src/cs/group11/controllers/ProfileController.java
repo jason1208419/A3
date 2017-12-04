@@ -118,8 +118,8 @@ public class ProfileController {
                 "it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition " +
                 "of an idealized village";
 
-        Image artworkImage = new Image("https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
-        Painting painting = new Painting("Starry Night", description, artworkImage, "Vincent Van Gogh", 1889, 200, 300);
+        String artworkImagePath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
+        Painting painting = new Painting("Starry Night", description, artworkImagePath, "Vincent Van Gogh", 1889, 200, 300);
         Auction auction = new Auction(creator, 7, 10.00, painting);
 
         Address bidderAddress = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");

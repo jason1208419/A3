@@ -27,7 +27,8 @@ public class BidCellController {
 
     }
 
-    private void setArtworkImage(Image image) {
+    private void setArtworkImagePath(String imagePath) {
+        Image image = new Image(imagePath);
         this.artworkImageView.setImage(image);
     }
 
@@ -55,7 +56,7 @@ public class BidCellController {
 
         Artwork artwork = bid.getAuction().getArtwork();
 
-        this.setArtworkImage(artwork.getImage());
+        this.setArtworkImagePath(artwork.getImagePath());
         this.setArtworkName(artwork.getName());
         this.setBidDate(bid.getCreationDate());
         this.setBidder(bid.getUser());

@@ -13,11 +13,24 @@ public class Sculpture extends Artwork implements Validatable {
 	private double depth;
 	private String material;
 
-	private List<Image> photos;
+	private List<String> photos;
 
-	public Sculpture(String title, String description, Image image, String artist, int creationYear, double width,
-			double height, double depth, String material, List<Image> photos) {
-		super(title, description, image, artist, creationYear);
+	public Sculpture(int id, String title, String description, String imagePath, String artist, int creationYear, double width,
+					 double height, double depth, String material, List<String> photos) {
+		super(id, title, description, imagePath, artist, creationYear);
+
+		this.width = width;
+		this.height = height;
+		this.depth = depth;
+		this.material = material;
+		this.photos = photos;
+
+		this.validate();
+	}
+
+	public Sculpture(String title, String description, String imagePath, String artist, int creationYear, double width,
+			double height, double depth, String material, List<String> photos) {
+		super(title, description, imagePath, artist, creationYear);
 
 		this.width = width;
 		this.height = height;
@@ -44,7 +57,7 @@ public class Sculpture extends Artwork implements Validatable {
 		return material;
 	}
 
-	public List<Image> getPhotos() {
+	public List<String> getPhotos() {
 		return photos;
 	}
 

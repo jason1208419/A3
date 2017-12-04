@@ -10,6 +10,8 @@ import cs.group11.interfaces.Validatable;
 
 public class Auction implements Validatable {
 
+	private int id;
+
 	private User creator;
 	private int maxBids;
 	private Artwork artwork;
@@ -19,6 +21,9 @@ public class Auction implements Validatable {
 	private Date creationDate;
 
 	public Auction(User creator, int maxBids, double reservePrice, Artwork artwork) {
+		this.id = 0;
+		this.creationDate = new Date();
+
 		this.creator = creator;
 		this.maxBids = maxBids;
 		this.reservePrice = reservePrice;
@@ -27,7 +32,20 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
-		this.creationDate = new Date();
+	}
+
+	public Auction(int id, Date creationDate, User creator, int maxBids, double reservePrice, Artwork artwork) {
+		this.id = id;
+		this.creationDate = creationDate;
+
+		this.creator = creator;
+		this.maxBids = maxBids;
+		this.reservePrice = reservePrice;
+		this.artwork = artwork;
+
+		this.validate();
+
+		this.bids = new ArrayList<>();
 	}
 
 	public User getCreator() {
@@ -56,6 +74,16 @@ public class Auction implements Validatable {
 		if (!this.bids.contains(bid)) {
 			this.bids.add(bid);
 		}
+	}
+
+	public void addAllBids(List<Bid> bids) {
+		for (Bid bid : bids) {
+			this.addBid(bid);
+		}
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public Date getCreationDate() {

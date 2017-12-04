@@ -9,20 +9,40 @@ import javafx.scene.image.Image;
 
 public abstract class Artwork implements Validatable {
 
+	private int id;
 	private String name;
 	private String description;
-	private Image image;
+	private String imagePath;
 	private String artist;
 	private int creationYear;
 
-	public Artwork(String name, String description, Image image, String artist, int creationYear) {
+	public Artwork() {
+	}
+
+	public Artwork(String name, String description, String imagePath, String artist, int creationYear) {
+		this.id = 0;
 		this.name = name;
 		this.description = description;
-		this.image = image;
+		this.imagePath = imagePath;
 		this.artist = artist;
 		this.creationYear = creationYear;
 
 		this.validate();
+	}
+
+	public Artwork(int id, String name, String description, String imagePath, String artist, int creationYear) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.imagePath = imagePath;
+		this.artist = artist;
+		this.creationYear = creationYear;
+
+		this.validate();
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -33,8 +53,8 @@ public abstract class Artwork implements Validatable {
 		return description;
 	}
 
-	public Image getImage() {
-		return image;
+	public String getImagePath() {
+		return imagePath;
 	}
 
 	public String getArtist() {
@@ -53,7 +73,7 @@ public abstract class Artwork implements Validatable {
 		if (Validator.isStringEmpty(artist)) {
 			throw new InvalidDataException("No artist set for artwork!");
 		}
-		if (Validator.isNull(image)) {
+		if (Validator.isStringEmpty(imagePath)) {
 			throw new InvalidDataException("No image specified for artwork!");
 		}
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);

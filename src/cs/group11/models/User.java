@@ -132,6 +132,10 @@ public class User implements Validatable, Serializable {
         this.favouriteUsers.addAll(users);
     }
 
+    public void addAllFavouriteAuctions(List<Auction> auctions) {
+        this.favouriteAuctions.addAll(auctions);
+    }
+
     public void addFavouriteUser(User user) {
         this.favouriteUsers.add(user);
     }

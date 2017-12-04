@@ -10,8 +10,17 @@ public class Painting extends Artwork implements Validatable {
     private double width;
     private double height;
 
-    public Painting(String title, String description, Image image, String artist, int creationYear, double width, double height) {
-        super(title, description, image, artist, creationYear);
+    public Painting(int id, String title, String description, String imagePath, String artist, int creationYear, double width, double height) {
+        super(id, title, description, imagePath, artist, creationYear);
+
+        this.width = width;
+        this.height = height;
+
+        this.validate();
+    }
+
+    public Painting(String title, String description, String imagePath, String artist, int creationYear, double width, double height) {
+        super(title, description, imagePath, artist, creationYear);
 
         this.width = width;
         this.height = height;
