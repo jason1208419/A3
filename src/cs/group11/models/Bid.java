@@ -48,13 +48,5 @@ public class Bid implements Validatable {
 		if (Validator.isNull(auction)) {
 			throw new InvalidDataException("No auction set for this bid.");
 		}
-		if (auction.getBids().size() > 0) {
-			Bid lastBid = auction.getLastBid();
-			if (price <= lastBid.getPrice()) {
-				throw new InvalidDataException("Bid price cannot be below the last Bid price");
-			}
-		} else if (auction.isCompleted()) {
-			throw new InvalidDataException("Cannot add a Bid to a completed Auction");
-		}
 	}
 }
