@@ -1,6 +1,5 @@
 package cs.group11.controllers;
 
-import cs.group11.AucListTest;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
