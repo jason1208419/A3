@@ -9,16 +9,41 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="572.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.CreateAuctionV2Controller">
-   <center>
-      <HBox prefHeight="255.0" prefWidth="656.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  prefHeight="303.0" prefWidth="372.0" HBox.hgrow="ALWAYS">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
+      fx:controller="cs.group11.controllers.CreateAuctionV2Controller">
+    <children>
+        <HBox prefHeight="57.0" prefWidth="656.0"/>
+        <HBox>
+            <children>
+                <VBox prefHeight="71.0" prefWidth="100.0">
+                    <children>
+                        <RadioButton fx:id="sculptureRadio" mnemonicParsing="false" selected="true" text="Sculpture">
+                            <VBox.margin>
+                                <Insets/>
+                            </VBox.margin>
+                            <padding>
+                                <Insets top="10.0"/>
+                            </padding>
+                        </RadioButton>
+                        <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting"/>
+                    </children>
+                </VBox>
+                <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true"/>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <padding>
+                <Insets bottom="10.0"/>
+            </padding>
+        </HBox>
+        <HBox prefHeight="255.0" prefWidth="656.0">
+            <children>
+                <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                      prefHeight="303.0" prefWidth="372.0" HBox.hgrow="ALWAYS">
                <children>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
@@ -27,7 +52,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                        <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
+                         <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
@@ -37,7 +62,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                        <TextField fx:id="startPrice" prefHeight="29.0" prefWidth="149.0"/>
+                         <TextField fx:id="startPrice" prefHeight="29.0" prefWidth="149.0"/>
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
@@ -47,7 +72,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                        <TextField fx:id="maxBids" prefHeight="0.0" prefWidth="149.0"/>
+                         <TextField fx:id="maxBids" prefHeight="0.0" prefWidth="149.0"/>
                      </children>
                   </HBox>
                   <HBox prefHeight="112.0" prefWidth="276.0">
@@ -57,11 +82,11 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                        <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
+                         <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
                      </children>
                   </HBox>
                   <HBox prefHeight="213.0" prefWidth="276.0">
-                     <children>
+                      <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Width:">
                            <opaqueInsets>
                               <Insets left="10.0" />
@@ -108,8 +133,8 @@
                   <Insets left="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
+                <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                      prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
                <children>
                   <HBox prefHeight="70.0" prefWidth="295.0">
                      <children>
@@ -144,7 +169,7 @@
                               <Button fx:id="removeImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <ListView fx:id="extraImages" prefHeight="100.0" prefWidth="160.0"/>
+                         <ListView fx:id="extraImages" prefHeight="100.0" prefWidth="160.0"/>
                      </children>
                   </HBox>
                </children>
@@ -154,39 +179,11 @@
             </VBox>
          </children>
       </HBox>
-   </center>
-   <top>
-      <HBox BorderPane.alignment="TOP_LEFT">
+        <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="656.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox prefHeight="71.0" prefWidth="100.0">
-               <children>
-                  <RadioButton fx:id="sculptureRadio" mnemonicParsing="false" selected="true" text="Sculpture">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </RadioButton>
-                  <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting" />
-               </children>
-            </VBox>
-            <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
+             <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="134.0"
+                     text="Create Auction"/>
          </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
       </HBox>
-   </top>
-   <bottom>
-      <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="134.0"
-              text="Create Auction" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="5.0" top="10.0" />
-         </BorderPane.margin>
-      </Button>
-   </bottom>
-</BorderPane>
+    </children>
+</VBox>
