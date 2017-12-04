@@ -2,6 +2,7 @@ package cs.group11.controllers;
 
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
+import cs.group11.models.Bid;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.fxml.FXML;
@@ -83,15 +84,30 @@ public class ViewAuctionController {
         Image avatarImage = new Image(auction.getCreator().getAvatarPath());
         this.sellerAvatarImageView.setImage(avatarImage);
 
-        this.currentPrice.setText(""); // TODO: Add the current bid price
-        this.startingPrice.setText(""); // TODO: Add the starting auction price
-        //material                          TODO: Add the material
-        //depth                             TODO: Add the depth
-        //remaining bids                    TODO: Add remaining bids
 
-//Gets the Width
+//Get Starting Price (aka reserve price)
+
+        double starterPrice;
+        starterPrice = this.auction.getReservePrice();
+
+        this.startingPrice.setText(String.valueOf(starterPrice));
+
+//Get most recent bid price
+
+        double lastBid;
+        lastBid = this.auction.getLastBid().getPrice();
+
+        this.currentPrice.setText(String.valueOf(lastBid));
+
+        this.currentPrice2.setText(String.valueOf(lastBid));
+
+
+//Gets the Width and depth and material
+
         double artWidth = 0;
+        double artDepth = 0;
         String widthAsString = Double.toString(artWidth);
+        String depthAsString = Double.toString(artDepth);
 
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
@@ -104,6 +120,11 @@ public class ViewAuctionController {
 
             artWidth = sculpture.getWidth();
             this.width.setText(widthAsString);
+
+            artDepth = sculpture.getDepth();
+            this.depth.setText(depthAsString);
+
+            this.material.setText(((Sculpture) artwork).getMaterial());
         }
 
 //Gets the Height
@@ -142,6 +163,24 @@ public class ViewAuctionController {
 
         this.maxBids.setText(maxAsString);
 
+
+//Get remaining number of allowed bids
+        //Get current number of bids
+
+        double currentBids;
+        double remainingBids;
+
+
+        currentBids = auction.getBids().size();
+
+        remainingBids = theMaxBids - currentBids;
+
+        String remainingBidsAsString = Double.toString(remainingBids);
+        String currentBidsAsString = Double.toString(currentBids);
+
+
+        this.remainingBids.setText(remainingBidsAsString);
+        this.placedBids.setText(currentBidsAsString);
 
     }
 
