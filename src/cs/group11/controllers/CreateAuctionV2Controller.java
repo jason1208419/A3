@@ -2,9 +2,11 @@ package cs.group11.controllers;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
@@ -35,6 +37,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class CreateAuctionV2Controller {
 
@@ -79,7 +82,7 @@ public class CreateAuctionV2Controller {
 	@FXML
 	private Button removeImg;
 	@FXML
-	private ListView<Image> extraImages;
+	private ListView<Pair<String, Image>> extraImages;
 	@FXML
 	private TextArea description;
 	@FXML
@@ -91,6 +94,7 @@ public class CreateAuctionV2Controller {
 	@FXML
 	private Button create;
 
+	private String mainImagePath;
 	private User currentUser;
 
 	@FXML
@@ -98,12 +102,12 @@ public class CreateAuctionV2Controller {
 
 		makeFieldsNumeric(depth, length, startPrice, maxBids, width);
 
-		extraImages.setCellFactory(param -> new ListCell<Image>() {
+		extraImages.setCellFactory(param -> new ListCell<Pair<String, Image>>() {
 			@Override
-			public void updateItem(Image i, boolean empty) {
+			public void updateItem(Pair<String, Image> i, boolean empty) {
 				super.updateItem(i, empty);
 				if (!empty) {
-					ImageView img = new ImageView(i);
+					ImageView img = new ImageView(i.getValue());
 					img.setFitHeight(DEFAULT_EXTRA_IMAGE_LIST_CELL_HEIGHT);
 					img.setFitWidth(DEFAULT_EXTRA_IMAGE_LIST_CELL_WIDTH);
 					setGraphic(img);
@@ -112,19 +116,21 @@ public class CreateAuctionV2Controller {
 		});
 
 		extraImages.getSelectionModel().selectedItemProperty().addListener((value, oldState, newState) -> {
-			image.setImage(value.getValue());
+			image.setImage(value.getValue().getValue());
+			mainImagePath = value.getValue().getKey();
 			removeImg.setDisable(Validator.isNull(value.getValue()) || extraImages.getItems().size() <= 1);
 
 		});
 
 		addExtraImg.setOnAction((e) -> {
-			handleaddExtraImage();
+			handleAddExtraImage();
 		});
 
 		removeImg.setDisable(true);
 		removeImg.setOnAction((e) -> {
 			int selectedIndex = extraImages.getSelectionModel().getSelectedIndex();
 			if (selectedIndex != -1) {
+
 				extraImages.getItems().remove(selectedIndex);
 			}
 		});
@@ -154,28 +160,33 @@ public class CreateAuctionV2Controller {
 		creationDate.setValue(LocalDate.now());
 	}
 
-	private void handleaddExtraImage() {
-		Image i = userSelectImage();
-		if (Validator.isNull(i)) {
-			// TODO alert
-		} else {
-			extraImages.getItems().add(i);
-			extraImages.getSelectionModel().select(i);
+	private void handleAddExtraImage() {
+		Pair<String, Image> userSelection = userSelectImage();
+		if (!Validator.isNull(userSelection)) {
+			extraImages.getItems().add(userSelection);
+			extraImages.getSelectionModel().select(userSelection);
 		}
 	}
 
 	private void handleImageSelection() {
-		Image selected = userSelectImage();
-		if (Validator.isNull(selected)) {
-			// TODO show alert
-		} else {
-			ObservableList<Image> extraImgs = extraImages.getItems();
-			if (image.getImage() != null) {
-				extraImgs.remove(image.getImage());// remove the previous
-													// image from the list.
+		Pair<String, Image> selected = userSelectImage();
+		if (!Validator.isNull(selected)) {
+			ObservableList<Pair<String, Image>> extraImgs = extraImages.getItems();
+
+			// remove the previous image from the list.
+			int oldImageIndex = -1;
+			for (int i = 0; i < extraImgs.size(); i++) {
+				if (extraImgs.get(i).getValue().equals(image.getImage())) {
+					oldImageIndex = i;
+					break;// save ourselves some iterations.
+				}
+			}
+			if (oldImageIndex != -1) {// If we found it
+				extraImgs.remove(oldImageIndex);
 			}
 			extraImgs.add(selected);
-			image.setImage(selected);
+			image.setImage(selected.getValue());
+			mainImagePath = selected.getKey();
 		}
 	}
 
@@ -193,8 +204,17 @@ public class CreateAuctionV2Controller {
 		}
 	}
 
+	private Pair<String, Image> userSelectImage() {
+		FileChooser chooser = new FileChooser();
+		chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
+		chooser.setTitle("Select Image");
+		File in = chooser.showOpenDialog(null);
+		if (!Validator.isFileValid(in))
+			return null;
+		return new Pair<String, Image>(in.toURI().toString(), new Image(in.toURI().toString()));
+	}
+
 	private Auction createAuction() {
-		Image auctionImage = this.image.getImage();
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
 		double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
@@ -205,33 +225,28 @@ public class CreateAuctionV2Controller {
 		String auctionDescription = description.getText(); // date
 
 		Artwork forAuctioning;
-
 		if (sculptureRadio.isSelected()) {
 			double auctionDepth = parseDecimal(this.depth.getText());// depth
 			String auctionMaterial = this.material.getText(); // material
-			List<Image> auctionExtraImages = this.extraImages.getItems();
-			forAuctioning = new Sculpture(auctionTitle, auctionDescription, auctionImage, auctionAuthor,
+			List<String> extraImagePaths = getExtraImagePaths();
+
+			forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
 					artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
-					auctionExtraImages);
+					extraImagePaths);
 		} else {
-			forAuctioning = new Painting(auctionTitle, auctionDescription, auctionImage, auctionAuthor,
+			forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
 					artworkCreationDate.getYear(), auctionWidth, auctionLength);
 		}
 		return new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);
 	}
 
-	private double parseDecimal(String str) {
-		return Double.parseDouble(str);
+	private List<String> getExtraImagePaths() {
+		// Take all images, map them to just the path and return the new list.
+		return extraImages.getItems().stream().map((p) -> p.getKey()).collect(Collectors.toList());
 	}
 
-	private Image userSelectImage() {
-		FileChooser chooser = new FileChooser();
-		chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
-		chooser.setTitle("Select Image");
-		File in = chooser.showOpenDialog(null);
-		if (!Validator.isFileValid(in))
-			return null;
-		return new Image(in.toURI().toString());
+	private double parseDecimal(String str) {
+		return Double.parseDouble(str);
 	}
 
 	// THIS WILL BE DELETED! JUST FOR TESTING PURPOSES!
