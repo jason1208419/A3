@@ -96,7 +96,7 @@ public class CreateAuctionV2Controller {
 	@FXML
 	protected void initialize() {
 
-		makeNumeric(depth, length, startPrice, maxBids, width);
+		makeFieldsNumeric(depth, length, startPrice, maxBids, width);
 
 		extraImages.setCellFactory(param -> new ListCell<Image>() {
 			@Override
@@ -118,13 +118,7 @@ public class CreateAuctionV2Controller {
 		});
 
 		addExtraImg.setOnAction((e) -> {
-			Image i = userSelectImage();
-			if (Validator.isNull(i)) {
-				// TODO alert
-			} else {
-				extraImages.getItems().add(i);
-				extraImages.getSelectionModel().select(i);
-			}
+			handleaddExtraImage();
 		});
 
 		removeImg.setDisable(true);
@@ -150,18 +144,7 @@ public class CreateAuctionV2Controller {
 		// Set the image
 		image.setImage(defaultAuctionimage);
 		image.setOnMouseClicked((e) -> {
-			Image selected = userSelectImage();
-			if (Validator.isNull(selected)) {
-				// TODO show alert
-			} else {
-				ObservableList<Image> extraImgs = extraImages.getItems();
-				if (image.getImage() != null) {
-					extraImgs.remove(image.getImage());// remove the previous
-														// image from the list.
-				}
-				extraImgs.add(selected);
-				image.setImage(selected);
-			}
+			handleImageSelection();
 		});
 
 		create.setOnAction((e) -> {
@@ -171,7 +154,32 @@ public class CreateAuctionV2Controller {
 		creationDate.setValue(LocalDate.now());
 	}
 
-	private void makeNumeric(TextField... textFields) {
+	private void handleaddExtraImage() {
+		Image i = userSelectImage();
+		if (Validator.isNull(i)) {
+			// TODO alert
+		} else {
+			extraImages.getItems().add(i);
+			extraImages.getSelectionModel().select(i);
+		}
+	}
+
+	private void handleImageSelection() {
+		Image selected = userSelectImage();
+		if (Validator.isNull(selected)) {
+			// TODO show alert
+		} else {
+			ObservableList<Image> extraImgs = extraImages.getItems();
+			if (image.getImage() != null) {
+				extraImgs.remove(image.getImage());// remove the previous
+													// image from the list.
+			}
+			extraImgs.add(selected);
+			image.setImage(selected);
+		}
+	}
+
+	private void makeFieldsNumeric(TextField... textFields) {
 		for (TextField field : textFields) {
 			field.textProperty().addListener(new ChangeListener<String>() {
 				@Override
