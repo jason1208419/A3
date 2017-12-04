@@ -75,4 +75,42 @@ public final class MegaDB {
 	 * the database (Users/Artworks/Auctions)
 	 */
 
+
+    public static Collection<User> searchByUser(String input) {
+        Set<User> results = new HashSet<>();
+        for (User user : users) {
+            if (user.getUsername().contains(input)
+                    || user.getFirstname().contains(input)
+                    || user.getLastname().contains(input)) {
+                results.add(user);
+            }
+        }
+        return results;
+    }
+
+    public static Collection<Auction> searchByAuction(String input) {
+        Set<Auction> results = new HashSet<>();
+        for (Auction auc : auctions) {
+            if (auc.getCreator().getUsername().contains(input)
+                    || auc.getArtwork().getName().contains(input)) {
+                results.add(auc);
+            }
+        }
+        return results;
+    }
+
+	/*
+    DELETE IF NOT NEEDED
+
+	public static Collection<Auction> searchFinishedAuction(String input) {
+		Set<Auction> results = new HashSet<>();
+		for (Auction auc : auctions) {
+			if (auc.isCompleted()) {
+				results.add(auc);
+			}
+		}
+		return results;
+	}
+	*/
+
 }
