@@ -4,36 +4,30 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
-      fx:controller="cs.group11.controllers.SignInController">
-    <children>
+<VBox prefHeight="317.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.SignInController">
         <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" VBox.vgrow="NEVER">
-            <children>
-                <Label alignment="CENTER" prefHeight="0.0" prefWidth="82.0" text="Sign In">
+                <Label alignment="CENTER" prefHeight="35.0" prefWidth="105.0" text="Sign In">
                     <font>
-                        <Font size="27.0"/>
+                        <Font size="27.0" />
                     </font>
                 </Label>
-            </children>
         </HBox>
-        <Pane prefHeight="289.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-            <children>
-                <TextField id="username" fx:id="usernameTXT" alignment="CENTER" layoutX="205.0" layoutY="81.0"
-                           prefHeight="30.0" prefWidth="210.0"/>
-                <Button id="signIn" fx:id="signInBtn" alignment="CENTER" layoutX="205.0" layoutY="111.0"
-                        mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Sign In"/>
-                <Label alignment="CENTER" layoutX="130.0" layoutY="86.0" text="Username:">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </Label>
-                <Button id="shutDown" fx:id="shutDownBtn" alignment="CENTER" layoutX="205.0" layoutY="156.0"
-                        mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Shut Down"/>
-            </children>
-        </Pane>
-    </children>
+      <HBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="69.0" prefWidth="251.0" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER" prefHeight="100.0" VBox.vgrow="ALWAYS">
+                            <Label alignment="BOTTOM_LEFT" prefWidth="80.0" text="Username:">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Label>
+                            <TextField id="username" fx:id="usernameTXT" alignment="CENTER" prefHeight="30.0" prefWidth="210.0" />
+                  </HBox>
+                      <Button id="signIn" fx:id="signInBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Sign In" />
+                      <Button id="shutDown" fx:id="shutDownBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Shut Down" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" />
+            </VBox>
+      </HBox>
 </VBox>
