@@ -1,8 +1,11 @@
 package cs.group11.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import cs.group11.helpers.Validator;
 import cs.group11.models.Address;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -11,20 +14,14 @@ import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 public class EditProfileController {
@@ -38,26 +35,27 @@ public class EditProfileController {
     private Label username1;
     @FXML
     private Label username2;
+    private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", ".png", ".gif", ".jpeg", ".jpg");
     @FXML
     private TableView<Auction> removeFavouriteArtworks;
     @FXML
     private TableView<User> removeFavouriteUsers;
     @FXML
-    private TableColumn tablePic;
+    private TableColumn<Auction, Artwork> tablePic;
     @FXML
-    private TableColumn tableName;
+    private TableColumn<Auction, Artwork> tableName;
     @FXML
-    private TableColumn tableArtist;
+    private TableColumn<Auction, Artwork> tableArtist;
     @FXML
-    private TableColumn tableCreationYear;
+    private TableColumn<Auction, Artwork> tableCreationYear;
     @FXML
-    private TableColumn tableAvatar;
+    private TableColumn<User, String> tableAvatar;
     @FXML
-    private TableColumn tableUsername;
+    private TableColumn<User, String> tableUsername;
     @FXML
-    private TableColumn tableFirstName;
+    private TableColumn<User, String> tableFirstName;
     @FXML
-    private TableColumn tableLastName;
+    private TableColumn<User, String> tableLastName;
     @FXML
     private TableColumn<User, User> tableRemoveUser = new TableColumn<>("Remove");
     @FXML
@@ -75,9 +73,9 @@ public class EditProfileController {
     @FXML
     private TextField postcodeIn;
 
-    private Stage stage;
-
     private User user;
+    @FXML
+    private Label error;
 
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Auction> favouriteArtworkList;
@@ -88,6 +86,7 @@ public class EditProfileController {
         User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
         setUser(creator);
         Image avatarImage = new Image(user.getAvatarPath());
+        this.logo.setImage(avatarImage);
         this.avatar.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
         this.username1.setText(user.getUsername());
@@ -106,12 +105,12 @@ public class EditProfileController {
     private void setupFavouriteArtTable() {
         favouriteArtworkList = FXCollections.observableArrayList(this.user.getFavouriteAuctions());
 
-        tablePic.setCellValueFactory(new PropertyValueFactory<Auction, Artwork>("artwork"));
+        tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tablePic.setPrefWidth(100);
         tablePic.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
             public TableCell<Auction, Artwork> call(TableColumn<Auction, Artwork> param) {
-                TableCell<Auction, Artwork> cell = new TableCell<Auction, Artwork>() {
+                return new TableCell<Auction, Artwork>() {
                     @Override
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
@@ -128,15 +127,14 @@ public class EditProfileController {
                         }
                     }
                 };
-                return cell;
             }
         });
 
-        tableName.setCellValueFactory(new PropertyValueFactory<Auction, Artwork>("artwork"));
+        tableName.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableName.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
             public TableCell<Auction, Artwork> call(TableColumn<Auction, Artwork> param) {
-                TableCell<Auction, Artwork> cell = new TableCell<Auction, Artwork>() {
+                return new TableCell<Auction, Artwork>() {
                     @Override
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
@@ -150,14 +148,13 @@ public class EditProfileController {
                         }
                     }
                 };
-                return cell;
             }
         });
-        tableArtist.setCellValueFactory(new PropertyValueFactory<Auction, Artwork>("artwork"));
+        tableArtist.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableArtist.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
             public TableCell<Auction, Artwork> call(TableColumn<Auction, Artwork> param) {
-                TableCell<Auction, Artwork> cell = new TableCell<Auction, Artwork>() {
+                return new TableCell<Auction, Artwork>() {
                     @Override
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
@@ -171,14 +168,13 @@ public class EditProfileController {
                         }
                     }
                 };
-                return cell;
             }
         });
-        tableCreationYear.setCellValueFactory(new PropertyValueFactory<Auction, Artwork>("artwork"));
+        tableCreationYear.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableCreationYear.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
             public TableCell<Auction, Artwork> call(TableColumn<Auction, Artwork> param) {
-                TableCell<Auction, Artwork> cell = new TableCell<Auction, Artwork>() {
+                return new TableCell<Auction, Artwork>() {
                     @Override
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
@@ -192,7 +188,6 @@ public class EditProfileController {
                         }
                     }
                 };
-                return cell;
             }
         });
         tableRemoveArt.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
@@ -222,12 +217,12 @@ public class EditProfileController {
     private void setupFavouriteUserTable() {
         favouriteUsersList = FXCollections.observableArrayList(this.user.getFavouriteUsers());
 
-        tableAvatar.setCellValueFactory(new PropertyValueFactory<User, String>("avatarPath"));
+        tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
         tableAvatar.setPrefWidth(100);
         tableAvatar.setCellFactory(new Callback<TableColumn<User, String>, TableCell<User, String>>() {
             @Override
             public TableCell<User, String> call(TableColumn<User, String> param) {
-                TableCell<User, String> cell = new TableCell<User, String>() {
+                return new TableCell<User, String>() {
                     @Override
                     public void updateItem(String avatarPath, boolean empty) {
                         super.updateItem(avatarPath, empty);
@@ -245,13 +240,12 @@ public class EditProfileController {
                         }
                     }
                 };
-                return cell;
             }
         });
 
-        tableUsername.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-        tableFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstname"));
-        tableLastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastname"));
+        tableUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        tableFirstName.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+        tableLastName.setCellValueFactory(new PropertyValueFactory<>("lastname"));
         tableRemoveUser.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         tableRemoveUser.setCellFactory(param -> new TableCell<User, User>() {
             private final Button remove = new Button("Remove");
@@ -310,10 +304,21 @@ public class EditProfileController {
         }
     }
 
+    private String userSelectImage() {
+        FileChooser chooser = new FileChooser();
+        chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
+        chooser.setTitle("Select Image");
+        File in = chooser.showOpenDialog(null);
+        if (Validator.isFileValid(in)) {
+            return in.toURI().toString();
+        }
+        return null;
+    }
+
     //TODO: A user logs in to the program and performs actions which are saved locally to disk on that machine
 
     @FXML
-    private void cancelClick(ActionEvent actionEvent) throws IOException {
+    private void cancelClick() throws IOException {
         ProfileController profileCon = new ProfileController();
         profileCon.setUser(this.user);
 
@@ -321,36 +326,44 @@ public class EditProfileController {
         loader.setController(profileCon);
         VBox box = loader.load();
 
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
         rootBox.getChildren().setAll(box);
     }
 
-    public void avatarClick(ActionEvent actionEvent) throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/profile.fxml"));
-        rootBox.getChildren().setAll(box);
+    public void avatarClick() throws IOException {
+        cancelClick();
     }
 
-    public void viewAuctionClick(ActionEvent actionEvent) throws IOException {
+    public void viewAuctionClick() throws IOException {
         VBox box = FXMLLoader.load(getClass().getResource("../views/auctionList.fxml"));
+        box.prefHeightProperty().bind(rootBox.heightProperty());
         rootBox.getChildren().setAll(box);
     }
 
-    public void createAuctionClick(ActionEvent actionEvent) throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/createAuction.fxml"));
+    public void createAuctionClick() throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/createAuctionV2.fxml"));
+        box.prefHeightProperty().bind(rootBox.heightProperty());
         rootBox.getChildren().setAll(box);
     }
 
-    public void logoutClick(ActionEvent actionEvent) throws IOException {
+    public void logoutClick() throws IOException {
         VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
+        box.prefHeightProperty().bind(rootBox.heightProperty());
         rootBox.getChildren().setAll(box);
     }
 
-    public void uploadClick(ActionEvent actionEvent) {
+    public void uploadClick() {
+        user.setAvatarPath(userSelectImage());
+        Image avatarImage = new Image(user.getAvatarPath());
+        this.avatar.setImage(avatarImage);
+        this.avatar1.setImage(avatarImage);
     }
 
-    public void drawAvatarClick(ActionEvent actionEvent) {
+    public void drawAvatarClick() {
     }
 
-    public void submitClick(ActionEvent actionEvent) throws IOException {
+    public void submitClick() throws IOException {
         printUser();
         //TODO:validate input
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
@@ -364,9 +377,7 @@ public class EditProfileController {
         }
         if (addressIn.getText() != null && !addressIn.getText().isEmpty()) {
             ArrayList<String> address = new ArrayList<>();
-            for (String line : addressIn.getText().split("\\n")) {
-                address.add(line);
-            }
+            Collections.addAll(address, addressIn.getText().split("\\n"));
             String[] lines = new String[address.size()];
             lines = address.toArray(lines);
             this.user.getAddress().setLines(lines);
@@ -382,6 +393,7 @@ public class EditProfileController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
         VBox box = loader.load();
+        box.prefHeightProperty().bind(rootBox.heightProperty());
 
         rootBox.getChildren().setAll(box);
     }
@@ -392,5 +404,8 @@ public class EditProfileController {
             System.out.println(this.user.getAddress().getLine(i + 1));
         }
         System.out.println(this.user.getAddress().getPostcode());
+    }
+
+    public void builtInAvatarClick() {
     }
 }
