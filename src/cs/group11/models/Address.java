@@ -45,6 +45,19 @@ public class Address implements Validatable {
 		this.lines[number - 1] = line;
 	}
 
+	public String toCsv() {
+		StringBuilder builder = new StringBuilder();
+
+		for (String addressLine : this.lines) {
+			builder.append(addressLine).append(";");
+		}
+		builder.append(",");
+
+		builder.append(this.postcode).append(",");
+
+		return builder.toString();
+	}
+
 	@Override
 	public void validate() throws InvalidDataException {
 		if (Validator.isStringEmpty(postcode)) {

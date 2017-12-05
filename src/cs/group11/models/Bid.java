@@ -59,6 +59,18 @@ public class Bid implements Validatable {
 		return id;
 	}
 
+	public String toCsv() {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append(this.getId()).append(",");
+		builder.append(this.creationDate.getTime()).append(",");
+		builder.append(this.user.getId()).append(",");
+		builder.append(this.price).append(",");
+		builder.append(this.auction.getId()).append(",");
+
+		return builder.toString();
+	}
+
 	@Override
 	public void validate() throws InvalidDataException {
 		if (Validator.isNull(user)) {

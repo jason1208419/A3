@@ -98,6 +98,24 @@ public class Auction implements Validatable {
 		return this.bids.size() == this.maxBids;
 	}
 
+	public String toCsv() {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append(this.id).append(",");
+		builder.append(this.creationDate.getTime()).append(",");
+		builder.append(this.creator.getId()).append(",");
+		builder.append(this.maxBids).append(",");
+		builder.append(Double.toString(this.reservePrice)).append(",");
+		builder.append(this.artwork.getId()).append(",");
+
+		for (Bid bid : this.bids) {
+			builder.append(bid.getId()).append(";");
+		}
+		builder.append(",");
+
+		return builder.toString();
+	}
+
 	@Override
 	public void validate() throws InvalidDataException {
 		if (Validator.isNull(artwork)) {

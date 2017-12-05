@@ -152,6 +152,21 @@ public class User implements Validatable, Serializable {
         this.favouriteAuctions.remove(auction);
     }
 
+    public String toCsv() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(this.id).append(",");
+        builder.append(this.lastLogin.getTime()).append(",");
+        builder.append(this.username).append(",");
+        builder.append(this.firstname).append(",");
+        builder.append(this.lastname).append(",");
+        builder.append(this.telNo).append(",");
+        builder.append(this.address.toCsv());
+        builder.append(this.avatarPath).append(",");
+
+        return builder.toString();
+    }
+
     @Override
     public void validate() throws InvalidDataException {
         if (Validator.isStringEmpty(username)) {

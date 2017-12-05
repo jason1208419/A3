@@ -136,7 +136,6 @@ public final class FileHandler {
         int[] ids = Arrays.stream(favouriteUsersId).mapToInt(Integer::parseInt).toArray();
         return parseFavouriteUsers(ids, users);
     }
-
     public static List<Auction> parseFavouriteAuctions(int[] favouriteAuctionsId, HashMap<Integer, Auction> auctions) {
         List<Auction> favouriteAuctions = new ArrayList<>();
 
@@ -161,7 +160,7 @@ public final class FileHandler {
         String[] csvLine = line.split(",");
 
         int auctionId = Integer.parseInt(csvLine[0]);
-        Date lastLogin = new Date(Long.parseLong(csvLine[1]));
+        Date creationDate = new Date(Long.parseLong(csvLine[1]));
 
         int creatorId = Integer.parseInt(csvLine[2]);
         User creator = users.get(creatorId);
@@ -172,9 +171,8 @@ public final class FileHandler {
         int artworkId = Integer.parseInt(csvLine[5]);
         Artwork artwork = artworks.get(artworkId);
 
-        return new Auction(auctionId, lastLogin, creator, maxBids, reservePrice, artwork);
+        return new Auction(auctionId, creationDate, creator, maxBids, reservePrice, artwork);
     }
-
     public static List<Bid> parseAuctionBids(int[] bidsIds, HashMap<Integer, Bid> bids) {
         List<Bid> auctionBids = new ArrayList<>();
 
@@ -231,7 +229,7 @@ public final class FileHandler {
 
         int id = Integer.parseInt(csvLine[1]);
         String title = csvLine[2];
-        String description = csvLine[3];
+        String description = csvLine[3].equals("null") ? null : csvLine[3];
         String imagePath = csvLine[4];
         String artist = csvLine[5];
         int creationYear = Integer.parseInt(csvLine[6]);
@@ -245,7 +243,7 @@ public final class FileHandler {
 
         int id = Integer.parseInt(csvLine[1]);
         String title = csvLine[2];
-        String description = csvLine[3];
+        String description = csvLine[3].equals("null") ? null : csvLine[3];
         String imagePath = csvLine[4];
         String artist = csvLine[5];
         int creationYear = Integer.parseInt(csvLine[6]);
@@ -254,25 +252,64 @@ public final class FileHandler {
         double depth = Double.parseDouble(csvLine[9]);
         String material = csvLine[10];
 
-        List<String> photos = Arrays.asList(csvLine[11].split(";"));
+        List<String> photos = new ArrayList<>();
+
+        if (csvLine.length >= 12) {
+            photos = Arrays.asList(csvLine[11].split(";"));
+        }
 
         return new Sculpture(id, title, description, imagePath, artist, creationYear, width, height, depth, material, photos);
     }
 
-//    public static void writeUsers(HashMap<Integer, User> users) throws IOException {
-//
-//    }
-//
-//    public static void writeAuction (Auction auction) {
-//
-//    }
-//
-//    public static void writeFile (File file) {
-//
-//    }
-//
-//    public static void writeArtwork (Artwork artwork) {
-//
-//    }
+    public static void writeUsers(HashMap<Integer, User> users, File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        for (User user : users.values()) {
+            lines.add(user.toCsv());
+        }
+
+        writeLines(lines, file);
+    }
+
+    public static void writeAuction (HashMap<Integer, Auction> auctions, File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        for (Auction auction : auctions.values()) {
+            lines.add(auction.toCsv());
+        }
+
+        writeLines(lines, file);
+    }
+
+    public static void writeArtworks (HashMap<Integer, Artwork> artworks, File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        for (Artwork artwork : artworks.values()) {
+            lines.add(artwork.toCsv());
+        }
+
+        writeLines(lines, file);
+    }
+
+    public static void writeBids(HashMap<Integer, Bid> bids, File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        for (Bid bid : bids.values()) {
+            lines.add(bid.toCsv());
+        }
+
+        writeLines(lines, file);
+    }
+
+    public static void writeLines(List<String> lines, File file) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+
+        for (String line : lines) {
+            bw.write(line);
+            bw.newLine();
+        }
+
+        bw.close();
+    }
 }
 

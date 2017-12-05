@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.*;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 
 public class TestFileHandler {
     private HashMap<Integer, User> users;
@@ -169,9 +171,130 @@ public class TestFileHandler {
     }
 
     @Test
+    public void testWriteArtworks() {
+        HashMap<Integer, Artwork> artworks = getArtworksList();
+
+        String resourceDir = getClass().getResource("/").getFile();
+        File file = new File(resourceDir + "writeArtworks.csv");
+
+        try {
+            FileHandler.writeArtworks(artworks, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(file.exists(), is(true));
+
+        List<String> actualLines = null;
+        try {
+            actualLines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(actualLines.size(), is(artworks.size()));
+    }
+
+    @Test
+    public void testWriteAuctions() {
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+
+        String resourceDir = getClass().getResource("/").getFile();
+        File file = new File(resourceDir + "writeAuctions.csv");
+
+        try {
+            FileHandler.writeAuction(auctions, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(file.exists(), is(true));
+
+        List<String> actualLines = null;
+        try {
+            actualLines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(actualLines.size(), is(auctions.size()));
+    }
+
+    @Test
     public void testWriteUsers() {
         HashMap<Integer, User> users = getUsersList();
 
+        String resourceDir = getClass().getResource("/").getFile();
+        File file = new File(resourceDir + "writeUsers.csv");
+
+        try {
+            FileHandler.writeUsers(users, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(file.exists(), is(true));
+
+        List<String> actualLines = null;
+        try {
+            actualLines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(actualLines.size(), is(users.size()));
+    }
+
+    @Test
+    public void testWriteBids() {
+        HashMap<Integer, Bid> bids = getBidsList();
+
+        String resourceDir = getClass().getResource("/").getFile();
+        File file = new File(resourceDir + "writeBids.csv");
+
+        try {
+            FileHandler.writeBids(bids, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(file.exists(), is(true));
+
+        List<String> actualLines = null;
+        try {
+            actualLines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertThat(actualLines.size(), is(bids.size()));
+    }
+
+    @Test
+    public void testWriteLines() {
+        ArrayList<String> expectedLines = new ArrayList<>();
+        expectedLines.add("line 1");
+        expectedLines.add("line 2");
+        expectedLines.add("line 3");
+        expectedLines.add("line 10");
+        expectedLines.add("line 4");
+
+        String resourceDir = getClass().getResource("/").getFile();
+        File file = new File(resourceDir + "writeFile.txt");
+
+        try {
+            FileHandler.writeLines(expectedLines, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertThat(file.exists(), is(true));
+
+        List<String> lines = null;
+        try {
+            lines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < expectedLines.size(); i++) {
+            String expectedLine = expectedLines.get(i);
+            String actualLine = lines.get(i);
+
+            assertThat(actualLine, is(expectedLine));
+        }
     }
 
     @Test
@@ -226,7 +349,7 @@ public class TestFileHandler {
 
     @Test
     public void testParseUser() {
-        String csvLine = "1,1512074890055,Admin,Nasir,Al Jabbouri,07461174758,28 Kilvey Street;Singleton Park;Swansea,SA1 4PO,https://i.pinimg.com/736x/ef/41/fa/ef41fa8febc1a1ea7035a33c9f0c9a2e--mango-hummer.jpg";
+        String csvLine = "1,1512074890055,Admin,Nasir,Al Jabbouri,07461174758,28 Kilvey Street;Singleton Park;Swansea;,SA1 4PO,https://i.pinimg.com/736x/ef/41/fa/ef41fa8febc1a1ea7035a33c9f0c9a2e--mango-hummer.jpg,";
 
         User user = FileHandler.parseUser(csvLine);
         assertThat(user.getId(), is(1));
@@ -243,7 +366,7 @@ public class TestFileHandler {
 
     @Test
     public void testParseAuction() {
-        String csvLine = "0,1512171171729,2,6,10.00,2,1;0";
+        String csvLine = "0,1512171171729,2,6,10.0,2,1;0;,";
 
         Auction auction = FileHandler.parseAuction(csvLine, this.getUsersList(), this.getArtworksList());
         assertThat(auction, notNullValue());
@@ -336,13 +459,13 @@ public class TestFileHandler {
 
     @Test
     public void testParsePainting() {
-        String csvLine = "painting,0,flowers,,http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png,Van Gogh,1993,100,200";
+        String csvLine = "painting,0,flowers,null,http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png,Van Gogh,1993,100.0,200.0,";
 
-        Painting painting = (Painting) FileHandler.parseArtwork(csvLine);
+        Painting painting = (Painting) FileHandler.parsePainting(csvLine);
 
         assertThat(painting.getId(), is(0));
         assertThat(painting.getName(), is("flowers"));
-        assertThat(painting.getDescription(), is(""));
+        assertThat(painting.getDescription(), is(nullValue()));
         assertThat(painting.getImagePath(), is("http://spotdeco.com/wp-content/uploads/2016/08/interior-design-styles-boho-flowers.png"));
         assertThat(painting.getArtist(), is("Van Gogh"));
         assertThat(painting.getCreationYear(), is(1993));
@@ -352,13 +475,13 @@ public class TestFileHandler {
 
     @Test
     public void testParseSculpture() {
-        String csvLine = "sculpture,1,dill,,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,;";
+        String csvLine = "sculpture,1,dill,null,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,,";
 
-        Sculpture sculpture = (Sculpture) FileHandler.parseArtwork(csvLine);
+        Sculpture sculpture = (Sculpture) FileHandler.parseSculpture(csvLine);
 
         assertThat(sculpture.getId(), is(1));
         assertThat(sculpture.getName(), is("dill"));
-        assertThat(sculpture.getDescription(), is(""));
+        assertThat(sculpture.getDescription(), is(nullValue()));
         assertThat(sculpture.getImagePath(), is("https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg"));
         assertThat(sculpture.getArtist(), is("Vin Diesel"));
         assertThat(sculpture.getCreationYear(), is(2007));

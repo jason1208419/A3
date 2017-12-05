@@ -65,6 +65,8 @@ public abstract class Artwork implements Validatable {
 		return creationYear;
 	}
 
+	public abstract String toCsv();
+
 	@Override
 	public void validate() throws InvalidDataException {
 		if (Validator.isStringEmpty(name)) {

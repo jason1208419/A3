@@ -37,6 +37,23 @@ public class Painting extends Artwork implements Validatable {
     }
 
     @Override
+    public String toCsv() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("painting").append(",");
+        builder.append(this.getId()).append(",");
+        builder.append(this.getName()).append(",");
+        builder.append(this.getDescription()).append(",");
+        builder.append(this.getImagePath()).append(",");
+        builder.append(this.getArtist()).append(",");
+        builder.append(this.getCreationYear()).append(",");
+        builder.append(this.getWidth()).append(",");
+        builder.append(this.getHeight()).append(",");
+
+        return builder.toString();
+    }
+
+    @Override
     public void validate() throws InvalidDataException {
         super.validate();
         // TODO: Validate width and height
