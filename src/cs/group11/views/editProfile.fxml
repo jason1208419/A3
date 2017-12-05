@@ -6,157 +6,98 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" prefHeight="517.0" prefWidth="807.0" HBox.hgrow="ALWAYS"
-      xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.EditProfileController">
-    <children>
+<VBox fx:id="rootBox" prefHeight="517.0" prefWidth="807.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.EditProfileController">
         <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
-            <children>
                 <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true"
-                                   preserveRatio="true" HBox.hgrow="ALWAYS">
-                            <image>
-                                <Image url="@../../../res/avatars/creeper.jpg"/>
-                            </image>
-                        </ImageView>
-                    </children>
+                        <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="browseAuctions" mnemonicParsing="false" onAction="#viewAuctionClick"
-                                text="Browse Auctions" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="createAuction" mnemonicParsing="false" onAction="#createAuctionClick"
-                                text="Create Auction" HBox.hgrow="ALWAYS"/>
-                    </children>
+                        <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction" HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="profile" mnemonicParsing="false" onAction="#avatarClick">
+                        <Button mnemonicParsing="false" onAction="#avatarClick">
                             <graphic>
-                                <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                         </Button>
-                        <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
-                              HBox.hgrow="NEVER">
-                            <children>
-                                <Label fx:id="username1" text="username"/>
-                                <Button fx:id="logout" mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
-                            </children>
+                        <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                                <Label fx:id="username1" text="username" />
+                                <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout" />
                         </VBox>
-                    </children>
                 </HBox>
-            </children>
         </HBox>
         <HBox prefHeight="257.0" prefWidth="600.0" VBox.vgrow="NEVER">
-            <children>
                 <VBox prefHeight="257.0" prefWidth="354.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label text="Edit Avatar"/>
-                        <ImageView fx:id="avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <Label text="Edit Avatar" />
+                        <ImageView fx:id="avatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                         <HBox prefHeight="100.0" prefWidth="200.0">
-                            <children>
-                                <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadClick" text="Upload"/>
-                                <Button fx:id="drawAvatar" mnemonicParsing="false" onAction="#drawAvatarClick"
-                                        text="Draw Avatar"/>
-                            </children>
+                                <Button mnemonicParsing="false" onAction="#uploadClick" text="Upload" />
+                                <Button mnemonicParsing="false" onAction="#drawAvatarClick" text="Draw Avatar" />
+                        <Button mnemonicParsing="false" onAction="#builtInAvatarClick" text="Built In Avatars" />
                         </HBox>
-                    </children>
                 </VBox>
                 <VBox HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label text="Edit Profile (left blank if nothing need to be changed)"/>
+                        <Label text="Edit Profile (left blank if nothing need to be changed)" />
                         <HBox prefHeight="50.0" prefWidth="200.0">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="Username: "/>
-                                <Label fx:id="username2" prefHeight="50.0" text="username"/>
-                            </children>
+                                <Label prefHeight="50.0" prefWidth="120.0" text="Username: " />
+                                <Label fx:id="username2" prefHeight="50.0" text="username" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="First Name:"/>
-                                <TextField fx:id="firstNameIn" HBox.hgrow="ALWAYS"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Label prefHeight="50.0" prefWidth="120.0" text="First Name:" />
+                                <TextField fx:id="firstNameIn" HBox.hgrow="ALWAYS" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="Last Name:"/>
-                                <TextField fx:id="lastNameIn" HBox.hgrow="ALWAYS"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Label prefHeight="50.0" prefWidth="120.0" text="Last Name:" />
+                                <TextField fx:id="lastNameIn" HBox.hgrow="ALWAYS" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="UK Phone Number:"/>
-                                <TextField fx:id="phoneIn" HBox.hgrow="ALWAYS"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Label prefHeight="50.0" prefWidth="120.0" text="UK Phone Number:" />
+                                <TextField fx:id="phoneIn" HBox.hgrow="ALWAYS" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="Address:"/>
-                                <TextArea fx:id="addressIn" prefWidth="90.0" HBox.hgrow="ALWAYS"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Label prefHeight="50.0" prefWidth="120.0" text="Address:" />
+                                <TextArea fx:id="addressIn" prefWidth="90.0" HBox.hgrow="ALWAYS" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label prefHeight="50.0" prefWidth="120.0" text="Postcode:"/>
-                                <TextField fx:id="postcodeIn" HBox.hgrow="ALWAYS"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Label prefHeight="50.0" prefWidth="120.0" text="Postcode:" />
+                                <TextField fx:id="postcodeIn" HBox.hgrow="ALWAYS" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="354.0" HBox.hgrow="ALWAYS"
-                              VBox.vgrow="ALWAYS">
-                            <children>
-                                <Button fx:id="submit" mnemonicParsing="false" onAction="#submitClick" text="Submit"/>
-                                <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancelClick" text="Cancel"/>
-                            </children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="354.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <Button mnemonicParsing="false" onAction="#submitClick" text="Submit" />
+                                <Button mnemonicParsing="false" onAction="#cancelClick" text="Cancel" />
+                        <Label fx:id="error" textFill="RED" />
                         </HBox>
-                    </children>
                 </VBox>
-            </children>
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-            <children>
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label text="Remove Favourite Artworks"/>
-                        <TableView fx:id="removeFavouriteArtworks" prefHeight="157.0" prefWidth="362.0"
-                                   VBox.vgrow="ALWAYS">
+                        <Label text="Remove Favourite Artworks" />
+                        <TableView fx:id="removeFavouriteArtworks" prefHeight="157.0" prefWidth="362.0" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="tablePic" prefWidth="75.0" text="Picture"/>
-                                <TableColumn fx:id="tableName" prefWidth="75.0" text="Name"/>
-                                <TableColumn fx:id="tableArtist" prefWidth="75.0" text="Artist"/>
-                                <TableColumn fx:id="tableCreationYear" prefWidth="97.0" text="Creation Year"/>
-                                <TableColumn fx:id="tableRemoveArt" prefWidth="78.0" text="Remove"/>
+                                <TableColumn fx:id="tablePic" prefWidth="75.0" text="Picture" />
+                                <TableColumn fx:id="tableName" prefWidth="75.0" text="Name" />
+                                <TableColumn fx:id="tableArtist" prefWidth="75.0" text="Artist" />
+                                <TableColumn fx:id="tableCreationYear" prefWidth="97.0" text="Creation Year" />
+                                <TableColumn fx:id="tableRemoveArt" prefWidth="78.0" text="Remove" />
                             </columns>
                         </TableView>
-                    </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label text="Remove Favourite Users"/>
-                        <TableView fx:id="removeFavouriteUsers" prefHeight="200.0" prefWidth="200.0"
-                                   VBox.vgrow="ALWAYS">
+                        <Label text="Remove Favourite Users" />
+                        <TableView fx:id="removeFavouriteUsers" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="tableAvatar" prefWidth="75.0" text="Avatar"/>
-                                <TableColumn fx:id="tableUsername" prefWidth="75.0" text="Username"/>
-                                <TableColumn fx:id="tableFirstName" prefWidth="75.0" text="First Name"/>
-                                <TableColumn fx:id="tableLastName" prefWidth="75.0" text="Last Name"/>
-                                <TableColumn fx:id="tableRemoveUser" prefWidth="75.0" text="Remove"/>
+                                <TableColumn fx:id="tableAvatar" prefWidth="75.0" text="Avatar" />
+                                <TableColumn fx:id="tableUsername" prefWidth="75.0" text="Username" />
+                                <TableColumn fx:id="tableFirstName" prefWidth="75.0" text="First Name" />
+                                <TableColumn fx:id="tableLastName" prefWidth="75.0" text="Last Name" />
+                                <TableColumn fx:id="tableRemoveUser" prefWidth="75.0" text="Remove" />
                             </columns>
                         </TableView>
-                    </children>
                 </VBox>
-            </children>
         </HBox>
-    </children>
 </VBox>
