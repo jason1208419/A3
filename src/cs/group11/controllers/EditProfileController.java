@@ -82,9 +82,6 @@ public class EditProfileController {
 
     @FXML
     protected void initialize() {
-        Address address = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
-        User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
-        setUser(creator);
         Image avatarImage = new Image(user.getAvatarPath());
         this.logo.setImage(avatarImage);
         this.avatar.setImage(avatarImage);
@@ -92,8 +89,6 @@ public class EditProfileController {
         this.username1.setText(user.getUsername());
         this.username2.setText(user.getUsername());
 
-        setTestUsers();
-        setTestArt();
         setupFavouriteArtTable();
         setupFavouriteUserTable();
     }
@@ -270,7 +265,7 @@ public class EditProfileController {
         removeFavouriteUsers.setItems(favouriteUsersList);
     }
 
-    private void setTestArt() {
+    public void setTestArt() {
         User creator = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
 
         String description = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889, " +
@@ -283,7 +278,7 @@ public class EditProfileController {
         this.user.addFavouriteAuction(auction);
     }
 
-    private void setTestUsers() {
+    public void setTestUsers() {
         User df = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
         User abc = new User("abc", "Jason", "Lee", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
         this.user.addFavouriteUser(abc);
@@ -320,7 +315,8 @@ public class EditProfileController {
     @FXML
     private void cancelClick() throws IOException {
         ProfileController profileCon = new ProfileController();
-        profileCon.setUser(this.user);
+        profileCon.setLoginedUser(this.user);
+        profileCon.setViewingUser(this.user);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
@@ -388,7 +384,8 @@ public class EditProfileController {
         printUser();
 
         ProfileController profileCon = new ProfileController();
-        profileCon.setUser(this.user);
+        profileCon.setLoginedUser(this.user);
+        profileCon.setViewingUser(this.user);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
