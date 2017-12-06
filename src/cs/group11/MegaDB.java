@@ -56,19 +56,6 @@ public final class MegaDB {
 		return artworks.add(toAdd);
 	}
 
-	public static Collection<Artwork> searchArtwork(String input) {
-		Set<Artwork> results = new HashSet<>();
-		for (Artwork a : artworks) {
-			if (a.getArtist().contains(input) 
-					|| a.getDescription().contains(input) 
-					|| a.getName().contains(input)
-					|| String.valueOf(a.getCreationYear()).contains(input)) {
-				results.add(a);//Add to results if one of the attributes in Artwork contains 
-							   //the input string.
-			}
-		}
-		return results;
-	}
 
 	/*
 	 * TODO: Implement search function(s) to searc based on a specific value through
