@@ -116,6 +116,10 @@ public class ViewAuctionController {
             artWidth = painting.getWidth();
             this.width.setText("Width: " + widthAsString);
 
+            this.depth.setVisible(false);
+            this.material.setVisible(false);
+
+
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
 
