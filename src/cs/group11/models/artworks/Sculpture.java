@@ -30,8 +30,8 @@ public class Sculpture extends Artwork implements Validatable {
 	}
 
 	public Sculpture(String title, String description, String imagePath, String artist, int creationYear, double width,
-			double height, double depth, String material, List<String> photos) {
-		super(title, description, imagePath, artist, creationYear);
+                     double height, double depth, String material, List<String> photos) {
+        super(title, description, imagePath, artist, creationYear);
 
 		this.width = width;
 		this.height = height;
@@ -99,8 +99,10 @@ public class Sculpture extends Artwork implements Validatable {
 		if (Validator.isNegative(depth)) {
 			throw new InvalidDataException("No depth set!");
 		}
-		if (Validator.isStringEmpty(material)) {
-			throw new InvalidDataException("No material set!");
-		}
-	}
+        /*if (Validator.isStringEmpty(material)) {
+            throw new InvalidDataException("No material set!");
+		}}*/
+    }
+
 }
+
