@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <HBox prefHeight="229.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="237.0" prefWidth="325.0">
+               <children>
+                  <Label text="Select Avatar" />
+                  <ImageView fitHeight="137.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Upload" />
+                        <Button mnemonicParsing="false" text="Draw Avatar" />
+                        <Button mnemonicParsing="false" text="Select Built in Avatars" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="194.0" prefWidth="318.0">
+               <children>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Username" />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="First Name" />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Surname" />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Phone No." />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Address" />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="40.0" prefWidth="276.0">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Post Code" />
+                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <HBox prefHeight="91.0" prefWidth="372.0" />
+            <HBox prefHeight="91.0" prefWidth="372.0">
+               <children>
+                  <VBox prefHeight="91.0" prefWidth="300.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="206.0" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="52.0" prefWidth="120.0" />
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Cancel">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="91.0" prefWidth="188.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Create">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
