@@ -3,6 +3,7 @@ package cs.group11.models.artworks;
 import java.util.List;
 
 import cs.group11.helpers.InvalidDataException;
+import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 import cs.group11.models.Artwork;
 import javafx.scene.image.Image;
@@ -88,6 +89,18 @@ public class Sculpture extends Artwork implements Validatable {
 	@Override
 	public void validate() throws InvalidDataException {
 		super.validate();
-		// TODO: Validate width, height, depth and material
+
+		if (Validator.isNegative(width)) {
+			throw new InvalidDataException("No Width set!");
+		}
+		if (Validator.isNegative(height)) {
+			throw new InvalidDataException("No Height set!");
+		}
+		if (Validator.isNegative(depth)) {
+			throw new InvalidDataException("No depth set!");
+		}
+		if (Validator.isStringEmpty(material)) {
+			throw new InvalidDataException("No material set!");
+		}
 	}
 }

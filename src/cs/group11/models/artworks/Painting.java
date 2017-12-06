@@ -2,8 +2,10 @@ package cs.group11.models.artworks;
 
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
+import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Material;
 
 public class Painting extends Artwork implements Validatable {
 
@@ -56,6 +58,12 @@ public class Painting extends Artwork implements Validatable {
     @Override
     public void validate() throws InvalidDataException {
         super.validate();
-        // TODO: Validate width and height
+        if (Validator.isNegative(width)) {
+            throw new InvalidDataException("No Width set!");
+        }
+        if (Validator.isNegative(height)) {
+            throw new InvalidDataException("No Height set!");
+        }
+
     }
 }
