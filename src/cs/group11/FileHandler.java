@@ -38,7 +38,10 @@ public final class FileHandler {
 
 			String[] csvLine = line.split(",");
 
-			String[] favouriteUsersId = csvLine[9].split(";");
+			String[] favouriteUsersId = csvLine[9].equals("[]")
+					? new String[] {}
+					: csvLine[9].split(";");
+
 			List<User> favouriteUsers = parseFavouriteUsers(favouriteUsersId, users);
 			user.addAllFavouriteUsers(favouriteUsers);
 		}
@@ -197,11 +200,12 @@ public final class FileHandler {
 			String line = lines.get(i);
 			String[] csvLine = line.split(",");
 
-			if (csvLine.length == 11) {
-				String[] favouriteAuctionsId = csvLine[10].split(";");
-				List<Auction> favouriteAuctions = parseFavouriteAuctions(favouriteAuctionsId, auctions);
-				user.addAllFavouriteAuctions(favouriteAuctions);
-			}
+			String[] favouriteAuctionsId = csvLine[10].equals("[]")
+					? new String[] {}
+					: csvLine[10].split(";");
+
+			List<Auction> favouriteAuctions = parseFavouriteAuctions(favouriteAuctionsId, auctions);
+			user.addAllFavouriteAuctions(favouriteAuctions);
 		}
 
 		return users;
@@ -268,11 +272,9 @@ public final class FileHandler {
 		double depth = Double.parseDouble(csvLine[9]);
 		String material = csvLine[10];
 
-		List<String> photos = new ArrayList<>();
-
-		if (csvLine.length >= 12) {
-			photos = Arrays.asList(csvLine[11].split(";"));
-		}
+		List<String> photos = csvLine[11].equals("[]")
+			? new ArrayList<>()
+			: Arrays.asList(csvLine[11].split(";"));
 
 		return new Sculpture(id, title, description, imagePath, artist, creationYear, width, height, depth, material,
 				photos);

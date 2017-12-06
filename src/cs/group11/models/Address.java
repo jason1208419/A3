@@ -66,6 +66,13 @@ public class Address implements Validatable {
 		if (!UK_ADDRESS_REGEX.matcher(postcode.trim()).matches()) {
 			throw new InvalidDataException("Invalid postcode format! The postcode must be a valid UK postcode.");
 		}
+
+		for (String s : lines) {
+			if (Validator.isStringEmpty(s)) {
+				throw new InvalidDataException("Null values are not accepted as address line");
+			}
+		}
+
 		if (lines == null || lines.length < MINIMUM_ADDRESS_LINES) {
 			throw new InvalidDataException("Too few address lines!");
 		}
