@@ -135,6 +135,20 @@ public class ProfileController {
             System.out.println("Clicked on " + auction.getArtwork().getName());
 
             // TODO: Change to auction page
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+                Parent root = loader.load();
+
+                ViewAuctionController controller = loader.getController();
+                controller.setAuction(newValue.getAuction());
+                Scene viewAuc = new Scene(root, 600, 500);
+                Stage primaryStage = Main.getPrimaryStage();
+                primaryStage.setScene(viewAuc);
+
+
+            } catch (IOException e) {
+                System.out.println("Failed to load fxml file");
+            }
         };
 
         ChangeListener<User> onUserClick = (observable, oldValue, newValue) -> {
@@ -164,6 +178,20 @@ public class ProfileController {
             System.out.println("Clicked on " + newValue.getArtwork().getName());
 
             // TODO: Change to auction page
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+                Parent root = loader.load();
+
+                ViewAuctionController controller = loader.getController();
+                controller.setAuction(newValue);
+                Scene viewAuc = new Scene(root, 600, 500);
+                Stage primaryStage = Main.getPrimaryStage();
+                primaryStage.setScene(viewAuc);
+
+
+            } catch (IOException e) {
+                System.out.println("Failed to load fxml file");
+            }
         };
 
         bidsWon.getSelectionModel().selectedItemProperty().addListener(onBidClick);
@@ -502,34 +530,6 @@ public class ProfileController {
         tableFirstName.setCellValueFactory(new PropertyValueFactory<>("firstname"));
         tableLastName.setCellValueFactory(new PropertyValueFactory<>("lastname"));
         favouriteUsers.setItems(favouriteUsersList);
-    }
-
-    private class BidListCell extends ListCell<Bid> {
-        private Node node;
-        private BidCellController controller;
-
-        public BidListCell() {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/bidCell.fxml"));
-                node = loader.load();
-                controller = loader.getController();
-            } catch (IOException exc) {
-                throw new RuntimeException(exc);
-            }
-        }
-
-        @Override
-        protected void updateItem(Bid bid, boolean empty) {
-            super.updateItem(bid, empty);
-
-            if (empty) {
-                setGraphic(null);
-            } else {
-                controller.setBid(bid);
-                setGraphic(node);
-            }
-        }
-
     }
 
     public void avatarClick() throws IOException {

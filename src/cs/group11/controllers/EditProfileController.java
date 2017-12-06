@@ -8,12 +8,10 @@ import java.util.Collections;
 import cs.group11.Main;
 import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
-import cs.group11.models.Address;
-import cs.group11.models.Artwork;
-import cs.group11.models.Auction;
-import cs.group11.models.User;
+import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -96,6 +94,50 @@ public class EditProfileController {
 
         setupFavouriteArtTable();
         setupFavouriteUserTable();
+
+        ChangeListener<User> onUserClick = (observable, oldValue, newValue) -> {
+            System.out.println("Clicked on " + newValue.getUsername());
+
+            ProfileController profileCon = new ProfileController();
+            profileCon.setViewingUser(newValue);
+            profileCon.setLoginedUser(this.user);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
+            loader.setController(profileCon);
+            VBox box = null;
+            try {
+                box = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (box != null) {
+                box.prefHeightProperty().bind(rootBox.heightProperty());
+            }
+
+            rootBox.getChildren().setAll(box);
+        };
+
+        ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
+            System.out.println("Clicked on " + newValue.getArtwork().getName());
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+                Parent root = loader.load();
+
+                ViewAuctionController controller = loader.getController();
+                controller.setAuction(newValue);
+                Scene viewAuc = new Scene(root, 600, 500);
+                Stage primaryStage = Main.getPrimaryStage();
+                primaryStage.setScene(viewAuc);
+
+
+            } catch (IOException e) {
+                System.out.println("Failed to load fxml file");
+            }
+        };
+        removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
+        removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
     }
 
     public void setUser(User user) {
@@ -290,6 +332,7 @@ public class EditProfileController {
         String imgPath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
         Painting painting = new Painting("Starry Night", description, imgPath, "Vincent Van Gogh", 1889, 200, 300);
         Auction auction = new Auction(creator, 7, 10.00, painting);
+        Bid testBid = new Bid(15.25, creator, auction);
         this.user.addFavouriteAuction(auction);
     }
 
@@ -342,8 +385,6 @@ public class EditProfileController {
         box.prefHeightProperty().bind(rootBox.heightProperty());
 
         rootBox.getChildren().setAll(box);
-
-
     }
 
     public void avatarClick() throws IOException {
@@ -397,7 +438,6 @@ public class EditProfileController {
     public void submitClick() throws IOException {
         boolean inputValid = true;
         printUser();
-        //TODO:validate input
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
             this.user.setFirstname(firstNameIn.getText());
         }
@@ -452,20 +492,17 @@ public class EditProfileController {
     public void builtInAvatarClick() throws IOException {
         Stage stage = new Stage();
 
-        BuildInAvatarController.OnAvatarSubmit onAvatarSubmit = new BuildInAvatarController.OnAvatarSubmit() {
-            @Override
-            public void onSubmit(String avatarPath) {
-                user.setAvatarPath(avatarPath);
-                try {
-                    MegaDB.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stage.close();
-                Image img = new Image(user.getAvatarPath());
-                avatar.setImage(img);
-                avatar1.setImage(img);
+        BuildInAvatarController.OnAvatarSubmit onAvatarSubmit = avatarPath -> {
+            user.setAvatarPath(avatarPath);
+            try {
+                MegaDB.save();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            stage.close();
+            Image img = new Image(user.getAvatarPath());
+            avatar.setImage(img);
+            avatar1.setImage(img);
         };
 
         BuildInAvatarController buildInAvatarController = new BuildInAvatarController();
@@ -474,7 +511,7 @@ public class EditProfileController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/buildInAvatar.fxml"));
         fxmlLoader.setController(buildInAvatarController);
 
-        Parent root1 = (Parent) fxmlLoader.load();
+        Parent root1 = fxmlLoader.load();
         stage.setTitle("Build In Avatar");
         stage.setScene(new Scene(root1));
         stage.show();
