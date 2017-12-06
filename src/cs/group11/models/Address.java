@@ -58,6 +58,10 @@ public class Address implements Validatable {
 		return builder.toString();
 	}
 
+	public static boolean isPostcodeValid(String postcode) {
+		return UK_ADDRESS_REGEX.matcher(postcode.trim()).matches();
+	}
+
 	@Override
 	public void validate() throws InvalidDataException {
 		if (Validator.isStringEmpty(postcode)) {

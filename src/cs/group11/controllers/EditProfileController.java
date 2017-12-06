@@ -325,8 +325,6 @@ public class EditProfileController {
         return null;
     }
 
-    //TODO: A user logs in to the program and performs actions which are saved locally to disk on that machine
-
     @FXML
     private void cancelClick() throws IOException {
 
@@ -397,6 +395,7 @@ public class EditProfileController {
     }
 
     public void submitClick() throws IOException {
+        boolean inputValid = true;
         printUser();
         //TODO:validate input
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
@@ -416,22 +415,30 @@ public class EditProfileController {
             this.user.getAddress().setLines(lines);
         }
         if (postcodeIn.getText() != null && !postcodeIn.getText().isEmpty()) {
-            this.user.getAddress().setPostcode(postcodeIn.getText());
+            if (Address.isPostcodeValid(postcodeIn.getText())) {
+                inputValid = true;
+                this.user.getAddress().setPostcode(postcodeIn.getText());
+            } else {
+                inputValid = false;
+                error.setText("Postcode not valid!");
+            }
         }
-        printUser();
-        MegaDB.save();
+        if (inputValid) {
+            printUser();
+            MegaDB.save();
 
-        ProfileController profileCon = new ProfileController();
-        profileCon.setLoginedUser(this.user);
-        profileCon.setViewingUser(this.user);
+            ProfileController profileCon = new ProfileController();
+            profileCon.setLoginedUser(this.user);
+            profileCon.setViewingUser(this.user);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-        loader.setController(profileCon);
-        profileCon.addTestBids();
-        VBox box = loader.load();
-        box.prefHeightProperty().bind(rootBox.heightProperty());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
+            loader.setController(profileCon);
+            profileCon.addTestBids();
+            VBox box = loader.load();
+            box.prefHeightProperty().bind(rootBox.heightProperty());
 
-        rootBox.getChildren().setAll(box);
+            rootBox.getChildren().setAll(box);
+        }
     }
 
     private void printUser() {
@@ -457,6 +464,7 @@ public class EditProfileController {
                 stage.close();
                 Image img = new Image(user.getAvatarPath());
                 avatar.setImage(img);
+                avatar1.setImage(img);
             }
         };
 
