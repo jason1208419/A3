@@ -136,8 +136,8 @@ public class CreateAuctionV2Controller {
 		});
 
 		// set pane min width and height
-		mainPane.setMinWidth(DEFAULT_WINDOW_WIDTH);
-		mainPane.setMinHeight(DEFAULT_WINDOW_HEIGHT);
+		//mainPane.setMinWidth(DEFAULT_WINDOW_WIDTH);
+		//mainPane.setMinHeight(DEFAULT_WINDOW_HEIGHT);
 
 		// Setup the toggle group for the radiobuttons.
 		ToggleGroup radioGroup = new ToggleGroup();

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import cs.group11.Main;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Address;
 import cs.group11.models.Artwork;
@@ -16,12 +17,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class EditProfileController {
@@ -333,15 +337,21 @@ public class EditProfileController {
     }
 
     public void viewAuctionClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/auctionList.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
+        Parent root = loader.load();
+        AuctionListController controller = loader.getController();
+        Scene viewAuc = new Scene(root, 600, 500);
+        Stage primaryStage = Main.getPrimaryStage();
+        primaryStage.setScene(viewAuc);
     }
 
     public void createAuctionClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/createAuctionV2.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
+        Parent root = loader.load();
+        CreateAuctionV2Controller controller = loader.getController();
+        Scene createAuc = new Scene(root, 600, 500);
+        Stage primaryStage = Main.getPrimaryStage();
+        primaryStage.setScene(createAuc);
     }
 
     public void logoutClick() throws IOException {

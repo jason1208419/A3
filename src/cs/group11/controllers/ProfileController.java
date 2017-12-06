@@ -549,7 +549,6 @@ public class ProfileController {
     public void viewAuctionClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
         Parent root = loader.load();
-
         AuctionListController controller = loader.getController();
         Scene viewAuc = new Scene(root, 600, 500);
         Stage primaryStage = Main.getPrimaryStage();
@@ -557,9 +556,12 @@ public class ProfileController {
     }
 
     public void createAuctionClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/createAuctionV2.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
+        Parent root = loader.load();
+        CreateAuctionV2Controller controller = loader.getController();
+        Scene createAuc = new Scene(root, 600, 500);
+        Stage primaryStage = Main.getPrimaryStage();
+        primaryStage.setScene(createAuc);
     }
 
     public void logoutClick() throws IOException {

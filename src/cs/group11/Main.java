@@ -52,7 +52,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         setPrimaryStage(primaryStage);
-        primaryStage.setTitle("Edit Profile");
+        primaryStage.setTitle("Artatawe");
         primaryStage.setScene(new Scene(root, 750, 650));
         primaryStage.show();
     }
