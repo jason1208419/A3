@@ -25,7 +25,7 @@ public class TestFileHandler {
     private HashMap<Integer, Bid> bids;
 
     private int[][] favouriteUsersIds = new int[][]{ {4, 2, 3}, {0, 2}, {0}, {4}, {3, 1} };
-    private int[][] favouriteAuctionsIds = new int[][] { {0} };
+    private int[][] favouriteAuctionsIds = new int[][] { {0}, {0}, {0}, {0}, {0} };
     private int[][] auctionBidsIds = new int[][] { {1, 0} };
 
     private HashMap<Integer, User> getUsersList() {
@@ -323,7 +323,7 @@ public class TestFileHandler {
         HashMap<Integer, User> loadedUsers = null;
 
         try {
-            loadedUsers = FileHandler.readUsers(file, new HashMap<>());
+            loadedUsers = FileHandler.readUsers(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -343,6 +343,42 @@ public class TestFileHandler {
                 User expectedFavUser = expectedFavUsers.get(i);
 
                 assertUserMatch(loadedFavUser, expectedFavUser);
+            }
+        }
+    }
+
+    @Test
+    public void testLoadUsersAuctions() {
+        HashMap<Integer, User> users = getUsersList();
+
+        File userFile = new File(getClass().getResource("users.csv").getFile());
+        HashMap<Integer, User> loadedUsers = null;
+        HashMap<Integer, Auction> auctions = getAuctionsList();
+
+        try {
+            loadedUsers = FileHandler.readUsers(userFile);
+            loadedUsers = FileHandler.loadUsersAuctions(userFile, users, auctions);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (User loadedUser : loadedUsers.values()) {
+            User expectedUser = users.get(loadedUser.getId());
+            assertUserMatch(loadedUser, expectedUser);
+
+            List<Auction> loadedFavAuctions = loadedUser.getFavouriteAuctions();
+            List<Auction> expectedFavAuctions = expectedUser.getFavouriteAuctions();
+
+            int expectedFavAuctionsCount = favouriteAuctionsIds[loadedUser.getId()].length;
+            assertThat(loadedFavAuctions.size(), is(expectedFavAuctionsCount));
+
+            for (int i = 0; i < loadedFavAuctions.size(); i++) {
+                Auction loadedFavAuction = loadedFavAuctions.get(i);
+                Auction expectedFavAuction = expectedFavAuctions.get(i);
+
+                assertThat(loadedFavAuction.getId(), is(expectedFavAuction.getId()));
+                assertThat(loadedFavAuction.getCreationDate().getTime(), is(expectedFavAuction.getCreationDate().getTime()));
+                assertThat(loadedFavAuction.getReservePrice(), is(expectedFavAuction.getReservePrice()));
             }
         }
     }
@@ -503,7 +539,7 @@ public class TestFileHandler {
         HashMap<Integer, Auction> loadedAuctions = null;
 
         try {
-            loadedAuctions = FileHandler.readAuction(file, users, bids, artworks);
+            loadedAuctions = FileHandler.readAuction(file, users, artworks);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -516,17 +552,6 @@ public class TestFileHandler {
             assertThat(loadedAuction.getCreator().getUsername(), is(expectedAuction.getCreator().getUsername()));
             assertThat(loadedAuction.getReservePrice(), is(expectedAuction.getReservePrice()));
             assertThat(loadedAuction.getArtwork().getArtist(), is(expectedAuction.getArtwork().getArtist()));
-
-            List<Bid> loadedBids = loadedAuction.getBids();
-            List<Bid> expectedBids = expectedAuction.getBids();
-
-            assertThat(loadedBids.size(), is(expectedBids.size()));
-
-            for (Bid loadedBid : loadedBids) {
-                Bid expectedBid = expectedBids.get(loadedBid.getId());
-                assertThat(loadedBid.getId(), is(expectedBid.getId()));
-                assertThat(loadedBid.getPrice(), is(expectedBid.getPrice()));
-            }
         }
     }
 

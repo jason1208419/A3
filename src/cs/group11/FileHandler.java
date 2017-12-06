@@ -20,7 +20,7 @@ public final class FileHandler {
 
         return lines;
     }
-    public static HashMap<Integer, User> readUsers(File file, HashMap<Integer, Auction> auctions) throws IOException {
+    public static HashMap<Integer, User> readUsers(File file) throws IOException {
         HashMap<Integer, User> users = new HashMap<>();
         List<String> lines = readLines(file);
 
@@ -40,18 +40,11 @@ public final class FileHandler {
             String[] favouriteUsersId = csvLine[9].split(";");
             List<User> favouriteUsers = parseFavouriteUsers(favouriteUsersId, users);
             user.addAllFavouriteUsers(favouriteUsers);
-
-            // TODO: Test favourite auctions
-            if (csvLine.length == 11) {
-                String[] favouriteAuctionsId = csvLine[10].split(";");
-                List<Auction> favouriteAuctions = parseFavouriteAuctions(favouriteAuctionsId, auctions);
-                user.addAllFavouriteAuctions(favouriteAuctions);
-            }
         }
 
         return users;
     }
-    public static HashMap<Integer, Auction> readAuction(File file, HashMap<Integer, User> users, HashMap<Integer, Bid> bids, HashMap<Integer, Artwork> artworks) throws IOException {
+    public static HashMap<Integer, Auction> readAuction(File file, HashMap<Integer, User> users, HashMap<Integer, Artwork> artworks) throws IOException {
         HashMap<Integer, Auction> auctions = new HashMap<>();
         List<String> lines = readLines(file);
 
@@ -59,18 +52,6 @@ public final class FileHandler {
         for (String line : lines) {
             Auction auction = parseAuction(line, users, artworks);
             auctions.put(auction.getId(), auction);
-        }
-
-        // Add bids to auctions
-        for (int i = 0; i < auctions.size(); i++) {
-            Auction auction = auctions.get(i);
-            String line = lines.get(i);
-
-            String[] csvLine = line.split(",");
-            String[] bidsIds = csvLine[6].split(";");
-            List<Bid> auctionBids = parseAuctionBids(bidsIds, bids);
-
-            auction.addAllBids(auctionBids);
         }
 
         return auctions;
@@ -191,6 +172,26 @@ public final class FileHandler {
     public static List<Bid> parseAuctionBids(String[] bidsIds, HashMap<Integer, Bid> bids) {
         int[] ids = Arrays.stream(bidsIds).mapToInt(Integer::parseInt).toArray();
         return parseAuctionBids(ids, bids);
+    }
+
+    // Called after the readUsers() function to add the users auctions
+    public static HashMap<Integer, User> loadUsersAuctions(File file, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) throws IOException {
+        List<String> lines = readLines(file);
+
+        // Add favourite users
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            String line = lines.get(i);
+            String[] csvLine = line.split(",");
+
+            if (csvLine.length == 11) {
+                String[] favouriteAuctionsId = csvLine[10].split(";");
+                List<Auction> favouriteAuctions = parseFavouriteAuctions(favouriteAuctionsId, auctions);
+                user.addAllFavouriteAuctions(favouriteAuctions);
+            }
+        }
+
+        return users;
     }
 
     public static Bid parseBid(String line, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) {
