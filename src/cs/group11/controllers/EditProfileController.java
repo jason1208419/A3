@@ -361,6 +361,7 @@ public class EditProfileController {
     }
 
     public void uploadClick() {
+        String currentAvatarPath = user.getAvatarPath();
         try {
             user.setAvatarPath(userSelectImage());
             Image avatarImage = new Image(user.getAvatarPath());
@@ -368,6 +369,7 @@ public class EditProfileController {
             this.avatar1.setImage(avatarImage);
         } catch (NullPointerException e) {
             System.out.println("Path not specified");
+            user.setAvatarPath(currentAvatarPath);
         }
 
     }
