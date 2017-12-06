@@ -127,25 +127,40 @@ public class ViewAuctionController {
      */
     private void setArtworkDetails() {
         Artwork artwork = auction.getArtwork();
-        String artworkType = "Artwork";
+        setArtworkDimensions(artwork);
 
+
+        Image image = new Image(auction.getArtwork().getImagePath());
+        this.artworkImageView.setImage(image);
+        this.title.setText("Title: " + (artwork.getName()));
+        this.author.setText("Artist: " + (artwork.getArtist()));
+
+        //Gets artworks creation year
+        int creationYear = artwork.getCreationYear();
+        String yearAsString = Integer.toString(creationYear);
+        this.artworkCreation.setText("Art creation: " + yearAsString);
+
+    }
+
+    /**
+     * Displays height, width, depth and material of the artwork in the GUI.
+     *
+     * @param artwork The artwork to be displayed
+     */
+    private void setArtworkDimensions(Artwork artwork) {
+        String artworkType = "Artwork";
         if (artwork instanceof Painting) {
             artworkType = "Painting";
         } else if (artwork instanceof Sculpture) {
             artworkType = "Sculpture";
         }
-
-        Image image = new Image(auction.getArtwork().getImagePath());
-        this.artworkImageView.setImage(image);
         this.artType.setText("Type: " + (artworkType));
-        this.title.setText("Title: " + (artwork.getName()));
-        this.author.setText("Artist: " + (artwork.getArtist()));
 
-        //Gets the Width and depth and material
 
         double artWidth;
         double artDepth;
 
+        //Gets the Width and depth and material
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
 
@@ -166,7 +181,6 @@ public class ViewAuctionController {
             String depthAsString = Double.toString(artDepth);
             this.depth.setText("Depth: " + depthAsString);
 
-
             this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
         }
 
@@ -185,12 +199,6 @@ public class ViewAuctionController {
         }
         String heightAsString = Double.toString(artHeight);
         this.height.setText("Height: " + heightAsString);
-
-        //Gets artworks creation year
-        int creationYear = artwork.getCreationYear();
-        String yearAsString = Integer.toString(creationYear);
-        this.artworkCreation.setText("Art creation: " + yearAsString);
-
     }
 
 
