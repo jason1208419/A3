@@ -26,9 +26,12 @@ public final class MegaDB {
 	private MegaDB() {
 	}// Prevent instantiation of class.
 
-
 	// TODO: Test
 	public static void load() throws IOException {
+		if (DATA_DIR.listFiles() == null || DATA_DIR.listFiles().length != 4) {
+			// Missing file(s), invoke save to create
+			save();
+		}
 		users = FileHandler.readUsers(USER_FILE);
 		artworks = FileHandler.readArtworks(ARTWORK_FILE);
 		auctions = FileHandler.readAuction(AUCTION_FILE, users, artworks);
@@ -80,42 +83,42 @@ public final class MegaDB {
 	}
 
 	// TODO: Test username, firstname, lastname, with full and partial information
-    public static Collection<User> searchByUser(String input) {
-        Set<User> results = new HashSet<>();
-        for (User user : users.values()) {
-            if (user.getUsername().contains(input)
-                    || user.getFirstname().contains(input)
-                    || user.getLastname().contains(input)) {
-                results.add(user);
-            }
-        }
-        return results;
-    }
+	public static Collection<User> searchByUser(String input) {
+		Set<User> results = new HashSet<>();
+		for (User user : users.values()) {
+			if (user.getUsername().contains(input) || user.getFirstname().contains(input)
+					|| user.getLastname().contains(input)) {
+				results.add(user);
+			}
+		}
+		return results;
+	}
 
-    // TODO: Test auction username, artwork name, with full and partial information
-    public static Collection<Auction> searchByAuction(String input) {
-        Set<Auction> results = new HashSet<>();
-        for (Auction auc : auctions.values()) {
-            if (auc.getCreator().getUsername().contains(input)
-                    || auc.getArtwork().getName().contains(input)) {
-                results.add(auc);
-            }
-        }
-        return results;
-    }
-
-	/*
-    DELETE IF NOT NEEDED
-
-	public static Collection<Auction> searchFinishedAuction(String input) {
+	// TODO: Test auction username, artwork name, with full and partial information
+	public static Collection<Auction> searchByAuction(String input) {
 		Set<Auction> results = new HashSet<>();
-		for (Auction auc : auctions) {
-			if (auc.isCompleted()) {
+		for (Auction auc : auctions.values()) {
+			if (auc.getCreator().getUsername().contains(input) || auc.getArtwork().getName().contains(input)) {
 				results.add(auc);
 			}
 		}
 		return results;
 	}
-	*/
+
+	@Deprecated // Added for test reasons only;
+	public static void clear() {
+		users.clear();
+		auctions.clear();
+		bids.clear();
+		artworks.clear();
+	}
+
+	/*
+	 * DELETE IF NOT NEEDED
+	 * 
+	 * public static Collection<Auction> searchFinishedAuction(String input) {
+	 * Set<Auction> results = new HashSet<>(); for (Auction auc : auctions) { if
+	 * (auc.isCompleted()) { results.add(auc); } } return results; }
+	 */
 
 }
