@@ -2,6 +2,7 @@ package cs.group11.models;
 
 import java.util.Date;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -25,6 +26,7 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public Bid(double price, User user, Auction auction) {
@@ -37,6 +39,7 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public User getUser() {

@@ -175,7 +175,7 @@ public final class FileHandler {
     }
 
     // Called after the readUsers() function to add the users auctions
-    public static HashMap<Integer, User> loadUsersAuctions(File file, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) throws IOException {
+    public static HashMap<Integer, User> loadFavouriteUserAuctions(File file, HashMap<Integer, User> users, HashMap<Integer, Auction> auctions) throws IOException {
         List<String> lines = readLines(file);
 
         // Add favourite users

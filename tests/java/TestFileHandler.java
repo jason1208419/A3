@@ -357,7 +357,7 @@ public class TestFileHandler {
 
         try {
             loadedUsers = FileHandler.readUsers(userFile);
-            loadedUsers = FileHandler.loadUsersAuctions(userFile, users, auctions);
+            loadedUsers = FileHandler.loadFavouriteUserAuctions(userFile, users, auctions);
         } catch (IOException e) {
             e.printStackTrace();
         }

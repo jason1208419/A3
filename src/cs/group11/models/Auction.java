@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -32,6 +33,8 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
+
+		MegaDB.addAuction(this);
 	}
 
 	public Auction(int id, Date creationDate, User creator, int maxBids, double reservePrice, Artwork artwork) {
@@ -46,6 +49,8 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
+
+		MegaDB.addAuction(this);
 	}
 
 	public User getCreator() {

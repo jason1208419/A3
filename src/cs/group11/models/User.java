@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -40,6 +41,8 @@ public class User implements Validatable, Serializable {
 
         this.favouriteUsers = new ArrayList<>();
         this.favouriteAuctions = new ArrayList<>();
+
+        MegaDB.addUser(this);
     }
 
     public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
@@ -57,6 +60,8 @@ public class User implements Validatable, Serializable {
 
         this.favouriteUsers = new ArrayList<>();
         this.favouriteAuctions = new ArrayList<>();
+
+        MegaDB.addUser(this);
     }
 
     public static User login(String username) {

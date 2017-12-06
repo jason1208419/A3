@@ -2,6 +2,7 @@ package cs.group11.models;
 
 import java.util.Calendar;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -28,6 +29,8 @@ public abstract class Artwork implements Validatable {
 		this.creationYear = creationYear;
 
 		this.validate();
+
+		MegaDB.addArtwork(this);
 	}
 
 	public Artwork(int id, String name, String description, String imagePath, String artist, int creationYear) {
@@ -39,6 +42,8 @@ public abstract class Artwork implements Validatable {
 		this.creationYear = creationYear;
 
 		this.validate();
+
+		MegaDB.addArtwork(this);
 	}
 
 	public int getId() {
