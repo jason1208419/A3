@@ -427,6 +427,28 @@ public class EditProfileController {
         System.out.println(this.user.getAddress().getPostcode());
     }
 
-    public void builtInAvatarClick() {
+    public void builtInAvatarClick() throws IOException {
+        Stage stage = new Stage();
+
+        BuildInAvatarController.OnAvatarSubmit onAvatarSubmit = new BuildInAvatarController.OnAvatarSubmit() {
+            @Override
+            public void onSubmit(String avatarPath) {
+                user.setAvatarPath(avatarPath);
+                stage.close();
+                Image img = new Image(user.getAvatarPath());
+                avatar.setImage(img);
+            }
+        };
+
+        BuildInAvatarController buildInAvatarController = new BuildInAvatarController();
+        buildInAvatarController.setOnAvatarSubmit(onAvatarSubmit);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/buildInAvatar.fxml"));
+        fxmlLoader.setController(buildInAvatarController);
+
+        Parent root1 = (Parent) fxmlLoader.load();
+        stage.setTitle("Build In Avatar");
+        stage.setScene(new Scene(root1));
+        stage.show();
     }
 }
