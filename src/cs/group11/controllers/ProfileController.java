@@ -575,10 +575,11 @@ public class ProfileController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
         loader.setController(editProfileCon);
-        VBox box = loader.load();
+        Parent root = loader.load();
 
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        EditProfileController controller = loader.getController();
+        Scene viewAuc = new Scene(root, 600, 500);
+        Stage primaryStage = Main.getPrimaryStage();
+        primaryStage.setScene(viewAuc);
     }
 }

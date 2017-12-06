@@ -1,5 +1,6 @@
 package cs.group11.controllers;
 
+import cs.group11.Main;
 import cs.group11.models.Address;
 import cs.group11.models.User;
 import javafx.collections.FXCollections;
@@ -7,11 +8,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,21 +73,50 @@ public class SignInController {
 
                 boolean userFound = false;
 
+                int index = -1;
                 for (int i = 0; i < users.size(); i++) {
                     System.out.println(i);
                     if (Objects.equals(username, users.get(i).getUsername())) {
                         userFound = true;
+                        index = i;
                         break;
                     }
                 }
 
                 if (userFound) {
                     System.out.println("Welcome user");
+                    loginSuccess(index);
                 } else {
                     System.out.println("User not found");
                 }
             }
+
+
+            private void loginSuccess(int index) {
+                try {
+
+                    EditProfileController controller = new EditProfileController();
+                    controller.setUser(users.get(index));
+                    controller.setTestArt();
+                    controller.setTestUsers();
+
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
+                    loader.setController(controller);
+                    Parent root = loader.load();
+                    Scene mainScreen = new Scene(root, 600, 500);
+                    Stage primaryStage = Main.getPrimaryStage();
+                    primaryStage.setScene(mainScreen);
+
+                } catch (IOException e) {
+                    System.out.println("Failed to load fxml file");
+                    e.printStackTrace();
+                }
+
+            }
         };
         signInBtn.setOnAction(onLoginClick);
+
+
     }
 }

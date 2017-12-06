@@ -318,6 +318,7 @@ public class EditProfileController {
 
     @FXML
     private void cancelClick() throws IOException {
+
         ProfileController profileCon = new ProfileController();
         profileCon.setLoginedUser(this.user);
         profileCon.setViewingUser(this.user);
@@ -325,11 +326,15 @@ public class EditProfileController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
         profileCon.addTestBids();
+
+
         VBox box = loader.load();
 
         box.prefHeightProperty().bind(rootBox.heightProperty());
 
         rootBox.getChildren().setAll(box);
+
+
     }
 
     public void avatarClick() throws IOException {
