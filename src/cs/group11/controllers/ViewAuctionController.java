@@ -1,15 +1,24 @@
 package cs.group11.controllers;
 
+import cs.group11.AucListTest;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,10 +57,12 @@ public class ViewAuctionController {
     private Label maxBids;
     @FXML
     private Label placedBids;
-    ;
+
     @FXML
     private Label remainingBids;
-    ;
+
+    @FXML
+    private Button backBtn;
 
     @FXML
     private Label sellerUsername;
@@ -187,6 +198,29 @@ public class ViewAuctionController {
         this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
         this.placedBids.setText("Number of bids placed: " + currentBidsAsString);
 
+
+        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> {
+            previousScreen();
+        };
+
+        backBtn.setOnAction(onButtonClick);
+    }
+
+    private void previousScreen() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
+            Parent root = loader.load();
+
+            AuctionListController controller = loader.getController();
+            Scene viewAuc = new Scene(root, 600, 500);
+            Stage primaryStage = AucListTest.getPrimaryStage();
+            primaryStage.setScene(viewAuc);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

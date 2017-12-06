@@ -61,6 +61,7 @@
                         <Label fx:id="maxBids" text="Total bids allowed"/>
                         <Label fx:id="placedBids" text="No. bids placed"/>
                         <Label fx:id="remainingBids" text="No. bids remaining"/>
+                        <Button fx:id="backBtn" mnemonicParsing="false" text="Back"/>
                     </children>
                 </VBox>
                 <VBox prefHeight="100.0" prefWidth="54.0"/>
