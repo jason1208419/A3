@@ -1,10 +1,10 @@
 package cs.group11.controllers;
 
 import java.io.IOException;
+import java.util.Date;
 
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,14 +32,42 @@ public class ProfileController {
     @FXML
     private Button editProfile;
 
-    @FXML private ListView<Bid> bidsWon;
-    @FXML private ListView<Bid> bidsMade;
-    @FXML private ListView<Bid> bidsReceived;
-
+    @FXML
+    private TableView<Bid> bidsWon;
+    @FXML
+    private TableView<Bid> bidsMade;
+    @FXML
+    private TableView<Bid> bidsReceived;
     @FXML
     private TableView<User> favouriteUsers;
     @FXML
     private TableView<Auction> favouriteAuctions;
+    @FXML
+    private TableColumn<Bid, Auction> wonPic;
+    @FXML
+    private TableColumn<Bid, Auction> wonName;
+    @FXML
+    private TableColumn<Bid, Double> wonPrice;
+    @FXML
+    private TableColumn<Bid, Date> wonDate;
+    @FXML
+    private TableColumn<Bid, Auction> madePic;
+    @FXML
+    private TableColumn<Bid, Auction> madeName;
+    @FXML
+    private TableColumn<Bid, Double> madePrice;
+    @FXML
+    private TableColumn<Bid, Date> madeDate;
+    @FXML
+    private TableColumn<Bid, Auction> receivedPic;
+    @FXML
+    private TableColumn<Bid, Auction> receivedName;
+    @FXML
+    private TableColumn<Bid, Double> receivedPrice;
+    @FXML
+    private TableColumn<Bid, Date> receivedDate;
+    @FXML
+    private TableColumn<Bid, User> receivedUsername;
     @FXML
     private TableColumn<Auction, Artwork> tablePic;
     @FXML
@@ -71,17 +99,9 @@ public class ProfileController {
 
     @FXML
     protected void initialize() {
-        bidsWonList = FXCollections.observableArrayList();
-        bidsMadeList = FXCollections.observableArrayList();
-        bidsReceivedList = FXCollections.observableArrayList();
-
-        bidsWon.setItems(bidsWonList);
-        bidsMade.setItems(bidsMadeList);
-        bidsReceived.setItems(bidsReceivedList);
-
-        bidsWon.setCellFactory(param -> new BidListCell());
-        bidsMade.setCellFactory(param -> new BidListCell());
-        bidsReceived.setCellFactory(param -> new BidListCell());
+        setupBidsWonTable();
+        setupBidsMadeTable();
+        setupBidsReceivedTable();
 
         setupFavouriteUserTable();
         setupFavouriteArtTable();
@@ -147,11 +167,9 @@ public class ProfileController {
         bidsReceived.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         favouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
         favouriteAuctions.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
-
-        addTestBids();
     }
 
-    private void addTestBids() {
+    public void addTestBids() {
         User creator = this.loginedUser;
 
         String description = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889, " +
@@ -166,7 +184,7 @@ public class ProfileController {
         User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
 
         Bid bid = new Bid(11.21, bidder, auction);
-        this.bidsWonList.add(bid);
+        this.loginedUser.addBid(bid);
     }
 
     public void setLoginedUser(User user) {
@@ -175,6 +193,185 @@ public class ProfileController {
 
     public void setViewingUser(User user) {
         this.viewingUser = user;
+    }
+
+    private void setupBidsWonTable() {
+        bidsWonList = FXCollections.observableArrayList(this.viewingUser.getWonBids());
+
+        wonPic.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        wonPic.setPrefWidth(100);
+        wonPic.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            ImageView node = new ImageView();
+                            Image image = new Image(auction.getArtwork().getImagePath());
+                            node.setImage(image);
+                            node.setFitWidth(100);
+                            node.setPreserveRatio(true);
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+
+        wonName.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        wonName.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Label node = new Label();
+                            node.setText(auction.getArtwork().getName());
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+        wonPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        wonDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        bidsWon.setItems(bidsWonList);
+    }
+
+    private void setupBidsMadeTable() {
+        bidsMadeList = FXCollections.observableArrayList(this.viewingUser.getBids());
+
+        madePic.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        madePic.setPrefWidth(100);
+        madePic.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            ImageView node = new ImageView();
+                            Image image = new Image(auction.getArtwork().getImagePath());
+                            node.setImage(image);
+                            node.setFitWidth(100);
+                            node.setPreserveRatio(true);
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+
+        madeName.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        madeName.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Label node = new Label();
+                            node.setText(auction.getArtwork().getName());
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+        madePrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        madeDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        bidsMade.setItems(bidsMadeList);
+    }
+
+    private void setupBidsReceivedTable() {
+        bidsReceivedList = FXCollections.observableArrayList(this.viewingUser.getReceivedBids());
+
+        receivedPic.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        receivedPic.setPrefWidth(100);
+        receivedPic.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            ImageView node = new ImageView();
+                            Image image = new Image(auction.getArtwork().getImagePath());
+                            node.setImage(image);
+                            node.setFitWidth(100);
+                            node.setPreserveRatio(true);
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+
+        receivedName.setCellValueFactory(new PropertyValueFactory<>("auction"));
+        receivedName.setCellFactory(new Callback<TableColumn<Bid, Auction>, TableCell<Bid, Auction>>() {
+            @Override
+            public TableCell<Bid, Auction> call(TableColumn<Bid, Auction> param) {
+                return new TableCell<Bid, Auction>() {
+                    @Override
+                    public void updateItem(Auction auction, boolean empty) {
+                        super.updateItem(auction, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Label node = new Label();
+                            node.setText(auction.getArtwork().getName());
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+        receivedPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        receivedDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        receivedUsername.setCellValueFactory(new PropertyValueFactory<>("user"));
+        receivedUsername.setCellFactory(new Callback<TableColumn<Bid, User>, TableCell<Bid, User>>() {
+            @Override
+            public TableCell<Bid, User> call(TableColumn<Bid, User> param) {
+                return new TableCell<Bid, User>() {
+                    @Override
+                    public void updateItem(User user, boolean empty) {
+                        super.updateItem(user, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Label node = new Label();
+                            node.setText(user.getUsername());
+                            setGraphic(node);
+                        }
+                    }
+                };
+            }
+        });
+        bidsReceived.setItems(bidsReceivedList);
     }
 
     private void setupFavouriteArtTable() {

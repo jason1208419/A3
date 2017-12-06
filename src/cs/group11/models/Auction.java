@@ -33,6 +33,7 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
+        creator.addCreatedAuction(this);
 
 		MegaDB.addAuction(this);
 	}
@@ -49,6 +50,7 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
+        creator.addCreatedAuction(this);
 
 		MegaDB.addAuction(this);
 	}

@@ -26,7 +26,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-		MegaDB.addBid(this);
+        user.addBid(this);
+        MegaDB.addBid(this);
 	}
 
 	public Bid(double price, User user, Auction auction) {
@@ -39,7 +40,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-		MegaDB.addBid(this);
+        user.addBid(this);
+        MegaDB.addBid(this);
 	}
 
 	public User getUser() {

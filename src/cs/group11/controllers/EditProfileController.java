@@ -320,6 +320,7 @@ public class EditProfileController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
+        profileCon.addTestBids();
         VBox box = loader.load();
 
         box.prefHeightProperty().bind(rootBox.heightProperty());
@@ -389,6 +390,7 @@ public class EditProfileController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
         loader.setController(profileCon);
+        profileCon.addTestBids();
         VBox box = loader.load();
         box.prefHeightProperty().bind(rootBox.heightProperty());
 

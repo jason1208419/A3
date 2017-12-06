@@ -25,6 +25,8 @@ public class User implements Validatable, Serializable {
 
     private List<User> favouriteUsers;
     private List<Auction> favouriteAuctions;
+    private List<Bid> bids;
+    private List<Auction> createdAuctions;
 
     public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
         this.id = 0;
@@ -41,7 +43,8 @@ public class User implements Validatable, Serializable {
 
         this.favouriteUsers = new ArrayList<>();
         this.favouriteAuctions = new ArrayList<>();
-
+        this.bids = new ArrayList<>();
+        this.createdAuctions = new ArrayList<>();
         MegaDB.addUser(this);
     }
 
@@ -60,7 +63,8 @@ public class User implements Validatable, Serializable {
 
         this.favouriteUsers = new ArrayList<>();
         this.favouriteAuctions = new ArrayList<>();
-
+        this.bids = new ArrayList<>();
+        this.createdAuctions = new ArrayList<>();
         MegaDB.addUser(this);
     }
 
@@ -155,6 +159,50 @@ public class User implements Validatable, Serializable {
 
     public void removeFavouriteAuction(Auction auction) {
         this.favouriteAuctions.remove(auction);
+    }
+
+    public void addBid(Bid bid) {
+        if (!this.bids.contains(bid)) {
+            this.bids.add(bid);
+        }
+    }
+
+    public void addCreatedAuction(Auction auction) {
+        if (!this.createdAuctions.contains(auction)) {
+            this.createdAuctions.add(auction);
+        }
+    }
+
+    public List<Bid> getWonBids() {
+        List<Bid> wonBids = new ArrayList<>();
+
+        for (Bid bid : this.bids) {
+            Auction auction = bid.getAuction();
+
+            if (auction.isCompleted() && auction.getLastBid().getUser().equals(this)) {
+                wonBids.add(bid);
+            }
+        }
+
+        return wonBids;
+    }
+
+    public List<Bid> getReceivedBids() {
+        List<Bid> received = new ArrayList<>();
+
+        for (Auction createdAuction : createdAuctions) {
+            List<Bid> auctionBids = createdAuction.getBids();
+            received.addAll(auctionBids);
+        }
+        return received;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public List<Auction> getCreatedAuctions() {
+        return createdAuctions;
     }
 
     public String toCsv() {
