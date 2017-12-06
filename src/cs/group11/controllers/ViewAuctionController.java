@@ -143,17 +143,15 @@ public class ViewAuctionController {
 
         //Gets the Width and depth and material
 
-        double artWidth = 0;
-        double artDepth = 0;
-        String widthAsString = Double.toString(artWidth);
-        String depthAsString = Double.toString(artDepth);
+        double artWidth;
+        double artDepth;
 
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
 
             artWidth = painting.getWidth();
+            String widthAsString = Double.toString(artWidth);
             this.width.setText("Width: " + widthAsString);
-
             this.depth.setVisible(false);
             this.material.setVisible(false);
 
@@ -162,30 +160,31 @@ public class ViewAuctionController {
             Sculpture sculpture = (Sculpture) artwork;
 
             artWidth = sculpture.getWidth();
+            String widthAsString = Double.toString(artWidth);
             this.width.setText("Width: " + widthAsString);
-
             artDepth = sculpture.getDepth();
+            String depthAsString = Double.toString(artDepth);
             this.depth.setText("Depth: " + depthAsString);
+
 
             this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
         }
 
         //Gets the Height
         double artHeight = 0;
-        String heightAsString = Double.toString(artHeight);
 
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
 
             artHeight = painting.getHeight();
-            this.height.setText("Height: " + heightAsString);
 
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
 
             artHeight = sculpture.getHeight();
-            this.height.setText("Height: " + heightAsString);
         }
+        String heightAsString = Double.toString(artHeight);
+        this.height.setText("Height: " + heightAsString);
 
         //Gets artworks creation year
         int creationYear = artwork.getCreationYear();
