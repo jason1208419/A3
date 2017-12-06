@@ -126,22 +126,6 @@ public class TestFileHandler {
         return bids;
     }
 
-    private void assertUserMatch(User user1, User user2) {
-        assertThat(user1.getId(), is(user2.getId()));
-        assertThat(user1.getLastLogin().toString(), is(user2.getLastLogin().toString()));
-        assertThat(user1.getUsername(), is(user2.getUsername()));
-        assertThat(user1.getFirstname(), is(user2.getFirstname()));
-        assertThat(user1.getLastname(), is(user2.getLastname()));
-        assertThat(user1.getTelNo(), is(user2.getTelNo()));
-        assertThat(user1.getAvatarPath(), is(user2.getAvatarPath()));
-
-        Address address1 = user1.getAddress();
-        Address address2 = user2.getAddress();
-
-        assertThat(address1.getLines(), is(address2.getLines()));
-        assertThat(address1.getPostcode(), is(address2.getPostcode()));
-    }
-
     @Test
     public void testReadLines() {
         File file = new File(getClass().getResource("readLines.csv").getFile());
@@ -330,7 +314,7 @@ public class TestFileHandler {
 
         for (User loadedUser : loadedUsers.values()) {
             User expectedUser = users.get(loadedUser.getId());
-            assertUserMatch(loadedUser, expectedUser);
+            TestUser.assertUserMatch(loadedUser, expectedUser);
 
             List<User> loadedFavUsers = loadedUser.getFavouriteUsers();
             List<User> expectedFavUsers = expectedUser.getFavouriteUsers();
@@ -342,7 +326,7 @@ public class TestFileHandler {
                 User loadedFavUser = loadedFavUsers.get(i);
                 User expectedFavUser = expectedFavUsers.get(i);
 
-                assertUserMatch(loadedFavUser, expectedFavUser);
+                TestUser.assertUserMatch(loadedFavUser, expectedFavUser);
             }
         }
     }
@@ -364,7 +348,7 @@ public class TestFileHandler {
 
         for (User loadedUser : loadedUsers.values()) {
             User expectedUser = users.get(loadedUser.getId());
-            assertUserMatch(loadedUser, expectedUser);
+            TestUser.assertUserMatch(loadedUser, expectedUser);
 
             List<Auction> loadedFavAuctions = loadedUser.getFavouriteAuctions();
             List<Auction> expectedFavAuctions = expectedUser.getFavouriteAuctions();
@@ -511,7 +495,7 @@ public class TestFileHandler {
 
     @Test
     public void testParseSculpture() {
-        String csvLine = "sculpture,1,dill,null,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,,";
+        String csvLine = "sculpture,1,dill,null,https://pbs.twimg.com/profile_images/603507749717037056/qgzh0UMy.jpg,Vin Diesel,2007,300,10,4,plants,[],";
 
         Sculpture sculpture = (Sculpture) FileHandler.parseSculpture(csvLine);
 

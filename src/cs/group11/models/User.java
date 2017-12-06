@@ -217,7 +217,26 @@ public class User implements Validatable, Serializable {
         builder.append(this.address.toCsv());
         builder.append(this.avatarPath).append(",");
 
-        return builder.toString();
+        if (this.favouriteUsers.size() == 0) {
+            builder.append("[]");
+        } else {
+            for (User user : this.favouriteUsers) {
+                builder.append(user.getId()).append(";");
+            }
+        }
+        builder.append(",");
+
+        if (this.favouriteAuctions.size() == 0) {
+            builder.append("[]");
+        } else {
+            for (Auction auction : this.favouriteAuctions) {
+                builder.append(auction.getId()).append(";");
+            }
+        }
+        builder.append(",");
+
+        String str = builder.toString();
+        return str;
     }
 
     @Override

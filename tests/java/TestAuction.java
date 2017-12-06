@@ -25,7 +25,7 @@ public class TestAuction {
         Bid bid1 = new Bid(0, new Date(1512337288025L), 11.20, user, auction);
 
         String expectedResult = "";
-        assertThat(auction.toCsv(), is("0,1512171171729,2,6,10.0,2,1;0;,"));
+        assertThat(auction.toCsv(), is("0,1512171171729,2,6,10.0,2,"));
     }
 
 }

@@ -83,8 +83,12 @@ public class Sculpture extends Artwork implements Validatable {
 		builder.append(this.getDepth()).append(",");
 		builder.append(this.getMaterial()).append(",");
 
-		for (String photo : photos) {
-			builder.append(photo).append(";");
+		if (photos.size() == 0) {
+			builder.append("[]");
+		} else {
+			for (String photo : photos) {
+				builder.append(photo).append(";");
+			}
 		}
 		builder.append(",");
 

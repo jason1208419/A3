@@ -115,11 +115,6 @@ public class Auction implements Validatable {
 		builder.append(Double.toString(this.reservePrice)).append(",");
 		builder.append(this.artwork.getId()).append(",");
 
-		for (Bid bid : this.bids) {
-			builder.append(bid.getId()).append(";");
-		}
-		builder.append(",");
-
 		return builder.toString();
 	}
 
