@@ -66,26 +66,7 @@ public class AuctionListController {
 
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
-
-            //TODO MAKE GUI NEATER
-
-            try {
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                Parent root = loader.load();
-
-                ViewAuctionController controller = loader.getController();
-                controller.setAuction(auction);
-                Scene viewAuc = new Scene(root,600,500);
-                Stage primaryStage = AucListTest.getPrimaryStage();
-                //Switches to individual auction screen
-                primaryStage.setScene(viewAuc);
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            switchScreen(auction);
         };
 
 
@@ -123,6 +104,29 @@ public class AuctionListController {
         filterAuc.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
 
         addTestAuctions();
+    }
+
+    /**
+     * Switches to the individual auction screen.
+     *
+     * @param auction The individual auction to be viewed.
+     */
+    private void switchScreen(Auction auction) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+            Parent root = loader.load();
+
+            ViewAuctionController controller = loader.getController();
+            controller.setAuction(auction);
+            Scene viewAuc = new Scene(root, 600, 500);
+            Stage primaryStage = AucListTest.getPrimaryStage();
+            primaryStage.setScene(viewAuc);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
