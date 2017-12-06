@@ -77,11 +77,11 @@ public class ViewAuctionController {
 
         Image image = new Image(auction.getArtwork().getImagePath());
         this.artworkImageView.setImage(image);
-        this.artType.setText(artworkType);
-        this.title.setText(artwork.getName());
-        this.author.setText(artwork.getArtist());
+        this.artType.setText("Type: " + (artworkType));
+        this.title.setText("Title: " + (artwork.getName()));
+        this.author.setText("Artist: " + (artwork.getArtist()));
 
-        this.sellerUsername.setText(auction.getCreator().getUsername());
+        this.sellerUsername.setText("Seller: " + (auction.getCreator().getUsername()));
         Image avatarImage = new Image(auction.getCreator().getAvatarPath());
         this.sellerAvatarImageView.setImage(avatarImage);
 
@@ -91,16 +91,16 @@ public class ViewAuctionController {
         double starterPrice;
         starterPrice = this.auction.getReservePrice();
 
-        this.startingPrice.setText(String.valueOf(starterPrice));
+        this.startingPrice.setText("Starting Price: " + (String.valueOf(starterPrice)));
 
 //Get most recent bid price
 
         double lastBid;
         lastBid = this.auction.getLastBid().getPrice();
 
-        this.currentPrice.setText(String.valueOf(lastBid));
+        this.currentPrice.setText("Current price: " + (String.valueOf(lastBid)));
 
-        this.currentPrice2.setText(String.valueOf(lastBid));
+        this.currentPrice2.setText("Current price: " + (String.valueOf(lastBid)));
 
 
 //Gets the Width and depth and material
@@ -114,18 +114,18 @@ public class ViewAuctionController {
             Painting painting = (Painting) artwork;
 
             artWidth = painting.getWidth();
-            this.width.setText(widthAsString);
+            this.width.setText("Width: " + widthAsString);
 
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
 
             artWidth = sculpture.getWidth();
-            this.width.setText(widthAsString);
+            this.width.setText("Width: " + widthAsString);
 
             artDepth = sculpture.getDepth();
-            this.depth.setText(depthAsString);
+            this.depth.setText("Depth: " + depthAsString);
 
-            this.material.setText(((Sculpture) artwork).getMaterial());
+            this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
         }
 
 //Gets the Height
@@ -135,34 +135,34 @@ public class ViewAuctionController {
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
 
-            artHeight = painting.getWidth();
-            this.height.setText(heightAsString);
+            artHeight = painting.getHeight();
+            this.height.setText("Height: " + heightAsString);
 
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
 
             artHeight = sculpture.getHeight();
-            this.height.setText(heightAsString);
+            this.height.setText("Height: " + heightAsString);
         }
 
 
 //Gets artworks creation year
         int creationYear = 0;
         String yearAsString = Integer.toString(creationYear);
-        this.artworkCreation.setText(yearAsString);
+        this.artworkCreation.setText("Art creation: " + yearAsString);
 
 //Gets auction creation date
         Date createdDate = auction.getCreationDate();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String strCreatedDate = dateFormat.format(createdDate);
 
-        this.auctionCreation.setText(strCreatedDate);
+        this.auctionCreation.setText("Auction creation: " + strCreatedDate);
 
 //Gets the Maximum amount of bids
         int theMaxBids = 0;
         String maxAsString = Integer.toString(theMaxBids);
 
-        this.maxBids.setText(maxAsString);
+        this.maxBids.setText("Max number of bids: " + maxAsString);
 
 
 //Get remaining number of allowed bids
@@ -180,8 +180,8 @@ public class ViewAuctionController {
         String currentBidsAsString = Double.toString(currentBids);
 
 
-        this.remainingBids.setText(remainingBidsAsString);
-        this.placedBids.setText(currentBidsAsString);
+        this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
+        this.placedBids.setText("Number of bids placed: " + currentBidsAsString);
 
     }
 
