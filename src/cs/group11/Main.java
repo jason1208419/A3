@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private static Stage primaryStage;
+    private static User currentUser;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,6 +25,15 @@ public class Main extends Application {
     private void setPrimaryStage(Stage primStage) {
         primaryStage = primStage;
     }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User curUser) {
+        currentUser = curUser;
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,6 +64,7 @@ public class Main extends Application {
         setPrimaryStage(primaryStage);
         primaryStage.setTitle("Artatawe");
         primaryStage.setScene(new Scene(root, 750, 650));
+        setCurrentUser(creator);
         primaryStage.show();
     }
 }

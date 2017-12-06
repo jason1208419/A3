@@ -85,18 +85,19 @@ public class SignInController {
 
                 if (userFound) {
                     System.out.println("Welcome user");
-                    loginSuccess(index);
+                    Main.setCurrentUser(users.get(index));
+                    loginSuccess();
                 } else {
                     System.out.println("User not found");
                 }
             }
 
 
-            private void loginSuccess(int index) {
+            private void loginSuccess() {
                 try {
 
                     EditProfileController controller = new EditProfileController();
-                    controller.setUser(users.get(index));
+                    controller.setUser(Main.getCurrentUser());
                     controller.setTestArt();
                     controller.setTestUsers();
 

@@ -18,10 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +42,12 @@ public class AuctionListController {
     @FXML
     private ListView<Auction> filterAuc;
 
+    @FXML
+    private Button homeBtn;
+
     private ObservableList<Auction> currentAuctions;
     private FilteredList<Auction> filteredAuctions;
+
 
 
     @FXML
@@ -93,10 +99,14 @@ public class AuctionListController {
 
                 return false;
 
-
             });
         };
 
+        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> {
+            homeSwitch();
+
+        };
+        homeBtn.setOnAction(onButtonClick);
         paintBtn.setOnAction(onCheckboxClick);
         sculptBtn.setOnAction(onCheckboxClick);
 
@@ -123,6 +133,28 @@ public class AuctionListController {
             Stage primaryStage = Main.getPrimaryStage();
             primaryStage.setScene(viewAuc);
 
+
+        } catch (IOException e) {
+            System.out.println("Failed to load fxml file");
+        }
+    }
+
+    private void homeSwitch() {
+
+        try {
+
+            EditProfileController controller = new EditProfileController();
+            controller.setUser(Main.getCurrentUser());
+            controller.setTestArt();
+            controller.setTestUsers();
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
+            loader.setController(controller);
+            Parent root = loader.load();
+            Stage primaryStage = Main.getPrimaryStage();
+            Scene mainScene = new Scene(root, 600, 500);
+            primaryStage.setScene(mainScene);
 
         } catch (IOException e) {
             System.out.println("Failed to load fxml file");
