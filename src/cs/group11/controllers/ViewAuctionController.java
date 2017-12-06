@@ -71,12 +71,61 @@ public class ViewAuctionController {
 
     private Auction auction;
 
+    /**
+     * Displays info about bids in the GUI.
+     */
+    private void setBidInfo() {
+        //Get most recent bid price
+        double lastBid;
+        lastBid = this.auction.getLastBid().getPrice();
 
-    public void setAuction(Auction auction) {
+        this.currentPrice.setText("Current price: " + (String.valueOf(lastBid)));
+        this.currentPrice2.setText("Current price: " + (String.valueOf(lastBid)));
 
+        //Gets the Maximum amount of bids
+        int theMaxBids = auction.getMaxBids();
+        String maxAsString = Integer.toString(theMaxBids);
 
-        this.auction = auction;
+        this.maxBids.setText("Max number of bids: " + maxAsString);
 
+        //Get remaining number of allowed bids
+        //Get current number of bids
+        int currentBids;
+        int remainingBids;
+
+        currentBids = auction.getBids().size();
+        remainingBids = theMaxBids - currentBids;
+
+        String remainingBidsAsString = Integer.toString(remainingBids);
+        String currentBidsAsString = Integer.toString(currentBids);
+
+        this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
+        this.placedBids.setText("Number of bids placed: " + currentBidsAsString);
+    }
+
+    /**
+     * Sets reserve price of auction.
+     */
+    private void setAucDetails() {
+        //Get Starting Price (aka reserve price)
+
+        double starterPrice;
+        starterPrice = this.auction.getReservePrice();
+
+        this.startingPrice.setText("Starting Price: " + (String.valueOf(starterPrice)));
+
+        //Gets auction creation date
+        Date createdDate = auction.getCreationDate();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        String strCreatedDate = dateFormat.format(createdDate);
+
+        this.auctionCreation.setText("Auction creation: " + strCreatedDate);
+    }
+
+    /**
+     * Displays info about artworks in the GUI.
+     */
+    private void setArtworkDetails() {
         Artwork artwork = auction.getArtwork();
         String artworkType = "Artwork";
 
@@ -92,29 +141,7 @@ public class ViewAuctionController {
         this.title.setText("Title: " + (artwork.getName()));
         this.author.setText("Artist: " + (artwork.getArtist()));
 
-        this.sellerUsername.setText("Seller: " + (auction.getCreator().getUsername()));
-        Image avatarImage = new Image(auction.getCreator().getAvatarPath());
-        this.sellerAvatarImageView.setImage(avatarImage);
-
-
-//Get Starting Price (aka reserve price)
-
-        double starterPrice;
-        starterPrice = this.auction.getReservePrice();
-
-        this.startingPrice.setText("Starting Price: " + (String.valueOf(starterPrice)));
-
-//Get most recent bid price
-
-        double lastBid;
-        lastBid = this.auction.getLastBid().getPrice();
-
-        this.currentPrice.setText("Current price: " + (String.valueOf(lastBid)));
-
-        this.currentPrice2.setText("Current price: " + (String.valueOf(lastBid)));
-
-
-//Gets the Width and depth and material
+        //Gets the Width and depth and material
 
         double artWidth = 0;
         double artDepth = 0;
@@ -143,7 +170,7 @@ public class ViewAuctionController {
             this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
         }
 
-//Gets the Height
+        //Gets the Height
         double artHeight = 0;
         String heightAsString = Double.toString(artHeight);
 
@@ -160,44 +187,35 @@ public class ViewAuctionController {
             this.height.setText("Height: " + heightAsString);
         }
 
-//Gets artworks creation year
+        //Gets artworks creation year
         int creationYear = artwork.getCreationYear();
         String yearAsString = Integer.toString(creationYear);
         this.artworkCreation.setText("Art creation: " + yearAsString);
 
-//Gets auction creation date
-        Date createdDate = auction.getCreationDate();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String strCreatedDate = dateFormat.format(createdDate);
-
-        this.auctionCreation.setText("Auction creation: " + strCreatedDate);
+    }
 
 
-//Gets the Maximum amount of bids
-        int theMaxBids = auction.getMaxBids();
-        String maxAsString = Integer.toString(theMaxBids);
+    /**
+     * Displays info about the artwork in the GUI.
+     */
+    private void setUserDetails() {
+        this.sellerUsername.setText("Seller: " + (auction.getCreator().getUsername()));
+        Image avatarImage = new Image(auction.getCreator().getAvatarPath());
+        this.sellerAvatarImageView.setImage(avatarImage);
+    }
 
-        this.maxBids.setText("Max number of bids: " + maxAsString);
+    /**
+     * Displays all info about an auction in the GUI.
+     *
+     * @param auction
+     */
+    public void setAuction(Auction auction) {
 
-
-//Get remaining number of allowed bids
-        //Get current number of bids
-
-        int currentBids;
-        int remainingBids;
-
-
-        currentBids = auction.getBids().size();
-
-        remainingBids = theMaxBids - currentBids;
-
-        String remainingBidsAsString = Integer.toString(remainingBids);
-        String currentBidsAsString = Integer.toString(currentBids);
-
-
-        this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
-        this.placedBids.setText("Number of bids placed: " + currentBidsAsString);
-
+        this.auction = auction;
+        setArtworkDetails();
+        setUserDetails();
+        setBidInfo();
+        setAucDetails();
 
         EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> {
             previousScreen();
