@@ -13,10 +13,10 @@ public final class MegaDB {
 
 	private static final File DATA_DIR = new File("data");
 
-	private static final File USER_FILE = new File(DATA_DIR, "users.csv");
-	private static final File AUCTION_FILE = new File(DATA_DIR, "auctions.csv");
-	private static final File ARTWORK_FILE = new File(DATA_DIR, "artworks.csv");
-	private static final File BID_FILE = new File(DATA_DIR, "bids.csv");
+	public static final File USER_FILE = new File(DATA_DIR, "users.csv");
+	public static final File AUCTION_FILE = new File(DATA_DIR, "auctions.csv");
+	public static final File ARTWORK_FILE = new File(DATA_DIR, "artworks.csv");
+	public static final File BID_FILE = new File(DATA_DIR, "bids.csv");
 
 	private static HashMap<Integer, Auction> auctions = new HashMap<>();
 	private static HashMap<Integer, Artwork> artworks = new HashMap<>();
@@ -26,7 +26,6 @@ public final class MegaDB {
 	private MegaDB() {
 	}// Prevent instantiation of class.
 
-	// TODO: Test
 	public static void load() throws IOException {
 		if (DATA_DIR.listFiles() == null || DATA_DIR.listFiles().length != 4) {
 			// Missing file(s), invoke save to create
@@ -40,7 +39,6 @@ public final class MegaDB {
 		FileHandler.loadFavouriteUserAuctions(USER_FILE, users, auctions);
 	}
 
-	// TODO: Test
 	public static void save() throws IOException {
 		FileHandler.writeBids(bids, BID_FILE);
 		FileHandler.writeUsers(users, USER_FILE);
@@ -52,7 +50,6 @@ public final class MegaDB {
 		return Collections.unmodifiableCollection(auctions.values());
 	}
 
-	// TODO: Test
 	public static Collection<User> getUsers() {
 		return Collections.unmodifiableCollection(users.values());
 	}
@@ -66,7 +63,6 @@ public final class MegaDB {
 		auctions.put(toAdd.getId(), toAdd);
 	}
 
-	// TODO: Test
 	public static void addUser(User toAdd) {
 		toAdd.validate();
 		users.put(toAdd.getId(), toAdd);
@@ -82,7 +78,6 @@ public final class MegaDB {
 		bids.put(toAdd.getId(), toAdd);
 	}
 
-	// TODO: Test username, firstname, lastname, with full and partial information
 	public static Collection<User> searchByUser(String input) {
 		Set<User> results = new HashSet<>();
 		for (User user : users.values()) {
@@ -94,7 +89,6 @@ public final class MegaDB {
 		return results;
 	}
 
-	// TODO: Test auction username, artwork name, with full and partial information
 	public static Collection<Auction> searchByAuction(String input) {
 		Set<Auction> results = new HashSet<>();
 		for (Auction auc : auctions.values()) {
