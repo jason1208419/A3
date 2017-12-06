@@ -29,6 +29,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Handles fxml file that displays list of ongoing auctions.
+ *
+ * @Author Thomas Collett
+ */
 public class AuctionListController {
 
     @FXML
@@ -42,13 +47,16 @@ public class AuctionListController {
     private FilteredList<Auction> filteredAuctions;
 
     @FXML
+    /**
+     * Binds components and fills list with details about ongoing auctions.
+     */
     protected void initialize() {
         currentAuctions = FXCollections.observableArrayList();
         filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
         filterAuc.setItems(filteredAuctions);
         filterAuc.setCellFactory(param -> new AuctionCell());
 
-
+        //Handles event when user clicks on an auction
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
 
 
@@ -62,6 +70,7 @@ public class AuctionListController {
             //TODO MAKE GUI NEATER
 
             try {
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
                 Parent root = loader.load();
 
@@ -69,6 +78,7 @@ public class AuctionListController {
                 controller.setAuction(auction);
                 Scene viewAuc = new Scene(root,600,500);
                 Stage primaryStage = AucListTest.getPrimaryStage();
+                //Switches to individual auction screen
                 primaryStage.setScene(viewAuc);
 
 
@@ -79,7 +89,7 @@ public class AuctionListController {
         };
 
 
-
+        //Handles event when a filter is clicked
         EventHandler<ActionEvent> onCheckboxClick = (ActionEvent event) -> {
             boolean paintSelected = paintBtn.isSelected();
             boolean sculptureSelected = sculptBtn.isSelected();
@@ -115,6 +125,9 @@ public class AuctionListController {
         addTestAuctions();
     }
 
+    /**
+     * Adds test data into the auction list.
+     */
     private void addTestAuctions() {
         String[] adr = new String[2];
         adr[0] = "Testdata";
@@ -148,7 +161,9 @@ public class AuctionListController {
         this.currentAuctions.add(testAuc2);
     }
 
-
+    /**
+     * A custom ListCell to store auction data.
+     */
     private class AuctionCell extends ListCell<Auction> {
         private Node node;
         private AuctionCellController controller;
@@ -164,6 +179,9 @@ public class AuctionListController {
         }
 
         @Override
+        /**
+         * Fills the cell with data about an auction.
+         */
         protected void updateItem(Auction auction, boolean empty) {
             super.updateItem(auction, empty);
 
