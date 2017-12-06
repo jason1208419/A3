@@ -1,6 +1,6 @@
 package cs.group11.controllers;
 
-import cs.group11.AucListTest;
+import cs.group11.Main;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
@@ -19,11 +19,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -46,6 +43,7 @@ public class AuctionListController {
     private ObservableList<Auction> currentAuctions;
     private FilteredList<Auction> filteredAuctions;
 
+
     @FXML
     /**
      * Binds components and fills list with details about ongoing auctions.
@@ -66,6 +64,8 @@ public class AuctionListController {
 
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
+
+            
             switchScreen(auction);
         };
 
@@ -120,7 +120,7 @@ public class AuctionListController {
             ViewAuctionController controller = loader.getController();
             controller.setAuction(auction);
             Scene viewAuc = new Scene(root, 600, 500);
-            Stage primaryStage = AucListTest.getPrimaryStage();
+            Stage primaryStage = Main.getPrimaryStage();
             primaryStage.setScene(viewAuc);
 
 

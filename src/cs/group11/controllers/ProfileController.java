@@ -3,6 +3,7 @@ package cs.group11.controllers;
 import java.io.IOException;
 import java.util.Date;
 
+import cs.group11.Main;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.value.ChangeListener;
@@ -11,11 +12,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ProfileController {
@@ -543,9 +547,13 @@ public class ProfileController {
     }
 
     public void viewAuctionClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/auctionList.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
+        Parent root = loader.load();
+
+        AuctionListController controller = loader.getController();
+        Scene viewAuc = new Scene(root, 600, 500);
+        Stage primaryStage = Main.getPrimaryStage();
+        primaryStage.setScene(viewAuc);
     }
 
     public void createAuctionClick() throws IOException {

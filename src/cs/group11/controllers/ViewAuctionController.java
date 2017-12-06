@@ -1,9 +1,8 @@
 package cs.group11.controllers;
 
-import cs.group11.AucListTest;
+import cs.group11.Main;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
-import cs.group11.models.Bid;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.event.ActionEvent;
@@ -236,7 +235,7 @@ public class ViewAuctionController {
 
             AuctionListController controller = loader.getController();
             Scene viewAuc = new Scene(root, 600, 500);
-            Stage primaryStage = AucListTest.getPrimaryStage();
+            Stage primaryStage = Main.getPrimaryStage();
             primaryStage.setScene(viewAuc);
 
 

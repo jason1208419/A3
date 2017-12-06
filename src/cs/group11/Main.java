@@ -11,15 +11,25 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    private void setPrimaryStage(Stage primStage) {
+        primaryStage = primStage;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Address address = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
         User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
+
 
 //        ProfileController controller = new ProfileController();
 //        controller.setUser(creator);
@@ -35,10 +45,13 @@ public class Main extends Application {
         controller.setUser(creator);
         controller.setTestArt();
         controller.setTestUsers();
+
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/editProfile.fxml"));
         loader.setController(controller);
         Parent root = loader.load();
 
+        setPrimaryStage(primaryStage);
         primaryStage.setTitle("Edit Profile");
         primaryStage.setScene(new Scene(root, 750, 650));
         primaryStage.show();
