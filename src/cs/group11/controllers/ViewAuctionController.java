@@ -156,15 +156,11 @@ public class ViewAuctionController {
         }
         this.artType.setText("Type: " + (artworkType));
 
-
-        double artWidth;
-        double artDepth;
-
         //Gets the Width and depth and material
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
 
-            artWidth = painting.getWidth();
+            double artWidth = painting.getWidth();
             String widthAsString = Double.toString(artWidth);
             this.width.setText("Width: " + widthAsString);
             this.depth.setVisible(false);
@@ -174,10 +170,11 @@ public class ViewAuctionController {
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
 
-            artWidth = sculpture.getWidth();
+            double artWidth = sculpture.getWidth();
             String widthAsString = Double.toString(artWidth);
             this.width.setText("Width: " + widthAsString);
-            artDepth = sculpture.getDepth();
+
+            double artDepth = sculpture.getDepth();
             String depthAsString = Double.toString(artDepth);
             this.depth.setText("Depth: " + depthAsString);
 
