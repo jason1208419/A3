@@ -229,7 +229,6 @@ public class ViewAuctionController {
 
     private void previousScreen() {
         try {
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
             Parent root = loader.load();
 
@@ -240,7 +239,7 @@ public class ViewAuctionController {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to load fxml file");
         }
     }
 

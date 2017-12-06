@@ -351,10 +351,15 @@ public class EditProfileController {
     }
 
     public void uploadClick() {
-        user.setAvatarPath(userSelectImage());
-        Image avatarImage = new Image(user.getAvatarPath());
-        this.avatar.setImage(avatarImage);
-        this.avatar1.setImage(avatarImage);
+        try {
+            user.setAvatarPath(userSelectImage());
+            Image avatarImage = new Image(user.getAvatarPath());
+            this.avatar.setImage(avatarImage);
+            this.avatar1.setImage(avatarImage);
+        } catch (NullPointerException e) {
+            System.out.println("Path not specified");
+        }
+
     }
 
     public void drawAvatarClick() {

@@ -65,7 +65,7 @@ public class AuctionListController {
             Auction auction = newValue;
             System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
 
-            
+
             switchScreen(auction);
         };
 
@@ -125,7 +125,7 @@ public class AuctionListController {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to load fxml file");
         }
     }
 
