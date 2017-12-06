@@ -2,6 +2,7 @@ package cs.group11.models.artworks;
 
 import java.util.List;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -27,6 +28,8 @@ public class Sculpture extends Artwork implements Validatable {
 		this.photos = photos;
 
 		this.validate();
+
+		MegaDB.addArtwork(this);
 	}
 
 	public Sculpture(String title, String description, String imagePath, String artist, int creationYear, double width,
@@ -40,6 +43,8 @@ public class Sculpture extends Artwork implements Validatable {
 		this.photos = photos;
 
 		this.validate();
+
+		MegaDB.addArtwork(this);
 	}
 
 	public double getWidth() {
@@ -99,10 +104,10 @@ public class Sculpture extends Artwork implements Validatable {
 		if (Validator.isNegative(depth)) {
 			throw new InvalidDataException("No depth set!");
 		}
-        /*if (Validator.isStringEmpty(material)) {
-            throw new InvalidDataException("No material set!");
-		}}*/
-    }
+		if (Validator.isStringEmpty(material)) {
+			throw new InvalidDataException("No material set!");
+		}
+	}
 
 }
 

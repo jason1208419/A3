@@ -1,5 +1,6 @@
 package cs.group11.models.artworks;
 
+import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
 import cs.group11.helpers.Validator;
@@ -19,6 +20,8 @@ public class Painting extends Artwork implements Validatable {
         this.height = height;
 
         this.validate();
+
+        MegaDB.addArtwork(this);
     }
 
     public Painting(String title, String description, String imagePath, String artist, int creationYear, double width, double height) {
@@ -28,6 +31,8 @@ public class Painting extends Artwork implements Validatable {
         this.height = height;
 
         this.validate();
+
+        MegaDB.addArtwork(this);
     }
 
     public double getWidth() {
@@ -58,6 +63,7 @@ public class Painting extends Artwork implements Validatable {
     @Override
     public void validate() throws InvalidDataException {
         super.validate();
+
         if (Validator.isNegative(width)) {
             throw new InvalidDataException("No Width set!");
         }

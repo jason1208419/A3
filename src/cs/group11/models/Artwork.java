@@ -27,10 +27,6 @@ public abstract class Artwork implements Validatable {
 		this.imagePath = imagePath;
 		this.artist = artist;
 		this.creationYear = creationYear;
-
-		this.validate();
-
-		MegaDB.addArtwork(this);
 	}
 
 	public Artwork(int id, String name, String description, String imagePath, String artist, int creationYear) {
@@ -40,10 +36,6 @@ public abstract class Artwork implements Validatable {
 		this.imagePath = imagePath;
 		this.artist = artist;
 		this.creationYear = creationYear;
-
-		this.validate();
-
-		MegaDB.addArtwork(this);
 	}
 
 	public int getId() {
