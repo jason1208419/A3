@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Address;
 import cs.group11.models.Artwork;
@@ -205,6 +206,11 @@ public class EditProfileController {
                         event -> {
                             favouriteArtworkList.remove(art);
                             user.removeFavouriteAuction(art);
+                            try {
+                                MegaDB.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             printFavouriteAuction();
                         }
                 );
@@ -261,6 +267,11 @@ public class EditProfileController {
                         event -> {
                             favouriteUsersList.remove(user1);
                             user.removeFavouriteUser(user1);
+                            try {
+                                MegaDB.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             printFavouriteUsers();
                         }
                 );
@@ -369,12 +380,15 @@ public class EditProfileController {
         String currentAvatarPath = user.getAvatarPath();
         try {
             user.setAvatarPath(userSelectImage());
+            MegaDB.save();
             Image avatarImage = new Image(user.getAvatarPath());
             this.avatar.setImage(avatarImage);
             this.avatar1.setImage(avatarImage);
         } catch (NullPointerException e) {
             System.out.println("Path not specified");
             user.setAvatarPath(currentAvatarPath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -405,6 +419,7 @@ public class EditProfileController {
             this.user.getAddress().setPostcode(postcodeIn.getText());
         }
         printUser();
+        MegaDB.save();
 
         ProfileController profileCon = new ProfileController();
         profileCon.setLoginedUser(this.user);
@@ -434,6 +449,11 @@ public class EditProfileController {
             @Override
             public void onSubmit(String avatarPath) {
                 user.setAvatarPath(avatarPath);
+                try {
+                    MegaDB.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 stage.close();
                 Image img = new Image(user.getAvatarPath());
                 avatar.setImage(img);
