@@ -145,9 +145,8 @@ public class ViewAuctionController {
             this.height.setText("Height: " + heightAsString);
         }
 
-
 //Gets artworks creation year
-        int creationYear = 0;
+        int creationYear = artwork.getCreationYear();
         String yearAsString = Integer.toString(creationYear);
         this.artworkCreation.setText("Art creation: " + yearAsString);
 
@@ -158,8 +157,9 @@ public class ViewAuctionController {
 
         this.auctionCreation.setText("Auction creation: " + strCreatedDate);
 
+
 //Gets the Maximum amount of bids
-        int theMaxBids = 0;
+        int theMaxBids = auction.getMaxBids();
         String maxAsString = Integer.toString(theMaxBids);
 
         this.maxBids.setText("Max number of bids: " + maxAsString);
@@ -168,16 +168,16 @@ public class ViewAuctionController {
 //Get remaining number of allowed bids
         //Get current number of bids
 
-        double currentBids;
-        double remainingBids;
+        int currentBids;
+        int remainingBids;
 
 
         currentBids = auction.getBids().size();
 
         remainingBids = theMaxBids - currentBids;
 
-        String remainingBidsAsString = Double.toString(remainingBids);
-        String currentBidsAsString = Double.toString(currentBids);
+        String remainingBidsAsString = Integer.toString(remainingBids);
+        String currentBidsAsString = Integer.toString(currentBids);
 
 
         this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
