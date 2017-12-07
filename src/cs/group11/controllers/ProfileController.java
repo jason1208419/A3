@@ -561,7 +561,7 @@ public class ProfileController {
 
     public void viewAuctionClick() throws IOException {
         AuctionListController controller = new AuctionListController();
-        controller.setUser(this.loginedUser);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
         loader.setController(controller);
@@ -574,7 +574,7 @@ public class ProfileController {
 
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-        controller.setUser(this.loginedUser);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
         loader.setController(controller);
@@ -593,7 +593,7 @@ public class ProfileController {
 
     public void editProfileClick() throws IOException {
         EditProfileController editProfileCon = new EditProfileController();
-        editProfileCon.setUser(this.loginedUser);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
         loader.setController(editProfileCon);

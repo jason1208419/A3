@@ -85,6 +85,7 @@ public class EditProfileController {
 
     @FXML
     protected void initialize() {
+        this.user = Main.getCurrentUser();
         Image avatarImage = new Image(user.getAvatarPath());
         this.logo.setImage(avatarImage);
         this.avatar.setImage(avatarImage);
@@ -143,9 +144,6 @@ public class EditProfileController {
         removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     private void setupFavouriteArtTable() {
         favouriteArtworkList = FXCollections.observableArrayList(this.user.getFavouriteAuctions());
@@ -337,6 +335,7 @@ public class EditProfileController {
         Auction auction = new Auction(creator, 7, 10.00, painting);
         Bid testBid = new Bid(15.25, creator, auction);
         this.user.addFavouriteAuction(auction);
+
     }
 
     public void setTestUsers() {
@@ -395,7 +394,7 @@ public class EditProfileController {
 
     public void viewAuctionClick() throws IOException {
         AuctionListController controller = new AuctionListController();
-        controller.setUser(this.user);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
         loader.setController(controller);
@@ -408,7 +407,7 @@ public class EditProfileController {
 
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-        controller.setUser(this.user);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
         loader.setController(controller);

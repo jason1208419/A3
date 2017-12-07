@@ -61,6 +61,7 @@ public class AuctionListController {
      * Binds components and fills list with details about ongoing auctions.
      */
     protected void initialize() {
+        this.user = Main.getCurrentUser();
         Image avatarImage = new Image(user.getAvatarPath());
         this.logo.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
@@ -76,7 +77,6 @@ public class AuctionListController {
             System.out.println("Clicked on the auction for " + newValue.getArtwork().getName());
 
             ViewAuctionController controller = new ViewAuctionController();
-            controller.setUser(this.user);
             controller.setAuction(newValue);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
@@ -121,9 +121,6 @@ public class AuctionListController {
         addTestAuctions();
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     /**
      * Switches to the individual auction screen.
@@ -186,7 +183,7 @@ public class AuctionListController {
 
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-        controller.setUser(this.user);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
         loader.setController(controller);

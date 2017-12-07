@@ -51,20 +51,22 @@ public class Main extends Application {
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 600, 550));
 //        primaryStage.show();
+
+        setCurrentUser(creator);
         EditProfileController controller = new EditProfileController();
-        controller.setUser(creator);
-        controller.setTestArt();
-        controller.setTestUsers();
-
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/editProfile.fxml"));
         loader.setController(controller);
         Parent root = loader.load();
 
+        controller.setTestArt();
+        controller.setTestUsers();
+
+
+
         setPrimaryStage(primaryStage);
         primaryStage.setTitle("Artatawe");
         primaryStage.setScene(new Scene(root, 750, 650));
-        setCurrentUser(creator);
+
         primaryStage.show();
     }
 }

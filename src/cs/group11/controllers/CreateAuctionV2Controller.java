@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import cs.group11.Main;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -99,6 +100,7 @@ public class CreateAuctionV2Controller {
 
 	@FXML
 	protected void initialize() {
+		this.currentUser = Main.getCurrentUser();
 		Image avatarImage = new Image(currentUser.getAvatarPath());
 		this.logo.setImage(avatarImage);
 		this.avatar1.setImage(avatarImage);
@@ -156,9 +158,6 @@ public class CreateAuctionV2Controller {
 		creationDate.setValue(LocalDate.now());
 	}
 
-	public void setUser(User user) {
-		this.currentUser = user;
-	}
 
 	private void handleAddExtraImage() {
 		Pair<String, Image> userSelection = userSelectImage();
@@ -248,7 +247,7 @@ public class CreateAuctionV2Controller {
 
 	public void viewAuctionClick() throws IOException {
 		AuctionListController controller = new AuctionListController();
-		controller.setUser(this.currentUser);
+
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
 		loader.setController(controller);

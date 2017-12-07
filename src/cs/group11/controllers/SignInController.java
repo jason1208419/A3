@@ -92,7 +92,6 @@ public class SignInController {
                 try {
 
                     AuctionListController controller = new AuctionListController();
-                    controller.setUser(Main.getCurrentUser());
 
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));

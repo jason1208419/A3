@@ -85,6 +85,7 @@ public class ViewAuctionController {
 
     @FXML
     protected void initialize() {
+        this.user = Main.getCurrentUser();
         Image img = new Image(user.getAvatarPath());
         this.logo.setImage(img);
         this.avatar1.setImage(img);
@@ -196,7 +197,7 @@ public class ViewAuctionController {
     private void previousScreen() {
         try {
             AuctionListController controller = new AuctionListController();
-            controller.setUser(this.user);
+
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
             loader.setController(controller);
@@ -212,7 +213,7 @@ public class ViewAuctionController {
 
     public void viewAuctionClick() throws IOException {
         AuctionListController controller = new AuctionListController();
-        controller.setUser(this.user);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
         loader.setController(controller);
@@ -226,7 +227,7 @@ public class ViewAuctionController {
     @FXML
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-        controller.setUser(this.user);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
         loader.setController(controller);
