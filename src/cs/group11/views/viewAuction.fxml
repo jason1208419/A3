@@ -16,13 +16,11 @@
                        HBox.hgrow="ALWAYS"/>
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions"
-                    HBox.hgrow="ALWAYS"/>
-            <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction"
-                    HBox.hgrow="ALWAYS"/>
+            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions" HBox.hgrow="ALWAYS"/>
+            <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction" HBox.hgrow="ALWAYS"/>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-            <Button mnemonicParsing="false" onAction="#avatarClick">
+            <Button mnemonicParsing="false" onAction="#avatarClick" style="-fx-background-color: #0000;">
                 <graphic>
                     <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
                                preserveRatio="true"/>
@@ -37,44 +35,44 @@
     <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                 <HBox prefHeight="210.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0"
-                                           pickOnBounds="true" preserveRatio="true"/>
-                                <CheckBox mnemonicParsing="false" text="Favourite Artwork"/>
+                        <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <CheckBox mnemonicParsing="false" text="Favourite Artwork"/>
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="189.0" prefWidth="215.0" HBox.hgrow="ALWAYS">
-                                <Label fx:id="artType" text="Art Type"/>
-                                <Label fx:id="title" text="Title"/>
-                                <Label fx:id="author" text="Author"/>
-                                <Label fx:id="currentPrice" text="Current Price"/>
-                                <Label fx:id="startingPrice" text="Starting Price"/>
-                                <Label fx:id="width" text="Width"/>
-                                <Label fx:id="height" text="Height"/>
-                                <Label fx:id="material" text="?Material?"/>
-                                <Label fx:id="depth" text="?depth?"/>
-                                <Label fx:id="artworkCreation" text="Artwork Creation date"/>
-                                <Label fx:id="auctionCreation" text="Auction Creation date"/>
+                        <Label fx:id="artType" text="Art Type"/>
+                        <Label fx:id="title" text="Title"/>
+                        <Label fx:id="author" text="Author"/>
+                        <Label fx:id="currentPrice" text="Current Price"/>
+                        <Label fx:id="startingPrice" text="Starting Price"/>
+                        <Label fx:id="width" text="Width"/>
+                        <Label fx:id="height" text="Height"/>
+                        <Label fx:id="material" text="?Material?"/>
+                        <Label fx:id="depth" text="?depth?"/>
+                        <Label fx:id="artworkCreation" text="Artwork Creation date"/>
+                        <Label fx:id="auctionCreation" text="Auction Creation date"/>
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="210.0" prefWidth="123.0" HBox.hgrow="ALWAYS">
-                                <ImageView fx:id="sellerAvatarImageView" fitHeight="80.0" fitWidth="85.0"
-                                           pickOnBounds="true" preserveRatio="true"/>
-                                <Label fx:id="sellerUsername" text="Seller username"/>
-                                <CheckBox mnemonicParsing="false" text="Favourite User"/>
+                        <ImageView fx:id="sellerAvatarImageView" fitHeight="80.0" fitWidth="85.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <Label fx:id="sellerUsername" text="Seller username"/>
+                        <CheckBox mnemonicParsing="false" text="Favourite User"/>
                         </VBox>
                 </HBox>
         </VBox>
     <HBox prefHeight="100.0" prefWidth="200.0">
-                <VBox prefHeight="100.0" prefWidth="103.0"/>
+        <VBox prefHeight="100.0" prefWidth="103.0"/>
                 <VBox prefHeight="100.0" prefWidth="160.0">
-                        <Label fx:id="currentPrice2" text="Current Price"/>
-                        <Label fx:id="maxBids" text="Total bids allowed"/>
-                        <Label fx:id="placedBids" text="No. bids placed"/>
-                        <Label fx:id="remainingBids" text="No. bids remaining"/>
-                        <Button fx:id="backBtn" mnemonicParsing="false" text="Back"/>
+                    <Label fx:id="currentPrice2" text="Current Price"/>
+                    <Label fx:id="maxBids" text="Total bids allowed"/>
+                    <Label fx:id="placedBids" text="No. bids placed"/>
+                    <Label fx:id="remainingBids" text="No. bids remaining"/>
+                    <Button fx:id="backBtn" mnemonicParsing="false" text="Back"/>
                 </VBox>
-                <VBox prefHeight="100.0" prefWidth="54.0"/>
+        <VBox prefHeight="100.0" prefWidth="54.0"/>
                 <VBox prefHeight="100.0" prefWidth="130.0">
-                        <TextField promptText="Enter your new bid"/>
-                        <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Submit"/>
+                    <TextField promptText="Enter your new bid"/>
+                    <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Submit"/>
                 </VBox>
         </HBox>
 </VBox>

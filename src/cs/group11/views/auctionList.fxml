@@ -12,24 +12,24 @@
       xmlns="http://javafx.com/javafx/8.0.121">
         <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
                 <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                        <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true"
-                                   preserveRatio="true" HBox.hgrow="ALWAYS"/>
+                    <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true"
+                               HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                        <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction"
-                                HBox.hgrow="ALWAYS"/>
+                    <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction"
+                            HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                        <Button mnemonicParsing="false" onAction="#avatarClick">
+                    <Button mnemonicParsing="false" onAction="#avatarClick" style="-fx-background-color: #0000;">
                                 <graphic>
-                                        <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
-                                                   preserveRatio="true"/>
+                                    <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                                               preserveRatio="true"/>
                                 </graphic>
                         </Button>
-                        <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
-                              HBox.hgrow="NEVER">
-                                <Label fx:id="username1" text="username"/>
-                                <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
+                    <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
+                          HBox.hgrow="NEVER">
+                        <Label fx:id="username1" text="username"/>
+                        <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
                         </VBox>
                 </HBox>
         </HBox>

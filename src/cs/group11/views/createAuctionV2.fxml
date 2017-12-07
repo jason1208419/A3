@@ -19,11 +19,10 @@
                        HBox.hgrow="ALWAYS"/>
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions"
-                    HBox.hgrow="ALWAYS"/>
+            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions" HBox.hgrow="ALWAYS"/>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-            <Button mnemonicParsing="false" onAction="#avatarClick">
+            <Button mnemonicParsing="false" onAction="#avatarClick" style="-fx-background-color: #0000;">
                 <graphic>
                     <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
                                preserveRatio="true"/>
@@ -45,9 +44,9 @@
                                 <Insets top="10.0"/>
                             </padding>
                         </RadioButton>
-                        <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting"/>
+                    <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting"/>
                 </VBox>
-                <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true"/>
             <opaqueInsets>
                 <Insets/>
             </opaqueInsets>
@@ -56,15 +55,15 @@
             </padding>
         </HBox>
         <HBox prefHeight="255.0" prefWidth="656.0">
-                <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                      prefHeight="303.0" prefWidth="372.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  prefHeight="303.0" prefWidth="372.0" HBox.hgrow="ALWAYS">
                   <HBox prefHeight="40.0" prefWidth="276.0">
                         <Label prefHeight="30.0" prefWidth="103.0" text="Title:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                         <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
+                      <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                         <Label prefHeight="30.0" prefWidth="103.0" text="Reserve Price: ">
@@ -72,7 +71,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                         <TextField fx:id="startPrice" prefHeight="29.0" prefWidth="149.0"/>
+                      <TextField fx:id="startPrice" prefHeight="29.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                         <Label prefHeight="30.0" prefWidth="103.0" text="Max Bids:">
@@ -80,7 +79,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                         <TextField fx:id="maxBids" prefHeight="0.0" prefWidth="149.0"/>
+                      <TextField fx:id="maxBids" prefHeight="0.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="112.0" prefWidth="276.0">
                         <Label prefHeight="17.0" prefWidth="103.0" text="Artist:">
@@ -88,7 +87,7 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
-                         <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
+                      <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="213.0" prefWidth="276.0">
                         <Label prefHeight="17.0" prefWidth="103.0" text="Width:">
@@ -129,8 +128,8 @@
                   <Insets left="10.0" />
                </padding>
             </VBox>
-                <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                      prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
+            <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
                   <HBox prefHeight="70.0" prefWidth="295.0">
                         <Label prefHeight="17.0" prefWidth="103.0" text="Depth:">
                            <opaqueInsets>
@@ -157,7 +156,7 @@
                               <Button fx:id="addExtraImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" VBox.vgrow="ALWAYS" />
                               <Button fx:id="removeImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" VBox.vgrow="ALWAYS" />
                         </VBox>
-                         <ListView fx:id="extraImages" prefHeight="100.0" prefWidth="160.0"/>
+                      <ListView fx:id="extraImages" prefHeight="100.0" prefWidth="160.0"/>
                   </HBox>
                <padding>
                   <Insets left="10.0" />
@@ -165,7 +164,7 @@
             </VBox>
       </HBox>
         <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="656.0" VBox.vgrow="ALWAYS">
-             <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="134.0"
-                     text="Create Auction"/>
+            <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="134.0"
+                    text="Create Auction"/>
       </HBox>
 </VBox>
