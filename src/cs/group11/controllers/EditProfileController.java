@@ -12,6 +12,7 @@ import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -82,6 +83,7 @@ public class EditProfileController {
     private TextField postcodeIn;
 
     private User user;
+    private final int UK_PHONE_MAX_LENGTH = 11;
     @FXML
     private Label error;
 
@@ -152,6 +154,17 @@ public class EditProfileController {
             }
             rootBox.getChildren().setAll(box);
         };
+
+        phoneIn.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    phoneIn.setText(newValue.replaceAll("[^\\d]", ""));
+                } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) {
+                    phoneIn.setText(phoneIn.getText().substring(0, UK_PHONE_MAX_LENGTH));
+                }
+            }
+        });
         removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
         removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
     }
