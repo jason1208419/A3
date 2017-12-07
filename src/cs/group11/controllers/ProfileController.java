@@ -24,9 +24,13 @@ import javafx.util.Callback;
 
 public class ProfileController {
 
+    @FXML
+    private ImageView logo;
     @FXML private ImageView avatarImageView;
     @FXML
     private ImageView avatar1;
+    @FXML
+    private Label username1;
     @FXML private Label username;
     @FXML private Label firstname;
     @FXML private Label lastname;
@@ -46,6 +50,7 @@ public class ProfileController {
     private TableView<User> favouriteUsers;
     @FXML
     private TableView<Auction> favouriteAuctions;
+
     @FXML
     private TableColumn<Bid, Auction> wonPic;
     @FXML
@@ -54,6 +59,7 @@ public class ProfileController {
     private TableColumn<Bid, Double> wonPrice;
     @FXML
     private TableColumn<Bid, Date> wonDate;
+
     @FXML
     private TableColumn<Bid, Auction> madePic;
     @FXML
@@ -62,6 +68,7 @@ public class ProfileController {
     private TableColumn<Bid, Double> madePrice;
     @FXML
     private TableColumn<Bid, Date> madeDate;
+
     @FXML
     private TableColumn<Bid, Auction> receivedPic;
     @FXML
@@ -72,6 +79,7 @@ public class ProfileController {
     private TableColumn<Bid, Date> receivedDate;
     @FXML
     private TableColumn<Bid, User> receivedUsername;
+
     @FXML
     private TableColumn<Auction, Artwork> tablePic;
     @FXML
@@ -80,6 +88,7 @@ public class ProfileController {
     private TableColumn<Auction, Artwork> tableArtist;
     @FXML
     private TableColumn<Auction, Artwork> tableCreationYear;
+
     @FXML
     private TableColumn<User, String> tableAvatar;
     @FXML
@@ -88,9 +97,10 @@ public class ProfileController {
     private TableColumn<User, String> tableFirstName;
     @FXML
     private TableColumn<User, String> tableLastName;
+
     @FXML
     private VBox rootBox;
-    private EditProfileController editProfileCon = new EditProfileController();
+    //private EditProfileController editProfileCon = new EditProfileController();
 
     private User loginedUser;
     private User viewingUser;
@@ -112,8 +122,10 @@ public class ProfileController {
 
         Image avatar1 = new Image(loginedUser.getAvatarPath());
         this.avatar1.setImage(avatar1);
+        this.logo.setImage(avatar1);
         Image avatar = new Image(viewingUser.getAvatarPath());
         this.avatarImageView.setImage(avatar);
+        this.username1.setText(loginedUser.getUsername());
         this.username.setText(viewingUser.getUsername());
         this.firstname.setText(viewingUser.getFirstname());
         this.lastname.setText(viewingUser.getLastname());
@@ -136,18 +148,19 @@ public class ProfileController {
 
             // TODO: Change to auction page
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                Parent root = loader.load();
-
-                ViewAuctionController controller = loader.getController();
+                ViewAuctionController controller = new ViewAuctionController();
+                controller.setUser(this.loginedUser);
                 controller.setAuction(newValue.getAuction());
-                Scene viewAuc = new Scene(root, 600, 500);
-                Stage primaryStage = Main.getPrimaryStage();
-                primaryStage.setScene(viewAuc);
 
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+                loader.setController(controller);
+                VBox box = loader.load();
 
+                box.prefHeightProperty().bind(rootBox.heightProperty());
+                box.prefWidthProperty().bind(rootBox.widthProperty());
+                rootBox.getChildren().setAll(box);
             } catch (IOException e) {
-                System.out.println("Failed to load fxml file");
+                e.printStackTrace();
             }
         };
 
@@ -179,18 +192,18 @@ public class ProfileController {
 
             // TODO: Change to auction page
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                Parent root = loader.load();
-
-                ViewAuctionController controller = loader.getController();
+                ViewAuctionController controller = new ViewAuctionController();
+                controller.setUser(this.loginedUser);
                 controller.setAuction(newValue);
-                Scene viewAuc = new Scene(root, 600, 500);
-                Stage primaryStage = Main.getPrimaryStage();
-                primaryStage.setScene(viewAuc);
 
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+                loader.setController(controller);
+                VBox box = loader.load();
 
+                box.prefHeightProperty().bind(rootBox.heightProperty());
+                rootBox.getChildren().setAll(box);
             } catch (IOException e) {
-                System.out.println("Failed to load fxml file");
+                e.printStackTrace();
             }
         };
 
@@ -547,21 +560,29 @@ public class ProfileController {
     }
 
     public void viewAuctionClick() throws IOException {
+        AuctionListController controller = new AuctionListController();
+        controller.setUser(this.loginedUser);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-        Parent root = loader.load();
-        AuctionListController controller = loader.getController();
-        Scene viewAuc = new Scene(root, 600, 500);
-        Stage primaryStage = Main.getPrimaryStage();
-        primaryStage.setScene(viewAuc);
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
     }
 
     public void createAuctionClick() throws IOException {
+        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
+        controller.setUser(this.loginedUser);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
-        Parent root = loader.load();
-        CreateAuctionV2Controller controller = loader.getController();
-        Scene createAuc = new Scene(root, 600, 500);
-        Stage primaryStage = Main.getPrimaryStage();
-        primaryStage.setScene(createAuc);
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
     }
 
     public void logoutClick() throws IOException {
@@ -571,13 +592,14 @@ public class ProfileController {
     }
 
     public void editProfileClick() throws IOException {
+        EditProfileController editProfileCon = new EditProfileController();
         editProfileCon.setUser(this.loginedUser);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
         loader.setController(editProfileCon);
         Parent root = loader.load();
 
-        EditProfileController controller = loader.getController();
+        loader.getController();
         Scene viewAuc = new Scene(root, 600, 500);
         Stage primaryStage = Main.getPrimaryStage();
         primaryStage.setScene(viewAuc);

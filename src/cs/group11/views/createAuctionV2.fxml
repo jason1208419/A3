@@ -12,14 +12,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
-      fx:controller="cs.group11.controllers.CreateAuctionV2Controller">
-    <children>
-        <HBox prefHeight="57.0" prefWidth="656.0"/>
-        <HBox>
-            <children>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" xmlns="http://javafx.com/javafx/8.0.121">
+    <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
+        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions"
+                    HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onAction="#avatarClick">
+                <graphic>
+                    <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                </graphic>
+            </Button>
+            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                <Label fx:id="username1" text="username"/>
+                <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
+            </VBox>
+        </HBox>
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS">
                 <VBox prefHeight="71.0" prefWidth="100.0">
-                    <children>
                         <RadioButton fx:id="sculptureRadio" mnemonicParsing="false" selected="true" text="Sculpture">
                             <VBox.margin>
                                 <Insets/>
@@ -29,10 +46,8 @@
                             </padding>
                         </RadioButton>
                         <RadioButton fx:id="paintingRadio" mnemonicParsing="false" text="Painting"/>
-                    </children>
                 </VBox>
                 <ImageView fx:id="image" fitHeight="176.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true"/>
-            </children>
             <opaqueInsets>
                 <Insets/>
             </opaqueInsets>
@@ -41,91 +56,72 @@
             </padding>
         </HBox>
         <HBox prefHeight="255.0" prefWidth="656.0">
-            <children>
                 <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                       prefHeight="303.0" prefWidth="372.0" HBox.hgrow="ALWAYS">
-               <children>
                   <HBox prefHeight="40.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="30.0" prefWidth="103.0" text="Title:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                          <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
-                     </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="30.0" prefWidth="103.0" text="Reserve Price: ">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                          <TextField fx:id="startPrice" prefHeight="29.0" prefWidth="149.0"/>
-                     </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="30.0" prefWidth="103.0" text="Max Bids:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                          <TextField fx:id="maxBids" prefHeight="0.0" prefWidth="149.0"/>
-                     </children>
                   </HBox>
                   <HBox prefHeight="112.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Artist:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                          <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
-                     </children>
                   </HBox>
                   <HBox prefHeight="213.0" prefWidth="276.0">
-                      <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Width:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <TextField fx:id="width" />
-                     </children>
                   </HBox>
                   <HBox prefHeight="286.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Length:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <TextField fx:id="length" />
-                     </children>
                   </HBox>
                   <HBox prefHeight="366.0" prefWidth="276.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Creation Date:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <DatePicker fx:id="creationDate" prefHeight="25.0" prefWidth="149.0" />
-                     </children>
                   </HBox>
                   <HBox prefHeight="504.0" prefWidth="214.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Description:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <TextArea fx:id="description" prefHeight="97.0" prefWidth="148.0" />
-                     </children>
                   </HBox>
-               </children>
                <opaqueInsets>
                   <Insets left="10.0" />
                </opaqueInsets>
@@ -135,31 +131,24 @@
             </VBox>
                 <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                       prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
-               <children>
                   <HBox prefHeight="70.0" prefWidth="295.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Depth:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <TextField fx:id="depth" />
-                     </children>
                   </HBox>
                   <HBox prefHeight="90.0" prefWidth="295.0">
-                     <children>
                         <Label prefHeight="17.0" prefWidth="103.0" text="Material:">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
                         </Label>
                         <TextField fx:id="material" />
-                     </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
                         <VBox>
-                           <children>
                               <Label prefHeight="17.0" prefWidth="103.0" text="Extra Images:">
                                  <opaqueInsets>
                                     <Insets left="10.0" />
@@ -167,23 +156,16 @@
                               </Label>
                               <Button fx:id="addExtraImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" VBox.vgrow="ALWAYS" />
                               <Button fx:id="removeImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" VBox.vgrow="ALWAYS" />
-                           </children>
                         </VBox>
                          <ListView fx:id="extraImages" prefHeight="100.0" prefWidth="160.0"/>
-                     </children>
                   </HBox>
-               </children>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </VBox>
-         </children>
       </HBox>
         <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="656.0" VBox.vgrow="ALWAYS">
-         <children>
              <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="134.0"
                      text="Create Auction"/>
-         </children>
       </HBox>
-    </children>
 </VBox>

@@ -37,7 +37,7 @@ public class SignInController {
     @FXML
     protected void initialize() {
 
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
 
         String imagePath = "https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg";
         Address address1 = new Address(new String[]{"313 Presli", "Singleton Park", "Swansea"}, "SA1 4PU");
@@ -56,12 +56,7 @@ public class SignInController {
         users.add(user3);
 
 
-        EventHandler<ActionEvent> onShutDown = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.exit(0);
-            }
-        };
+        EventHandler<ActionEvent> onShutDown = event -> System.exit(0);
 
         shutDownBtn.setOnAction(onShutDown);
 
@@ -96,13 +91,11 @@ public class SignInController {
             private void loginSuccess() {
                 try {
 
-                    EditProfileController controller = new EditProfileController();
+                    AuctionListController controller = new AuctionListController();
                     controller.setUser(Main.getCurrentUser());
-                    controller.setTestArt();
-                    controller.setTestUsers();
 
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
                     loader.setController(controller);
                     Parent root = loader.load();
                     Scene mainScreen = new Scene(root, 600, 500);

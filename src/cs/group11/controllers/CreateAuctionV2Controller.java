@@ -1,8 +1,8 @@
 package cs.group11.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,17 +21,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -56,7 +48,12 @@ public class CreateAuctionV2Controller {
 	private static final int DEFAULT_EXTRA_IMAGE_LIST_CELL_HEIGHT = 100;
 
 	@FXML
-	private BorderPane mainPane;
+	private ImageView logo;
+	@FXML
+	private ImageView avatar1;
+	@FXML
+	private Label username1;
+
 	@FXML
 	private VBox sculptureInputs;
 	@FXML
@@ -94,11 +91,18 @@ public class CreateAuctionV2Controller {
 	@FXML
 	private Button create;
 
+	@FXML
+	private VBox rootBox;
+
 	private String mainImagePath;
 	private User currentUser;
 
 	@FXML
 	protected void initialize() {
+		Image avatarImage = new Image(currentUser.getAvatarPath());
+		this.logo.setImage(avatarImage);
+		this.avatar1.setImage(avatarImage);
+		this.username1.setText(currentUser.getUsername());
 
 		makeFieldsNumeric(depth, length, startPrice, maxBids, width);
 
@@ -122,9 +126,7 @@ public class CreateAuctionV2Controller {
 
 		});
 
-		addExtraImg.setOnAction((e) -> {
-			handleAddExtraImage();
-		});
+		addExtraImg.setOnAction((e) -> handleAddExtraImage());
 
 		removeImg.setDisable(true);
 		removeImg.setOnAction((e) -> {
@@ -143,21 +145,19 @@ public class CreateAuctionV2Controller {
 		ToggleGroup radioGroup = new ToggleGroup();
 		sculptureRadio.setToggleGroup(radioGroup);
 		paintingRadio.setToggleGroup(radioGroup);
-		sculptureRadio.selectedProperty().addListener((observVal, oldState, newState) -> {
-			sculptureInputs.setVisible(sculptureRadio.isSelected());
-		});
+		sculptureRadio.selectedProperty().addListener((observVal, oldState, newState) -> sculptureInputs.setVisible(sculptureRadio.isSelected()));
 
 		// Set the image
 		image.setImage(defaultAuctionimage);
-		image.setOnMouseClicked((e) -> {
-			handleImageSelection();
-		});
+		image.setOnMouseClicked((e) -> handleImageSelection());
 
-		create.setOnAction((e) -> {
-			createAuction();
-		});
+		create.setOnAction((e) -> createAuction());
 
 		creationDate.setValue(LocalDate.now());
+	}
+
+	public void setUser(User user) {
+		this.currentUser = user;
 	}
 
 	private void handleAddExtraImage() {
@@ -192,13 +192,10 @@ public class CreateAuctionV2Controller {
 
 	private void makeFieldsNumeric(TextField... textFields) {
 		for (TextField field : textFields) {
-			field.textProperty().addListener(new ChangeListener<String>() {
-				@Override
-				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-					Matcher m = NON_NUMERICAL_INPUT_PATTERN.matcher(newValue);
-					if (m.find()) {
-						field.setText(m.replaceAll(""));
-					}
+			field.textProperty().addListener((observable, oldValue, newValue) -> {
+				Matcher m = NON_NUMERICAL_INPUT_PATTERN.matcher(newValue);
+				if (m.find()) {
+					field.setText(m.replaceAll(""));
 				}
 			});
 		}
@@ -211,7 +208,7 @@ public class CreateAuctionV2Controller {
 		File in = chooser.showOpenDialog(null);
 		if (!Validator.isFileValid(in))
 			return null;
-		return new Pair<String, Image>(in.toURI().toString(), new Image(in.toURI().toString()));
+		return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
 	}
 
 	private Auction createAuction() {
@@ -242,11 +239,46 @@ public class CreateAuctionV2Controller {
 
 	private List<String> getExtraImagePaths() {
 		// Take all images, map them to just the path and return the new list.
-		return extraImages.getItems().stream().map((p) -> p.getKey()).collect(Collectors.toList());
+		return extraImages.getItems().stream().map(Pair::getKey).collect(Collectors.toList());
 	}
 
 	private double parseDecimal(String str) {
 		return Double.parseDouble(str);
+	}
+
+	public void viewAuctionClick() throws IOException {
+		AuctionListController controller = new AuctionListController();
+		controller.setUser(this.currentUser);
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
+		loader.setController(controller);
+		VBox box = loader.load();
+
+		box.prefHeightProperty().bind(rootBox.heightProperty());
+
+		rootBox.getChildren().setAll(box);
+	}
+
+	public void avatarClick() throws IOException {
+		ProfileController profileCon = new ProfileController();
+		profileCon.setLoginedUser(this.currentUser);
+		profileCon.setViewingUser(this.currentUser);
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
+		loader.setController(profileCon);
+		profileCon.addTestBids();
+
+		VBox box = loader.load();
+
+		box.prefHeightProperty().bind(rootBox.heightProperty());
+
+		rootBox.getChildren().setAll(box);
+	}
+
+	public void logoutClick() throws IOException {
+		VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
+		box.prefHeightProperty().bind(rootBox.heightProperty());
+		rootBox.getChildren().setAll(box);
 	}
 
 	// THIS WILL BE DELETED! JUST FOR TESTING PURPOSES!

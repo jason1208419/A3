@@ -8,25 +8,40 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-      fx:controller="cs.group11.controllers.ViewAuctionController">
-    <children>
-        <HBox prefHeight="73.0" prefWidth="600.0"/>
-        <VBox prefHeight="200.0" prefWidth="100.0">
-            <children>
-                <HBox prefHeight="68.0" prefWidth="600.0" VBox.vgrow="ALWAYS"/>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/8.0.121">
+    <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
+        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onAction="#viewAuctionClick" text="Browse Auctions"
+                    HBox.hgrow="ALWAYS"/>
+            <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction"
+                    HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onAction="#avatarClick">
+                <graphic>
+                    <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                </graphic>
+            </Button>
+            <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0" HBox.hgrow="NEVER">
+                <Label fx:id="username1" text="username"/>
+                <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
+            </VBox>
+        </HBox>
+    </HBox>
+    <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                 <HBox prefHeight="210.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-                    <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                            <children>
+                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                 <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0"
                                            pickOnBounds="true" preserveRatio="true"/>
                                 <CheckBox mnemonicParsing="false" text="Favourite Artwork"/>
-                            </children>
                         </VBox>
-                        <VBox prefHeight="189.0" prefWidth="215.0" HBox.hgrow="ALWAYS">
-                            <children>
+                    <VBox alignment="CENTER_LEFT" prefHeight="189.0" prefWidth="215.0" HBox.hgrow="ALWAYS">
                                 <Label fx:id="artType" text="Art Type"/>
                                 <Label fx:id="title" text="Title"/>
                                 <Label fx:id="author" text="Author"/>
@@ -38,40 +53,28 @@
                                 <Label fx:id="depth" text="?depth?"/>
                                 <Label fx:id="artworkCreation" text="Artwork Creation date"/>
                                 <Label fx:id="auctionCreation" text="Auction Creation date"/>
-                            </children>
                         </VBox>
-                        <VBox prefHeight="210.0" prefWidth="123.0" HBox.hgrow="ALWAYS">
-                            <children>
+                    <VBox alignment="CENTER_LEFT" prefHeight="210.0" prefWidth="123.0" HBox.hgrow="ALWAYS">
                                 <ImageView fx:id="sellerAvatarImageView" fitHeight="80.0" fitWidth="85.0"
                                            pickOnBounds="true" preserveRatio="true"/>
                                 <Label fx:id="sellerUsername" text="Seller username"/>
                                 <CheckBox mnemonicParsing="false" text="Favourite User"/>
-                            </children>
                         </VBox>
-                    </children>
                 </HBox>
-            </children>
         </VBox>
-        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-            <children>
+    <HBox prefHeight="100.0" prefWidth="200.0">
                 <VBox prefHeight="100.0" prefWidth="103.0"/>
                 <VBox prefHeight="100.0" prefWidth="160.0">
-                    <children>
                         <Label fx:id="currentPrice2" text="Current Price"/>
                         <Label fx:id="maxBids" text="Total bids allowed"/>
                         <Label fx:id="placedBids" text="No. bids placed"/>
                         <Label fx:id="remainingBids" text="No. bids remaining"/>
                         <Button fx:id="backBtn" mnemonicParsing="false" text="Back"/>
-                    </children>
                 </VBox>
                 <VBox prefHeight="100.0" prefWidth="54.0"/>
                 <VBox prefHeight="100.0" prefWidth="130.0">
-                    <children>
                         <TextField promptText="Enter your new bid"/>
                         <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Submit"/>
-                    </children>
                 </VBox>
-            </children>
         </HBox>
-    </children>
 </VBox>

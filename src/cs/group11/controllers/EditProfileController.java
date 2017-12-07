@@ -121,20 +121,23 @@ public class EditProfileController {
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
             System.out.println("Clicked on " + newValue.getArtwork().getName());
 
+            ViewAuctionController controller = new ViewAuctionController();
+            controller.setUser(this.user);
+            controller.setAuction(newValue);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+            loader.setController(controller);
+            VBox box = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                Parent root = loader.load();
-
-                ViewAuctionController controller = loader.getController();
-                controller.setAuction(newValue);
-                Scene viewAuc = new Scene(root, 600, 500);
-                Stage primaryStage = Main.getPrimaryStage();
-                primaryStage.setScene(viewAuc);
-
-
+                box = loader.load();
             } catch (IOException e) {
-                System.out.println("Failed to load fxml file");
+                e.printStackTrace();
             }
+
+            if (box != null) {
+                box.prefHeightProperty().bind(rootBox.heightProperty());
+            }
+            rootBox.getChildren().setAll(box);
         };
         removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
         removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
@@ -379,7 +382,6 @@ public class EditProfileController {
         loader.setController(profileCon);
         profileCon.addTestBids();
 
-
         VBox box = loader.load();
 
         box.prefHeightProperty().bind(rootBox.heightProperty());
@@ -392,21 +394,29 @@ public class EditProfileController {
     }
 
     public void viewAuctionClick() throws IOException {
+        AuctionListController controller = new AuctionListController();
+        controller.setUser(this.user);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-        Parent root = loader.load();
-        AuctionListController controller = loader.getController();
-        Scene viewAuc = new Scene(root, 600, 500);
-        Stage primaryStage = Main.getPrimaryStage();
-        primaryStage.setScene(viewAuc);
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
     }
 
     public void createAuctionClick() throws IOException {
+        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
+        controller.setUser(this.user);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
-        Parent root = loader.load();
-        CreateAuctionV2Controller controller = loader.getController();
-        Scene createAuc = new Scene(root, 600, 500);
-        Stage primaryStage = Main.getPrimaryStage();
-        primaryStage.setScene(createAuc);
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
     }
 
     public void logoutClick() throws IOException {

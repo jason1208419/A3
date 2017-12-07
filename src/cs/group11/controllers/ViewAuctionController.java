@@ -3,6 +3,7 @@ package cs.group11.controllers;
 import cs.group11.Main;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
+import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +26,13 @@ import java.util.Date;
 
 
 public class ViewAuctionController {
+
+    @FXML
+    private ImageView logo;
+    @FXML
+    private ImageView avatar1;
+    @FXML
+    private Label username1;
 
     @FXML
     private ImageView artworkImageView;
@@ -68,118 +77,88 @@ public class ViewAuctionController {
     @FXML
     private ImageView sellerAvatarImageView;
 
+    @FXML
+    private VBox rootBox;
+
+    private User user;
     private Auction auction;
 
-    /**
-     * Displays info about bids in the GUI.
-     */
-    private void setBidInfo() {
-        //Get most recent bid price
-        double lastBid;
-        lastBid = this.auction.getLastBid().getPrice();
+    @FXML
+    protected void initialize() {
+        Image img = new Image(user.getAvatarPath());
+        this.logo.setImage(img);
+        this.avatar1.setImage(img);
+        this.username1.setText(user.getUsername());
 
-        this.currentPrice.setText("Current price: " + (String.valueOf(lastBid)));
-        this.currentPrice2.setText("Current price: " + (String.valueOf(lastBid)));
-
-        //Gets the Maximum amount of bids
-        int theMaxBids = auction.getMaxBids();
-        String maxAsString = Integer.toString(theMaxBids);
-
-        this.maxBids.setText("Max number of bids: " + maxAsString);
-
-        //Get remaining number of allowed bids
-        //Get current number of bids
-        int currentBids;
-        int remainingBids;
-
-        currentBids = auction.getBids().size();
-        remainingBids = theMaxBids - currentBids;
-
-        String remainingBidsAsString = Integer.toString(remainingBids);
-        String currentBidsAsString = Integer.toString(currentBids);
-
-        this.remainingBids.setText("Remaining bids: " + remainingBidsAsString);
-        this.placedBids.setText("Number of bids placed: " + currentBidsAsString);
-    }
-
-    /**
-     * Sets reserve price of auction.
-     */
-    private void setAucDetails() {
-        //Get Starting Price (aka reserve price)
-
-        double starterPrice;
-        starterPrice = this.auction.getReservePrice();
-
-        this.startingPrice.setText("Starting Price: " + (String.valueOf(starterPrice)));
-
-        //Gets auction creation date
-        Date createdDate = auction.getCreationDate();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String strCreatedDate = dateFormat.format(createdDate);
-
-        this.auctionCreation.setText("Auction creation: " + strCreatedDate);
-    }
-
-    /**
-     * Displays info about artworks in the GUI.
-     */
-    private void setArtworkDetails() {
         Artwork artwork = auction.getArtwork();
-        setArtworkDimensions(artwork);
-
-
-        Image image = new Image(auction.getArtwork().getImagePath());
-        this.artworkImageView.setImage(image);
-        this.title.setText("Title: " + (artwork.getName()));
-        this.author.setText("Artist: " + (artwork.getArtist()));
-
-        //Gets artworks creation year
-        int creationYear = artwork.getCreationYear();
-        String yearAsString = Integer.toString(creationYear);
-        this.artworkCreation.setText("Art creation: " + yearAsString);
-
-    }
-
-    /**
-     * Displays height, width, depth and material of the artwork in the GUI.
-     *
-     * @param artwork The artwork to be displayed
-     */
-    private void setArtworkDimensions(Artwork artwork) {
-        String artworkType = "Artwork";
-        if (artwork instanceof Painting) {
-            artworkType = "Painting";
-        } else if (artwork instanceof Sculpture) {
-            artworkType = "Sculpture";
-        }
-        this.artType.setText("Type: " + (artworkType));
+        this.artType.setText("Type: " + getType(artwork));
 
         //Gets the Width and depth and material
         if (artwork instanceof Painting) {
             Painting painting = (Painting) artwork;
-
-            double artWidth = painting.getWidth();
-            String widthAsString = Double.toString(artWidth);
-            this.width.setText("Width: " + widthAsString);
+            this.width.setText("Width: " + Double.toString(painting.getWidth()));
             this.depth.setVisible(false);
             this.material.setVisible(false);
 
-
         } else if (artwork instanceof Sculpture) {
             Sculpture sculpture = (Sculpture) artwork;
-
-            double artWidth = sculpture.getWidth();
-            String widthAsString = Double.toString(artWidth);
-            this.width.setText("Width: " + widthAsString);
-
-            double artDepth = sculpture.getDepth();
-            String depthAsString = Double.toString(artDepth);
-            this.depth.setText("Depth: " + depthAsString);
-
+            this.width.setText("Width: " + Double.toString(sculpture.getWidth()));
+            this.depth.setText("Depth: " + Double.toString(sculpture.getDepth()));
             this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
         }
 
+        this.height.setText("Height: " + getHeight(artwork));
+
+        Image image = new Image(auction.getArtwork().getImagePath());
+        this.artworkImageView.setImage(image);
+        this.title.setText("Title: " + artwork.getName());
+        this.author.setText("Artist: " + artwork.getArtist());
+
+        //Gets artworks creation year
+        this.artworkCreation.setText("Art creation: " + Integer.toString(artwork.getCreationYear()));
+
+        this.sellerUsername.setText("Seller: " + auction.getCreator().getUsername());
+        Image avatarImage = new Image(auction.getCreator().getAvatarPath());
+        this.sellerAvatarImageView.setImage(avatarImage);
+
+
+        //Get most recent bid price
+        double lastBid = this.auction.getLastBid().getPrice();
+
+        this.currentPrice.setText("Current price: " + String.valueOf(lastBid));
+        this.currentPrice2.setText("Current price: " + String.valueOf(lastBid));
+
+        //Gets the Maximum amount of bids
+        int theMaxBids = auction.getMaxBids();
+        String maxAsString = Integer.toString(theMaxBids);
+        this.maxBids.setText("Max number of bids: " + maxAsString);
+
+        //Get remaining number of allowed bids
+        //Get current number of bids
+        int currentBids = auction.getBids().size();
+        int remainingBids = theMaxBids - currentBids;
+
+        this.remainingBids.setText("Remaining bids: " + Integer.toString(remainingBids));
+        this.placedBids.setText("Number of bids placed: " + Integer.toString(currentBids));
+
+        //Get Starting Price (aka reserve price)
+        this.startingPrice.setText("Starting Price: " + String.valueOf(this.auction.getReservePrice()));
+
+        //Gets auction creation date
+        Date createdDate = auction.getCreationDate();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        this.auctionCreation.setText("Auction creation: " + dateFormat.format(createdDate));
+
+        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> previousScreen();
+
+        backBtn.setOnAction(onButtonClick);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private String getHeight(Artwork artwork) {
         //Gets the Height
         double artHeight = 0;
 
@@ -193,18 +172,16 @@ public class ViewAuctionController {
 
             artHeight = sculpture.getHeight();
         }
-        String heightAsString = Double.toString(artHeight);
-        this.height.setText("Height: " + heightAsString);
+        return Double.toString(artHeight);
     }
 
-
-    /**
-     * Displays info about the artwork in the GUI.
-     */
-    private void setUserDetails() {
-        this.sellerUsername.setText("Seller: " + (auction.getCreator().getUsername()));
-        Image avatarImage = new Image(auction.getCreator().getAvatarPath());
-        this.sellerAvatarImageView.setImage(avatarImage);
+    private String getType(Artwork artwork) {
+        if (artwork instanceof Painting) {
+            return "Painting";
+        } else if (artwork instanceof Sculpture) {
+            return "Sculpture";
+        }
+        return "Artwork";
     }
 
     /**
@@ -213,35 +190,72 @@ public class ViewAuctionController {
      * @param auction
      */
     public void setAuction(Auction auction) {
-
         this.auction = auction;
-        setArtworkDetails();
-        setUserDetails();
-        setBidInfo();
-        setAucDetails();
-
-        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> {
-            previousScreen();
-        };
-
-        backBtn.setOnAction(onButtonClick);
     }
 
     private void previousScreen() {
         try {
+            AuctionListController controller = new AuctionListController();
+            controller.setUser(this.user);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-            Parent root = loader.load();
+            loader.setController(controller);
+            VBox box = loader.load();
 
-            AuctionListController controller = loader.getController();
-            Scene viewAuc = new Scene(root, 600, 500);
-            Stage primaryStage = Main.getPrimaryStage();
-            primaryStage.setScene(viewAuc);
+            box.prefHeightProperty().bind(rootBox.heightProperty());
 
-
+            rootBox.getChildren().setAll(box);
         } catch (IOException e) {
             System.out.println("Failed to load fxml file");
         }
     }
 
+    public void viewAuctionClick() throws IOException {
+        AuctionListController controller = new AuctionListController();
+        controller.setUser(this.user);
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
+
+    @FXML
+    public void createAuctionClick() throws IOException {
+        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
+        controller.setUser(this.user);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void avatarClick() throws IOException {
+        ProfileController profileCon = new ProfileController();
+        profileCon.setLoginedUser(this.user);
+        profileCon.setViewingUser(this.user);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
+        loader.setController(profileCon);
+        profileCon.addTestBids();
+
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void logoutClick() throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+        rootBox.getChildren().setAll(box);
+    }
 }

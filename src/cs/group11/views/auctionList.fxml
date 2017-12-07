@@ -4,17 +4,40 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="277.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.AuctionListController">
-        <HBox prefHeight="74.0" prefWidth="628.0" />
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" prefHeight="277.0" prefWidth="628.0" HBox.hgrow="ALWAYS"
+      xmlns="http://javafx.com/javafx/8.0.121">
+        <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
+                <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                        <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true"
+                                   preserveRatio="true" HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                        <Button mnemonicParsing="false" onAction="#createAuctionClick" text="Create Auction"
+                                HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                        <Button mnemonicParsing="false" onAction="#avatarClick">
+                                <graphic>
+                                        <ImageView fx:id="avatar1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                                                   preserveRatio="true"/>
+                                </graphic>
+                        </Button>
+                        <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="50.0" prefWidth="60.0"
+                              HBox.hgrow="NEVER">
+                                <Label fx:id="username1" text="username"/>
+                                <Button mnemonicParsing="false" onAction="#logoutClick" text="Logout"/>
+                        </VBox>
+                </HBox>
+        </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                 <VBox prefHeight="200.0" prefWidth="100.0">
                         <Label fx:id="filterLBL" prefHeight="25.0" prefWidth="63.0" text="Filter type:" />
                         <CheckBox fx:id="sculptBtn" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Sculpture" />
                         <CheckBox fx:id="paintBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="93.0" text="Painting" />
-                    <Button fx:id="homeBtn" mnemonicParsing="false" prefHeight="41.0" prefWidth="84.0" text="Home"/>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                         <Label prefHeight="16.0" prefWidth="121.0" text="Auctions" />

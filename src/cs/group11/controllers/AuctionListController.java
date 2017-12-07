@@ -18,10 +18,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -34,6 +34,12 @@ import java.util.ArrayList;
  * @Author Thomas Collett
  */
 public class AuctionListController {
+    @FXML
+    private ImageView logo;
+    @FXML
+    private ImageView avatar1;
+    @FXML
+    private Label username1;
 
     @FXML
     private CheckBox paintBtn;
@@ -43,18 +49,23 @@ public class AuctionListController {
     private ListView<Auction> filterAuc;
 
     @FXML
-    private Button homeBtn;
+    private VBox rootBox;
 
     private ObservableList<Auction> currentAuctions;
     private FilteredList<Auction> filteredAuctions;
 
-
+    private User user;
 
     @FXML
     /**
      * Binds components and fills list with details about ongoing auctions.
      */
     protected void initialize() {
+        Image avatarImage = new Image(user.getAvatarPath());
+        this.logo.setImage(avatarImage);
+        this.avatar1.setImage(avatarImage);
+        this.username1.setText(user.getUsername());
+
         currentAuctions = FXCollections.observableArrayList();
         filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
         filterAuc.setItems(filteredAuctions);
@@ -62,17 +73,25 @@ public class AuctionListController {
 
         //Handles event when user clicks on an auction
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
+            System.out.println("Clicked on the auction for " + newValue.getArtwork().getName());
 
+            ViewAuctionController controller = new ViewAuctionController();
+            controller.setUser(this.user);
+            controller.setAuction(newValue);
 
-            if (newValue == null) {
-                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+            loader.setController(controller);
+            VBox box = null;
+            try {
+                box = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            Auction auction = newValue;
-            System.out.println("Clicked on the auction for " + auction.getArtwork().getName());
-
-
-            switchScreen(auction);
+            if (box != null) {
+                box.prefHeightProperty().bind(rootBox.heightProperty());
+            }
+            rootBox.getChildren().setAll(box);
         };
 
 
@@ -82,7 +101,6 @@ public class AuctionListController {
             boolean sculptureSelected = sculptBtn.isSelected();
 
             filteredAuctions.setPredicate((Auction a) -> {
-
                 if (paintSelected == sculptureSelected) {
                     return true;
                 }
@@ -91,29 +109,20 @@ public class AuctionListController {
                     return a.getArtwork() instanceof Painting;
                 }
 
-
-                if (sculptureSelected) {
-                    return a.getArtwork() instanceof Sculpture;
-                }
-
-
-                return false;
-
+                return a.getArtwork() instanceof Sculpture;
             });
         };
 
-        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> {
-            homeSwitch();
-
-        };
-        homeBtn.setOnAction(onButtonClick);
         paintBtn.setOnAction(onCheckboxClick);
         sculptBtn.setOnAction(onCheckboxClick);
-
 
         filterAuc.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
 
         addTestAuctions();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -123,39 +132,17 @@ public class AuctionListController {
      */
     private void switchScreen(Auction auction) {
         try {
+            ViewAuctionController controller = new ViewAuctionController();
+            controller.setUser(this.user);
+            controller.setAuction(auction);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-            Parent root = loader.load();
-
-            ViewAuctionController controller = loader.getController();
-            controller.setAuction(auction);
-            Scene viewAuc = new Scene(root, 600, 500);
-            Stage primaryStage = Main.getPrimaryStage();
-            primaryStage.setScene(viewAuc);
-
-
-        } catch (IOException e) {
-            System.out.println("Failed to load fxml file");
-        }
-    }
-
-    private void homeSwitch() {
-
-        try {
-
-            EditProfileController controller = new EditProfileController();
-            controller.setUser(Main.getCurrentUser());
-            controller.setTestArt();
-            controller.setTestUsers();
-
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
             loader.setController(controller);
-            Parent root = loader.load();
-            Stage primaryStage = Main.getPrimaryStage();
-            Scene mainScene = new Scene(root, 600, 500);
-            primaryStage.setScene(mainScene);
+            VBox box = loader.load();
 
+            box.prefHeightProperty().bind(rootBox.heightProperty());
+            box.prefWidthProperty().bind(rootBox.widthProperty());
+            rootBox.getChildren().setAll(box);
         } catch (IOException e) {
             System.out.println("Failed to load fxml file");
         }
@@ -197,6 +184,41 @@ public class AuctionListController {
         this.currentAuctions.add(testAuc2);
     }
 
+    public void createAuctionClick() throws IOException {
+        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
+        controller.setUser(this.user);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
+        loader.setController(controller);
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void avatarClick() throws IOException {
+        ProfileController profileCon = new ProfileController();
+        profileCon.setLoginedUser(this.user);
+        profileCon.setViewingUser(this.user);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
+        loader.setController(profileCon);
+        profileCon.addTestBids();
+
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
+
+    public void logoutClick() throws IOException {
+        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+        rootBox.getChildren().setAll(box);
+    }
+
     /**
      * A custom ListCell to store auction data.
      */
@@ -204,7 +226,7 @@ public class AuctionListController {
         private Node node;
         private AuctionCellController controller;
 
-        public AuctionCell() {
+        private AuctionCell() {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionCell.fxml"));
                 node = loader.load();
@@ -226,13 +248,7 @@ public class AuctionListController {
             } else {
                 controller.viewAuctionInfo(auction);
                 setGraphic(node);
-
             }
-
         }
-
-
     }
-
-
 }
