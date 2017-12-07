@@ -159,7 +159,7 @@ public class DrawController {
 		@Override
 		public void start(Stage s) throws Exception {
 			FXMLLoader l = new FXMLLoader();
-			Pane p = l.load(ClassLoader.getSystemResourceAsStream("drawer.fxml"));
+			Pane p = l.load(ClassLoader.getSystemResourceAsStream("cs/group11/views/drawer.fxml"));
 			s.setScene(new Scene(p));
 			s.show();
 		}
