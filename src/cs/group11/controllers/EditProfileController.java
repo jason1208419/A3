@@ -512,7 +512,14 @@ public class EditProfileController {
     /**
      * Pop up a window to let user create avatar
      */
-    public void drawAvatarClick() {
+    public void drawAvatarClick() throws IOException {
+        Stage drawingStage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/drawer.fxml"));
+        Parent root = loader.load();
+        drawingStage.setTitle("Drawing tool");
+        drawingStage.setScene(new Scene(root));
+        drawingStage.show();
     }
 
     /**
