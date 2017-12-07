@@ -27,6 +27,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * Help to make functions of buttons and tables for the editProfile.fxml
+ *
+ * @author Kin Wah Lee 689591
+ */
 public class EditProfileController {
     @FXML
     private ImageView logo;
@@ -83,8 +88,12 @@ public class EditProfileController {
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Auction> favouriteArtworkList;
 
+    /**
+     * set and display the correct information on the GUI. Allow users to click on the content of table and change to a more detailed page.
+     */
     @FXML
     protected void initialize() {
+        //set up the basic details on screen
         this.user = Main.getCurrentUser();
         Image avatarImage = new Image(user.getAvatarPath());
         this.logo.setImage(avatarImage);
@@ -93,9 +102,11 @@ public class EditProfileController {
         this.username1.setText(user.getUsername());
         this.username2.setText(user.getUsername());
 
+        //setup the two tables
         setupFavouriteArtTable();
         setupFavouriteUserTable();
 
+        //Let users to click on contents inside the favourite user table and show the page of the user being clicked on
         ChangeListener<User> onUserClick = (observable, oldValue, newValue) -> {
             System.out.println("Clicked on " + newValue.getUsername());
 
@@ -119,6 +130,7 @@ public class EditProfileController {
             rootBox.getChildren().setAll(box);
         };
 
+        //Let users to click on contents inside the favourite artwork table and show the page of the artwork being clicked on
         ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
             System.out.println("Clicked on " + newValue.getArtwork().getName());
 
@@ -144,10 +156,14 @@ public class EditProfileController {
         removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
     }
 
-
+    /**
+     * setup the contents inside the favourite artwork table
+     */
     private void setupFavouriteArtTable() {
+        //add a list of auctions need to be displayed
         favouriteArtworkList = FXCollections.observableArrayList(this.user.getFavouriteAuctions());
 
+        //set the picture of artwork inside each cell of the picture column
         tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tablePic.setPrefWidth(100);
         tablePic.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
@@ -173,6 +189,7 @@ public class EditProfileController {
             }
         });
 
+        //set the name of artwork inside each cell of the name column
         tableName.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableName.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
@@ -193,6 +210,8 @@ public class EditProfileController {
                 };
             }
         });
+
+        //set the artist of artwork inside each cell of the artist column
         tableArtist.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableArtist.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
@@ -213,6 +232,8 @@ public class EditProfileController {
                 };
             }
         });
+
+        //set the creation year of artwork inside each cell of the creation year column
         tableCreationYear.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tableCreationYear.setCellFactory(new Callback<TableColumn<Auction, Artwork>, TableCell<Auction, Artwork>>() {
             @Override
@@ -233,6 +254,8 @@ public class EditProfileController {
                 };
             }
         });
+
+        //set the remove button inside each cell of the remove column
         tableRemoveArt.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         tableRemoveArt.setCellFactory(param -> new TableCell<Auction, Auction>() {
             private final Button remove = new Button("Remove");
@@ -259,12 +282,19 @@ public class EditProfileController {
                 );
             }
         });
+
+        //set information for table to display
         removeFavouriteArtworks.setItems(favouriteArtworkList);
     }
 
+    /**
+     * setup the contents inside the favourite user table
+     */
     private void setupFavouriteUserTable() {
+        //add a list of users need to be displayed
         favouriteUsersList = FXCollections.observableArrayList(this.user.getFavouriteUsers());
 
+        //set the avatar of user inside each cell of the avatar column
         tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
         tableAvatar.setPrefWidth(100);
         tableAvatar.setCellFactory(new Callback<TableColumn<User, String>, TableCell<User, String>>() {
@@ -291,9 +321,14 @@ public class EditProfileController {
             }
         });
 
+        //set the username of user inside each cell of the username column
         tableUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        //set the first name of user inside each cell of the first name column
         tableFirstName.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+        //set the last name of user inside each cell of the last name column
         tableLastName.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+
+        //set the remove button inside each cell of the remove column
         tableRemoveUser.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         tableRemoveUser.setCellFactory(param -> new TableCell<User, User>() {
             private final Button remove = new Button("Remove");
@@ -320,6 +355,8 @@ public class EditProfileController {
                 );
             }
         });
+
+        //set information for table to display
         removeFavouriteUsers.setItems(favouriteUsersList);
     }
 
@@ -359,17 +396,29 @@ public class EditProfileController {
         }
     }
 
+    /**
+     * Open a window for the user to use custom image file as their own avatar
+     *
+     * @return the path of the chosen image
+     */
     private String userSelectImage() {
         FileChooser chooser = new FileChooser();
         chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
         chooser.setTitle("Select Image");
         File in = chooser.showOpenDialog(null);
+
+        //return path if a file chosen
         if (Validator.isFileValid(in)) {
             return in.toURI().toString();
         }
         return null;
     }
 
+    /**
+     * Change to the profile page when cancel button clicked
+     *
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     @FXML
     private void cancelClick() throws IOException {
 
@@ -388,10 +437,18 @@ public class EditProfileController {
         rootBox.getChildren().setAll(box);
     }
 
+    /**
+     * Change to the profile page when avatar on header clicked
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void avatarClick() throws IOException {
         cancelClick();
     }
 
+    /**
+     * Change to the auction list page when browse auction button clicked
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void viewAuctionClick() throws IOException {
         AuctionListController controller = new AuctionListController();
 
@@ -405,6 +462,10 @@ public class EditProfileController {
         rootBox.getChildren().setAll(box);
     }
 
+    /**
+     * Change to the create auction page when create auction button clicked
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
 
@@ -418,12 +479,19 @@ public class EditProfileController {
         rootBox.getChildren().setAll(box);
     }
 
+    /**
+     * Change to the sign in page when logout button clicked
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void logoutClick() throws IOException {
         VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
         box.prefHeightProperty().bind(rootBox.heightProperty());
         rootBox.getChildren().setAll(box);
     }
 
+    /**
+     * Pop up a window for user to choose avatar from local disk
+     */
     public void uploadClick() {
         String currentAvatarPath = user.getAvatarPath();
         try {
@@ -441,21 +509,33 @@ public class EditProfileController {
 
     }
 
+    /**
+     * Pop up a window to let user create avatar
+     */
     public void drawAvatarClick() {
     }
 
+    /**
+     * Change to the profile page and save changed data when submit button clicked
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void submitClick() throws IOException {
         boolean inputValid = true;
         printUser();
+
+        //save changes if user input something
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
             this.user.setFirstname(firstNameIn.getText());
         }
+        //save changes if user input something
         if (lastNameIn.getText() != null && !lastNameIn.getText().isEmpty()) {
             this.user.setLastname(lastNameIn.getText());
         }
+        //save changes if user input something
         if (phoneIn.getText() != null && !phoneIn.getText().isEmpty()) {
             this.user.setTelNo(phoneIn.getText());
         }
+        //save changes if user input something
         if (addressIn.getText() != null && !addressIn.getText().isEmpty()) {
             ArrayList<String> address = new ArrayList<>();
             Collections.addAll(address, addressIn.getText().split("\\n"));
@@ -463,6 +543,7 @@ public class EditProfileController {
             lines = address.toArray(lines);
             this.user.getAddress().setLines(lines);
         }
+        //save changes if user input valid postcode
         if (postcodeIn.getText() != null && !postcodeIn.getText().isEmpty()) {
             if (Address.isPostcodeValid(postcodeIn.getText())) {
                 inputValid = true;
@@ -472,6 +553,7 @@ public class EditProfileController {
                 error.setText("Postcode not valid!");
             }
         }
+        //save changes and change to profile page if user input valid postcode
         if (inputValid) {
             printUser();
             MegaDB.save();
@@ -498,6 +580,10 @@ public class EditProfileController {
         System.out.println(this.user.getAddress().getPostcode());
     }
 
+    /**
+     * Pop up a window to let the user choose one of the build in avatar as their own avatar
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void builtInAvatarClick() throws IOException {
         Stage stage = new Stage();
 
