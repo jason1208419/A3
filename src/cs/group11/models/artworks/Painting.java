@@ -1,5 +1,6 @@
 package cs.group11.models.artworks;
 
+import cs.group11.FileHandler;
 import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.Validatable;
@@ -49,10 +50,10 @@ public class Painting extends Artwork implements Validatable {
 
         builder.append("painting").append(",");
         builder.append(this.getId()).append(",");
-        builder.append(this.getName()).append(",");
-        builder.append(this.getDescription()).append(",");
-        builder.append(this.getImagePath()).append(",");
-        builder.append(this.getArtist()).append(",");
+        builder.append(FileHandler.escape(this.getName())).append(",");
+        builder.append(FileHandler.escape(this.getDescription())).append(",");
+        builder.append(FileHandler.escape(this.getImagePath())).append(",");
+        builder.append(FileHandler.escape(this.getArtist())).append(",");
         builder.append(this.getCreationYear()).append(",");
         builder.append(this.getWidth()).append(",");
         builder.append(this.getHeight()).append(",");

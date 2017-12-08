@@ -4,8 +4,8 @@ import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
@@ -635,6 +635,34 @@ public class TestFileHandler {
         String expectedString = ";unicodetext.";
         String result = FileHandler.unescape("\\u003Bunicodetext.");
         assertThat(result, is(expectedString));
+    }
+
+    @Test
+    public void testEscapeDescription() {
+        String originalString = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter " +
+                "Vincent van Gogh. Painted in June 1889, it depicts the view from the east-facing window of his " +
+                "asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition of an idealized village";
+
+        String expectedString = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter " +
+                "Vincent van Gogh. Painted in June 1889\\u002C it depicts the view from the east-facing window of his " +
+                "asylum room at Saint-Rémy-de-Provence\\u002C just before sunrise\\u002C with the addition of an " +
+                "idealized village";
+
+        String result = FileHandler.escape(originalString);
+        assertThat(result, is(expectedString));
+    }
+
+    @Test
+    public void testParser() {
+
+
+        String originalString = "painting,0,Starry Night,The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889\\\\u002C it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence\\\\u002C just before sunrise\\\\u002C with the addition of an idealized village,https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg,Vincent Van Gogh,1889,200.0,300.0,";
+
+        Artwork p = FileHandler.parseArtwork(originalString);
+        String newString = p.toCsv();
+        assertThat(newString, is(originalString));
+
+
     }
 
 
