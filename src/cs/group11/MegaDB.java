@@ -83,6 +83,15 @@ public final class MegaDB {
 	}
 
 	/**
+	 * Get a list of all bids.
+	 *
+	 * @return a clone of the data as a modifiable list.
+	 */
+	public static List<Bid> getBids() {
+		return new ArrayList<>(bids.values());
+	}
+
+	/**
 	 * Add an auction to the database
 	 * Warning: Same ids will result in overrides...
 	 */

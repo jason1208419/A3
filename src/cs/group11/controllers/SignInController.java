@@ -1,6 +1,7 @@
 package cs.group11.controllers;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
 import cs.group11.models.Address;
 import cs.group11.models.User;
 import javafx.collections.FXCollections;
@@ -37,8 +38,9 @@ public class SignInController {
     @FXML
     protected void initialize() {
 
-        users = new ArrayList<>();
+        users = MegaDB.getUsers();
 
+        /*
         String imagePath = "https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg";
         Address address1 = new Address(new String[]{"313 Presli", "Singleton Park", "Swansea"}, "SA1 4PU");
         User user1 = new User("Admin", "Kieran", "Phillips", "075828471938", address1, imagePath);
@@ -54,7 +56,7 @@ public class SignInController {
         User user3 = new User("User", "Kieransdfsfsd", "Phillipssdfsf", "07582847193843664", address1, imagePath);
 
         users.add(user3);
-
+        */
 
         EventHandler<ActionEvent> onShutDown = event -> System.exit(0);
 
@@ -74,7 +76,6 @@ public class SignInController {
                     if (Objects.equals(username, users.get(i).getUsername())) {
                         userFound = true;
                         index = i;
-                        break;
                     }
                 }
 
