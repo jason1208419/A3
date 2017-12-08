@@ -1,6 +1,7 @@
 package cs.group11.controllers;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
@@ -27,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles fxml file that displays list of ongoing auctions.
@@ -115,7 +117,10 @@ public class AuctionListController {
 
         filterAuc.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
 
-        addTestAuctions();
+        List<Auction> aucList = MegaDB.getAuctions();
+        for (Auction auction : aucList) {
+            currentAuctions.add(auction);
+        }
     }
 
 
@@ -142,41 +147,6 @@ public class AuctionListController {
         }
     }
 
-    /**
-     * Adds test data into the auction list.
-     */
-    private void addTestAuctions() {
-        String[] adr = new String[2];
-        adr[0] = "Testdata";
-        adr[1] = "Also test data";
-        Address testAdr = new Address(adr, "SA14LU");
-        User test = new User("Test", "TestA", "TestB", "999", testAdr, "res/avatars/creeper.jpg");
-
-        String imagePath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
-        Painting painting = new Painting("Starry Night", "TestDesc", imagePath, "Vincent Van Gogh", 1889, 200, 300);
-
-
-        Auction testAuc = new Auction(test, 12, 11.00, painting);
-        Bid testBid = new Bid(15.25, test, testAuc);
-        this.currentAuctions.add(testAuc);
-
-
-        String[] adr2 = new String[2];
-        adr2[0] = "A";
-        adr2[1] = "B";
-        Address testAdr2 = new Address(adr2, "SA27QG");
-        User test2 = new User("Test1", "TestA", "TestB", "911", testAdr2, "res/avatars/creeper.jpg");
-        String imagePath2 = "res/avatars/creeper.jpg";
-        ArrayList<String> imageLocations = new ArrayList<>();
-        imageLocations.add(imagePath2);
-
-        Sculpture s = new Sculpture("Creeper", "Sample text", imagePath2, "Fillipos",
-                2017, 342, 201, 300, "Green stuff", imageLocations);
-
-        Auction testAuc2 = new Auction(test2, 15, 12.25, s);
-        Bid testBid2 = new Bid(12.76, test2, testAuc2);
-        this.currentAuctions.add(testAuc2);
-    }
 
     public void createAuctionClick() throws IOException {
         CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
