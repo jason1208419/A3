@@ -3,9 +3,11 @@ package cs.group11.controllers;
 import cs.group11.drawing.tools.AbstractDrawingTool;
 import cs.group11.drawing.tools.CircleBrush;
 import cs.group11.drawing.tools.LineTool;
+import cs.group11.interfaces.OnViewSubmit;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,9 +23,16 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Filippos Pantekis
@@ -64,6 +73,9 @@ public class DrawController {
 	private GraphicsContext canvasGraphics;
 	private ToggleGroup radioButtonGroup = new ToggleGroup();
 	private AbstractDrawingTool selectedTool;
+	private int CANVAS_WIDTH = 388;
+	private int CANVAS_HEIGHT = 368;
+	private OnViewSubmit onViewSubmit;
 
 	/**
 	 * Initialize the GUI
@@ -151,6 +163,35 @@ public class DrawController {
 		updateTool();
 		toolName.setText(selectedTool.getName() + ":");
 		infoLabel.setText(" " + selectedTool.getDescription());
+	}
+
+	public String saveImage() throws IOException {
+		FileChooser fileChooser = new FileChooser();
+
+		//Set extension filter
+		FileChooser.ExtensionFilter extFilter =
+				new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+		fileChooser.getExtensionFilters().add(extFilter);
+
+		File file = fileChooser.showSaveDialog(null);
+
+		if (file != null) {
+			WritableImage writableImage = new WritableImage(CANVAS_WIDTH, CANVAS_HEIGHT);
+			canvas.snapshot(null, writableImage);
+			RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+			ImageIO.write(renderedImage, "jpg", file);
+			return file.toURI().toString();
+		}
+		return null;
+	}
+
+	public void setOnSave(OnViewSubmit onViewSubmit) {
+		this.onViewSubmit = onViewSubmit;
+	}
+
+	@FXML
+	public void saveClick() throws IOException {
+		onViewSubmit.submit(saveImage());
 	}
 
 	// TODO THIS WILL BE DELETED! JUST FOR TESTING PURPOSES!

@@ -1,5 +1,6 @@
 package cs.group11.controllers;
 
+import cs.group11.interfaces.OnViewSubmit;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,10 +25,11 @@ public class BuildInAvatarController {
     private ImageView avatar4;
     @FXML
     private ImageView avatar5;
-    private OnAvatarSubmit onAvatarSubmit;
+    private OnViewSubmit onViewSubmit;
 
     @FXML
     protected void initialize() {
+
         Image img0 = new Image(AVATAR0_PATH);
         Image img1 = new Image(AVATAR1_PATH);
         Image img2 = new Image(AVATAR2_PATH);
@@ -44,40 +46,41 @@ public class BuildInAvatarController {
 
         avatar0.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("0 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR0_PATH);
+            onViewSubmit.submit(AVATAR0_PATH);
+            //onAvatarSubmit.onSubmit(AVATAR0_PATH);
         });
 
         avatar1.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("1 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR1_PATH);
+            onViewSubmit.submit(AVATAR1_PATH);
         });
 
         avatar2.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("2 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR2_PATH);
+            onViewSubmit.submit(AVATAR2_PATH);
         });
 
         avatar3.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("3 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR3_PATH);
+            onViewSubmit.submit(AVATAR3_PATH);
         });
 
         avatar4.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("4 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR4_PATH);
+            onViewSubmit.submit(AVATAR4_PATH);
         });
 
         avatar5.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("5 Clicked!");
-            onAvatarSubmit.onSubmit(AVATAR5_PATH);
+            onViewSubmit.submit(AVATAR5_PATH);
         });
     }
 
-    public void setOnAvatarSubmit(OnAvatarSubmit onAvatarSubmit) {
-        this.onAvatarSubmit = onAvatarSubmit;
+    public void setOnAvatarSubmit(OnViewSubmit onViewSubmit) {
+        this.onViewSubmit = onViewSubmit;
     }
 
-    public interface OnAvatarSubmit {
+    /*public interface OnAvatarSubmit {
         void onSubmit(String avatarPath);
-    }
+    }*/
 }

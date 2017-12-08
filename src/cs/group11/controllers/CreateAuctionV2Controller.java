@@ -56,8 +56,8 @@ public class CreateAuctionV2Controller {
 	/**
 	 * Supported image formats for file selection
 	 */
-	private static final ExtensionFilter IMAGE_FILE_EXTENTIONS = new ExtensionFilter("Image Files", ".png", ".gif",
-			".jpeg", ".jpg");
+	private static final ExtensionFilter IMAGE_FILE_EXTENTIONS = new ExtensionFilter("Image Files", "*.png", "*.gif",
+			"*.jpeg", "*.jpg");
 
 	/**
 	 * The width of images shown in the 'extra image' list for sculptures
@@ -239,7 +239,7 @@ public class CreateAuctionV2Controller {
 	 */
 	private Pair<String, Image> userSelectImage() {
 		FileChooser chooser = new FileChooser();
-		chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
+		chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
 		chooser.setTitle("Select Image");
 		File in = chooser.showOpenDialog(null);
 		if (!Validator.isFileValid(in))

@@ -8,6 +8,7 @@ import java.util.Collections;
 import cs.group11.Main;
 import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
+import cs.group11.interfaces.OnViewSubmit;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -44,7 +45,7 @@ public class EditProfileController {
     private Label username1;
     @FXML
     private Label username2;
-    private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", ".png", ".gif", ".jpeg", ".jpg");
+    private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.gif", "*.jpeg", "*.jpg");
     @FXML
     private TableView<Auction> removeFavouriteArtworks;
     @FXML
@@ -416,7 +417,7 @@ public class EditProfileController {
      */
     private String userSelectImage() {
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
+        chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
         chooser.setTitle("Select Image");
         File in = chooser.showOpenDialog(null);
 
@@ -526,9 +527,30 @@ public class EditProfileController {
      * Pop up a window to let user create avatar
      */
     public void drawAvatarClick() throws IOException {
+        String currentAvatarPath = user.getAvatarPath();
         Stage drawingStage = new Stage();
 
+        OnViewSubmit onSave = avatarPath -> {
+            try {
+                user.setAvatarPath((String) avatarPath);
+                MegaDB.save();
+                drawingStage.close();
+                Image img = new Image(user.getAvatarPath());
+                avatar.setImage(img);
+                avatar1.setImage(img);
+            } catch (NullPointerException e) {
+                System.out.println("Path not specified");
+                user.setAvatarPath(currentAvatarPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+
+        DrawController drawController = new DrawController();
+        drawController.setOnSave(onSave);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/drawer.fxml"));
+        loader.setController(drawController);
         Parent root = loader.load();
         drawingStage.setTitle("Drawing tool");
         drawingStage.setScene(new Scene(root));
@@ -607,8 +629,8 @@ public class EditProfileController {
     public void builtInAvatarClick() throws IOException {
         Stage stage = new Stage();
 
-        BuildInAvatarController.OnAvatarSubmit onAvatarSubmit = avatarPath -> {
-            user.setAvatarPath(avatarPath);
+        OnViewSubmit onAvatarSubmit = avatarPath -> {
+            user.setAvatarPath((String) avatarPath);
             try {
                 MegaDB.save();
             } catch (IOException e) {
