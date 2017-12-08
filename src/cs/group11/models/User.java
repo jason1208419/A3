@@ -1,5 +1,6 @@
 package cs.group11.models;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -251,6 +252,10 @@ public class User implements Validatable, Serializable {
 
         String str = builder.toString();
         return str;
+    }
+
+    public void save() throws IOException {
+        MegaDB.save();
     }
 
     @Override

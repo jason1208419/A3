@@ -2,7 +2,11 @@ package cs.group11.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +19,7 @@ import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
+import cs.group11.models.Bid;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
@@ -121,12 +126,15 @@ public class CreateAuctionV2Controller {
 
 	private String mainImagePath;
 	private User currentUser;
+    private List<String> sculptureImages;
 
 	/**
 	 * The controller initialize method$
 	 */
 	@FXML
 	protected void initialize() {
+        sculptureImages = new ArrayList<>();
+
 		this.currentUser = MegaDB.getLoggedInUser();
 		Image avatarImage = new Image(currentUser.getAvatarPath());
 		this.avatar1.setImage(avatarImage);
@@ -178,7 +186,13 @@ public class CreateAuctionV2Controller {
 
 		// Listen to clicks on create button and handle the click invoking
 		// createAuction();
-		create.setOnAction((e) -> createAuction());
+        create.setOnAction((e) -> {
+            try {
+                createAuction();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
 
 		// Set the default date of the date field to the current date.
 		creationDate.setValue(LocalDate.now());
@@ -191,8 +205,10 @@ public class CreateAuctionV2Controller {
 	private void handleAddExtraImage() {
 		Pair<String, Image> userSelection = userSelectImage();
 		if (!Validator.isNull(userSelection)) {
-			extraImages.getItems().add(userSelection);
-			extraImages.getSelectionModel().select(userSelection);
+            String imgPath = userSelection.getKey();
+            sculptureImages.add(imgPath);
+            extraImages.getItems().add(userSelection);
+            extraImages.getSelectionModel().select(userSelection);
 		}
 	}
 
@@ -263,9 +279,9 @@ public class CreateAuctionV2Controller {
 	 * @return an Auction object created using the data provided by the user.
 	 * @throw {@link InvalidDataException} if the input data is not valid.
 	 */
-	private void createAuction() {
-		if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
-				|| (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
+    private void createAuction() throws IOException {
+        if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
+                || (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
 			Alert alert = new Alert(AlertType.ERROR, "All fields must be completed before\ncreating the auction",
 					ButtonType.OK);
 			alert.show();
@@ -293,8 +309,22 @@ public class CreateAuctionV2Controller {
 			forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
 					artworkCreationDate.getYear(), auctionWidth, auctionLength);
 		}
-		 new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);//Automatically added to megadb
-	}
+        Auction auction = new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);//Automatically added to megadb
+        ViewAuctionController controller = new ViewAuctionController();
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
+        loader.setController(controller);
+
+        controller.setAuction(auction);
+
+
+        VBox box = loader.load();
+
+        box.prefHeightProperty().bind(rootBox.heightProperty());
+
+        rootBox.getChildren().setAll(box);
+    }
 
 	/**
 	 * Checks if any of the parameter TextInputControlls has no text (left blank)

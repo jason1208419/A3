@@ -154,14 +154,11 @@ public class EditProfileController {
             rootBox.getChildren().setAll(box);
         };
 
-        phoneIn.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    phoneIn.setText(newValue.replaceAll("[^\\d]", ""));
-                } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) {
-                    phoneIn.setText(phoneIn.getText().substring(0, UK_PHONE_MAX_LENGTH));
-                }
+        phoneIn.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                phoneIn.setText(newValue.replaceAll("[^\\d]", ""));
+            } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) {
+                phoneIn.setText(phoneIn.getText().substring(0, UK_PHONE_MAX_LENGTH));
             }
         });
         removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
@@ -285,7 +282,7 @@ public class EditProfileController {
                             favouriteArtworkList.remove(art);
                             user.removeFavouriteAuction(art);
                             try {
-                                MegaDB.save();
+                                user.save();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -358,7 +355,7 @@ public class EditProfileController {
                             favouriteUsersList.remove(user1);
                             user.removeFavouriteUser(user1);
                             try {
-                                MegaDB.save();
+                                user.save();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -514,7 +511,7 @@ public class EditProfileController {
         String currentAvatarPath = user.getAvatarPath();
         try {
             user.setAvatarPath(userSelectImage());
-            MegaDB.save();
+            user.save();
             Image avatarImage = new Image(user.getAvatarPath());
             this.avatar.setImage(avatarImage);
             this.avatar1.setImage(avatarImage);
@@ -537,7 +534,7 @@ public class EditProfileController {
         OnSubmitClick onSave = avatarPath -> {
             try {
                 user.setAvatarPath((String) avatarPath);
-                MegaDB.save();
+                user.save();
                 drawingStage.close();
                 Image img = new Image(user.getAvatarPath());
                 avatar.setImage(img);
@@ -602,7 +599,7 @@ public class EditProfileController {
         //save changes and change to profile page if user input valid postcode
         if (inputValid) {
             printUser();
-            MegaDB.save();
+            user.save();
 
             ProfileController profileCon = new ProfileController();
             profileCon.setLoginedUser(this.user);
@@ -636,7 +633,7 @@ public class EditProfileController {
         OnSubmitClick onAvatarSubmit = avatarPath -> {
             user.setAvatarPath((String) avatarPath);
             try {
-                MegaDB.save();
+                user.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
