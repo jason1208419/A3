@@ -26,8 +26,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-        user.addBid(this);
-        MegaDB.addBid(this);
+		user.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public Bid(double price, User user, Auction auction) {
@@ -40,8 +40,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-        user.addBid(this);
-        MegaDB.addBid(this);
+		user.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public User getUser() {
@@ -84,27 +84,26 @@ public class Bid implements Validatable {
 		if (Validator.isNull(auction)) {
 			throw new InvalidDataException("No auction set for this bid.");
 		}
+		if (!Validator.isNull(this.auction.getLastBid())) {
+			if (this.auction.getLastBid().getId() == this.user.getId()) {
+				throw new InvalidDataException("You are already the highest bidder.");
+			}
 
+			if (this.auction.getLastBid().getPrice() <= this.price) {
 
-        if (this.auction.getLastBid().getId() == this.user.getId()) {
+				throw new InvalidDataException("Bid must be greater than the previous bid");
+			}
 
-            throw new InvalidDataException("You are already the highest bidder.");
-        }
+			if (this.auction.getLastBid().getPrice() <= this.auction.getReservePrice()) {
 
-        if (this.auction.getLastBid().getPrice() <= this.price) {
+				throw new InvalidDataException("Bid must be greater than or equal to the reserve price");
+			}
+		}
 
-            throw new InvalidDataException("Bid must be greater than the previous bid");
-        }
+		if (this.auction.isCompleted()) {
 
-        if (this.auction.getLastBid().getPrice() <= this.auction.getReservePrice()) {
-
-            throw new InvalidDataException("Bid must be greater than or equal to the reserve price");
-        }
-
-        if (this.auction.isCompleted()) {
-
-            throw new InvalidDataException("Auction is finished. No more bids accepted.");
-        }
+			throw new InvalidDataException("Auction is finished. No more bids accepted.");
+		}
 
 	}
 }
