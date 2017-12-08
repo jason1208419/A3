@@ -78,27 +78,6 @@ public final class MegaDB {
 		bids.put(toAdd.getId(), toAdd);
 	}
 
-	public static Collection<User> searchByUser(String input) {
-		Set<User> results = new HashSet<>();
-		for (User user : users.values()) {
-			if (user.getUsername().contains(input) || user.getFirstname().contains(input)
-					|| user.getLastname().contains(input)) {
-				results.add(user);
-			}
-		}
-		return results;
-	}
-
-	public static Collection<Auction> searchByAuction(String input) {
-		Set<Auction> results = new HashSet<>();
-		for (Auction auc : auctions.values()) {
-			if (auc.getCreator().getUsername().contains(input) || auc.getArtwork().getName().contains(input)) {
-				results.add(auc);
-			}
-		}
-		return results;
-	}
-
 	@Deprecated // Added for test reasons only;
 	public static void clear() {
 		users.clear();
@@ -106,8 +85,20 @@ public final class MegaDB {
 		bids.clear();
 		artworks.clear();
 	}
-
+	// REMOVED, UNESSESARY!
 	/*
+	 * public static Collection<User> searchByUser(String input) { Set<User> results
+	 * = new HashSet<>(); for (User user : users.values()) { if
+	 * (user.getUsername().contains(input) || user.getFirstname().contains(input) ||
+	 * user.getLastname().contains(input)) { results.add(user); } } return results;
+	 * }
+	 * 
+	 * public static Collection<Auction> searchByAuction(String input) {
+	 * Set<Auction> results = new HashSet<>(); for (Auction auc : auctions.values())
+	 * { if (auc.getCreator().getUsername().contains(input) ||
+	 * auc.getArtwork().getName().contains(input)) { results.add(auc); } } return
+	 * results; }
+	 * 
 	 * DELETE IF NOT NEEDED
 	 * 
 	 * public static Collection<Auction> searchFinishedAuction(String input) {
