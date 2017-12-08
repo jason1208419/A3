@@ -49,12 +49,13 @@ public class Bid implements Validatable {
 
 	private static int getNextId() {
 		List<Bid> bids = MegaDB.getBids();
-		Bid lastBid = bids.get(bids.size() - 1);
-		if (lastBid == null) {
+
+		if (bids.size() == 0) {
 			return 0;
-		} else {
-			return lastBid.getId() + 1;
 		}
+
+		Bid lastBid = bids.get(bids.size() - 1);
+		return lastBid.getId() + 1;
 	}
 
 	public User getUser() {

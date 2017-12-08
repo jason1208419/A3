@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="317.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cs.group11.controllers.SignInController">
+<VBox prefHeight="317.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
         <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
             <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true"
@@ -40,8 +40,9 @@
                             </Label>
                             <TextField id="username" fx:id="usernameTXT" alignment="CENTER" prefHeight="30.0" prefWidth="210.0" />
                   </HBox>
-                      <Button id="signIn" fx:id="signInBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Sign In" />
-                      <Button id="shutDown" fx:id="shutDownBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Shut Down" />
+                      <Button id="signIn" onAction="#loginSubmit" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Sign In" />
+                      <Button id="signIn" onAction="#signupClick" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Sign Up" />
+                      <Button id="shutDown" onAction="#shutdown" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Shut Down" />
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" />
             </VBox>
       </HBox>

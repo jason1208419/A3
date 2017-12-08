@@ -41,12 +41,13 @@ public class Auction implements Validatable {
 
 	private static int getNextId() {
 		List<Auction> auctions = MegaDB.getAuctions();
-		Auction lastAuction = auctions.get(auctions.size() - 1);
-		if (lastAuction == null) {
+
+		if (auctions.size() == 0) {
 			return 0;
-		} else {
-			return lastAuction.getId() + 1;
 		}
+
+		Auction lastAuction = auctions.get(auctions.size() - 1);
+		return lastAuction.getId() + 1;
 	}
 
 	public Auction(int id, Date creationDate, User creator, int maxBids, double reservePrice, Artwork artwork) {

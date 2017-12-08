@@ -21,7 +21,6 @@ public abstract class Artwork implements Validatable {
 	public Artwork(String name, String description, String imagePath, String artist, int creationYear) {
 		this.id = getNextId();
 
-
 		this.name = name;
 		this.description = description;
 		this.imagePath = imagePath;
@@ -34,12 +33,13 @@ public abstract class Artwork implements Validatable {
 
 	private static int getNextId() {
 		List<Artwork> artworks = MegaDB.getArtworks();
-		Artwork lastArtwork = artworks.get(artworks.size() - 1);
-		if (lastArtwork == null) {
+
+		if (artworks.size() == 0) {
 			return 0;
-		} else {
-			return lastArtwork.getId() + 1;
 		}
+
+		Artwork lastArtwork = artworks.get(artworks.size() - 1);
+		return lastArtwork.getId() + 1;
 	}
 
 	public Artwork(int id, String name, String description, String imagePath, String artist, int creationYear) {

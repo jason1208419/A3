@@ -2,6 +2,9 @@ package cs.group11.controllers;
 
 import cs.group11.Main;
 import cs.group11.MegaDB;
+import cs.group11.interfaces.OnAction;
+import cs.group11.interfaces.OnCancelClick;
+import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.models.Address;
 import cs.group11.models.User;
 import javafx.collections.FXCollections;
@@ -12,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,72 +38,44 @@ public class SignInController {
 
     private List<User> users;
 
+    private OnSubmitClick onSubmitClick;
+    private OnAction onSignupClick;
 
     @FXML
     protected void initialize() {
-
         users = MegaDB.getUsers();
+    }
 
-        /*
-        String imagePath = "https://media-cdn.tripadvisor.com/media/photo-s/0d/90/b1/d5/las-vegas-welcome-sign.jpg";
-        Address address1 = new Address(new String[]{"313 Presli", "Singleton Park", "Swansea"}, "SA1 4PU");
-        User user1 = new User("Admin", "Kieran", "Phillips", "075828471938", address1, imagePath);
+    public void signupClick() {
+        onSignupClick.call(null);
+    }
 
-        users.add(user1);
+    public void loginSubmit() {
+        String username = usernameTXT.getText();
+        User user = MegaDB.login(username);
 
-        Address address2 = new Address(new String[]{"43 Kings Road", "Singleton Park", "Cardiff"}, "CF33 6GH");
-        User user2 = new User("Kings head", "Oliver", "Bourne", "032502353325", address2, imagePath);
+        if (user != null) {
+            onSubmitClick.submit(user);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("User login error");
+            alert.setHeaderText("User could not be found.");
+            alert.setContentText("Please make sure you typed in your username correctly and that you have " +
+                    "registered for an account.");
 
-        users.add(user2);
+            alert.showAndWait();
+        }
+    }
 
-        Address address3 = new Address(new String[]{"313 Presli", "fafasfafds", "Swadsfsddsnsea"}, "SA1 4PU");
-        User user3 = new User("User", "Kieransdfsfsd", "Phillipssdfsf", "07582847193843664", address1, imagePath);
+    public void shutdown() {
+        System.exit(0);
+    }
 
-        users.add(user3);
-        */
+    public void setOnSubmitClick(OnSubmitClick onSubmitClick) {
+        this.onSubmitClick = onSubmitClick;
+    }
 
-        EventHandler<ActionEvent> onShutDown = event -> System.exit(0);
-
-        shutDownBtn.setOnAction(onShutDown);
-
-        EventHandler<ActionEvent> onLoginClick = new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                String username = usernameTXT.getText();
-                User user = MegaDB.login(username);
-
-                if (user != null) {
-                    System.out.println("Welcome user");
-                    loginSuccess();
-                } else {
-                    System.out.println("User not found");
-                }
-            }
-
-
-            private void loginSuccess() {
-                try {
-
-                    AuctionListController controller = new AuctionListController();
-
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-                    loader.setController(controller);
-                    Parent root = loader.load();
-                    Scene mainScreen = new Scene(root, 600, 500);
-                    Stage primaryStage = Main.getPrimaryStage();
-                    primaryStage.setScene(mainScreen);
-
-                } catch (IOException e) {
-                    System.out.println("Failed to load fxml file");
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        signInBtn.setOnAction(onLoginClick);
-
-
+    public void setOnSignupClick(OnAction onSignupClick) {
+        this.onSignupClick = onSignupClick;
     }
 }

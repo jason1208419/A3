@@ -55,12 +55,13 @@ public class User implements Validatable, Serializable {
 
     private static int getNextId() {
         List<User> users = MegaDB.getUsers();
-        User lastUser = users.get(users.size() - 1);
-        if (lastUser == null) {
+
+        if (users.size() == 0) {
             return 0;
-        } else {
-            return lastUser.getId() + 1;
         }
+
+        User lastUser = users.get(users.size() - 1);
+        return lastUser.getId() + 1;
     }
 
     public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
