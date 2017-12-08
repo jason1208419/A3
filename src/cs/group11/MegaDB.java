@@ -25,9 +25,16 @@ public final class MegaDB {
 	private static HashMap<Integer, User> users = new HashMap<>();
 	private static HashMap<Integer, Bid> bids = new HashMap<>();
 
+	/**
+	 * Private constructor to disable instantiation from outside this class (Static access class)
+	 */
 	private MegaDB() {
 	}// Prevent instantiation of class.
 
+	/**
+	 * load data using {@link FileHandler}.
+	 * To be run once on program startup.
+	 */
 	public static void load() throws IOException {
 		if (DATA_DIR.listFiles() == null || DATA_DIR.listFiles().length != 4) {
 			// Missing file(s), invoke save to create
@@ -37,10 +44,13 @@ public final class MegaDB {
 		artworks = FileHandler.readArtworks(ARTWORK_FILE);
 		auctions = FileHandler.readAuction(AUCTION_FILE, users, artworks);
 		bids = FileHandler.readBids(BID_FILE, users, auctions);
-
+		// Populate favourite users for the loaded users.
 		FileHandler.loadFavouriteUserAuctions(USER_FILE, users, auctions);
 	}
 
+	/**
+	 * Save all the data from memory to file.
+	 */
 	public static void save() throws IOException {
 		FileHandler.writeBids(bids, BID_FILE);
 		FileHandler.writeUsers(users, USER_FILE);
@@ -48,31 +58,58 @@ public final class MegaDB {
 		FileHandler.writeAuction(auctions, AUCTION_FILE);
 	}
 
+	/**
+	 * Get a list of all auctions.
+	 * @return a clone of the data as a modifiable list.
+	 */
 	public static List<Auction> getAuctions() {
 		return new ArrayList<>(auctions.values());
 	}
 
+	/**
+	 * Get a list of all users.
+	 * @return a clone of the data as a modifiable list. 
+	 */
 	public static List<User> getUsers() {
 		return new ArrayList<>(users.values());
 	}
 
+	/**
+	 * Get a list of all auctions.
+	 * @return a clone of the data as a modifiable list.
+	 */
 	public static List<Artwork> getArtworks() {
 		return new ArrayList<>(artworks.values());
 	}
 
+	/**
+	 * Add an auction to the database
+	 * Warning: Same ids will result in overrides...
+	 */
 	public static void addAuction(Auction toAdd) {
-		toAdd.validate();// Only store valid data in the databse
 		auctions.put(toAdd.getId(), toAdd);
 	}
 
+	/**
+	 * Add a user to the database
+	 * Warning: Same ids will result in overrides...
+	 */
 	public static void addUser(User toAdd) {
 		users.put(toAdd.getId(), toAdd);
 	}
 
+	/**
+	 * Add an artwork to the database
+	 * Warning: Same ids will result in overrides...
+	 */
 	public static void addArtwork(Artwork toAdd) {
 		artworks.put(toAdd.getId(), toAdd);
 	}
 
+	/**
+	 * Add a bid to the database
+	 * Warning: Same ids will result in overrides...
+	 */
 	public static void addBid(Bid toAdd) {
 		bids.put(toAdd.getId(), toAdd);
 	}
@@ -84,25 +121,4 @@ public final class MegaDB {
 		bids.clear();
 		artworks.clear();
 	}
-	// REMOVED, UNESSESARY!
-	/*
-	 * public static Collection<User> searchByUser(String input) { Set<User> results
-	 * = new HashSet<>(); for (User user : users.values()) { if
-	 * (user.getUsername().contains(input) || user.getFirstname().contains(input) ||
-	 * user.getLastname().contains(input)) { results.add(user); } } return results;
-	 * }
-	 * 
-	 * public static Collection<Auction> searchByAuction(String input) {
-	 * Set<Auction> results = new HashSet<>(); for (Auction auc : auctions.values())
-	 * { if (auc.getCreator().getUsername().contains(input) ||
-	 * auc.getArtwork().getName().contains(input)) { results.add(auc); } } return
-	 * results; }
-	 * 
-	 * DELETE IF NOT NEEDED
-	 * 
-	 * public static Collection<Auction> searchFinishedAuction(String input) {
-	 * Set<Auction> results = new HashSet<>(); for (Auction auc : auctions) { if
-	 * (auc.isCompleted()) { results.add(auc); } } return results; }
-	 */
-
 }
