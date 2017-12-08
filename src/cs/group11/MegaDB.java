@@ -3,6 +3,7 @@ package cs.group11;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -28,6 +29,28 @@ public final class MegaDB {
 	 */
 	private MegaDB() {
 	}// Prevent instantiation of class.
+
+    private static User loggedInUser;
+
+    private static boolean isUserLoggedIn() {
+        return loggedInUser != null;
+    }
+
+    public static User login(String username) {
+        for (User user : getUsers()) {
+            if (user.getUsername().equals(username)) {
+                loggedInUser = user;
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    private static User getLoggedInUser() {
+        return loggedInUser;
+    }
+
 
 	/**
 	 * load data using {@link FileHandler}.
