@@ -3,7 +3,7 @@ package cs.group11.controllers;
 import cs.group11.drawing.tools.AbstractDrawingTool;
 import cs.group11.drawing.tools.CircleBrush;
 import cs.group11.drawing.tools.LineTool;
-import cs.group11.interfaces.OnViewSubmit;
+import cs.group11.interfaces.OnSubmitClick;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -75,7 +75,7 @@ public class DrawController {
 	private AbstractDrawingTool selectedTool;
 	private int CANVAS_WIDTH = 388;
 	private int CANVAS_HEIGHT = 368;
-	private OnViewSubmit onViewSubmit;
+	private OnSubmitClick onViewSubmit;
 
 	/**
 	 * Initialize the GUI
@@ -185,7 +185,7 @@ public class DrawController {
 		return null;
 	}
 
-	public void setOnSave(OnViewSubmit onViewSubmit) {
+	public void setOnSave(OnSubmitClick onViewSubmit) {
 		this.onViewSubmit = onViewSubmit;
 	}
 

@@ -1,5 +1,5 @@
 package cs.group11.interfaces;
 
-public interface OnViewCancel {
+public interface OnCancelClick {
     void cancel(Object o);
 }

@@ -8,7 +8,7 @@ import java.util.Collections;
 import cs.group11.Main;
 import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
-import cs.group11.interfaces.OnViewSubmit;
+import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -534,7 +534,7 @@ public class EditProfileController {
         String currentAvatarPath = user.getAvatarPath();
         Stage drawingStage = new Stage();
 
-        OnViewSubmit onSave = avatarPath -> {
+        OnSubmitClick onSave = avatarPath -> {
             try {
                 user.setAvatarPath((String) avatarPath);
                 MegaDB.save();
@@ -633,7 +633,7 @@ public class EditProfileController {
     public void builtInAvatarClick() throws IOException {
         Stage stage = new Stage();
 
-        OnViewSubmit onAvatarSubmit = avatarPath -> {
+        OnSubmitClick onAvatarSubmit = avatarPath -> {
             user.setAvatarPath((String) avatarPath);
             try {
                 MegaDB.save();

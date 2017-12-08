@@ -1,6 +1,6 @@
 package cs.group11.controllers;
 
-import cs.group11.interfaces.OnViewSubmit;
+import cs.group11.interfaces.OnSubmitClick;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +25,7 @@ public class BuildInAvatarController {
     private ImageView avatar4;
     @FXML
     private ImageView avatar5;
-    private OnViewSubmit onViewSubmit;
+    private OnSubmitClick onViewSubmit;
 
     @FXML
     protected void initialize() {
@@ -76,7 +76,7 @@ public class BuildInAvatarController {
         });
     }
 
-    public void setOnAvatarSubmit(OnViewSubmit onViewSubmit) {
+    public void setOnAvatarSubmit(OnSubmitClick onViewSubmit) {
         this.onViewSubmit = onViewSubmit;
     }
 

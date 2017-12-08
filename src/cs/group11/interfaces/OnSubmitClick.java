@@ -1,5 +1,5 @@
 package cs.group11.interfaces;
 
-public interface OnViewSubmit {
+public interface OnSubmitClick {
     void submit(Object o);
 }
