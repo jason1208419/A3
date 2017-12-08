@@ -18,7 +18,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -72,6 +74,12 @@ public class ViewAuctionController {
 
 	@FXML
 	private VBox rootBox;
+
+    @FXML
+    private CheckBox favUserBtn;
+
+    @FXML
+    private CheckBox favArtBtn;
 
 	private OnHeaderAction headerAction;
 	private User user;
@@ -147,7 +155,28 @@ public class ViewAuctionController {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		this.auctionCreation.setText("Auction creation: " + dateFormat.format(createdDate));
 
-	}
+        /**
+         * Adds favourite user to MegaDB
+         */
+        EventHandler<ActionEvent> onFavUserClick = (ActionEvent event) -> {
+            if (!favUserBtn.isSelected()) {
+                MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
+                try {
+                    user.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        favUserBtn.setOnAction(onFavUserClick);
+
+        for (User user : user.getFavouriteUsers()) {
+            if (user.getId() == (this.auction.getCreator().getId())) {
+                favUserBtn.setSelected(true);
+            }
+        }
+    }
 
 	public void setHeaderAction(OnHeaderAction headerAction) {
 		this.headerAction = headerAction;
