@@ -98,7 +98,7 @@ public class ProfileController {
 
     @FXML
     private VBox rootBox;
-    //private EditProfileController editProfileCon = new EditProfileController();
+
 
     private User loginedUser;
     private User viewingUser;

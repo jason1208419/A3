@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.sun.media.sound.InvalidDataException;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -126,7 +127,7 @@ public class CreateAuctionV2Controller {
 	 */
 	@FXML
 	protected void initialize() {
-		this.currentUser = Main.getCurrentUser();
+		this.currentUser = MegaDB.getLoggedInUser();
 		Image avatarImage = new Image(currentUser.getAvatarPath());
 		this.avatar1.setImage(avatarImage);
 		this.username1.setText(currentUser.getUsername());

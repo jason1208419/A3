@@ -67,21 +67,10 @@ public class SignInController {
             @Override
             public void handle(ActionEvent event) {
                 String username = usernameTXT.getText();
+                User user = MegaDB.login(username);
 
-                boolean userFound = false;
-
-                int index = -1;
-                for (int i = 0; i < users.size(); i++) {
-                    System.out.println(i);
-                    if (Objects.equals(username, users.get(i).getUsername())) {
-                        userFound = true;
-                        index = i;
-                    }
-                }
-
-                if (userFound) {
+                if (user != null) {
                     System.out.println("Welcome user");
-                    Main.setCurrentUser(users.get(index));
                     loginSuccess();
                 } else {
                     System.out.println("User not found");

@@ -47,8 +47,8 @@ public final class MegaDB {
         return null;
     }
 
-    private static User getLoggedInUser() {
-        return loggedInUser;
+	public static User getLoggedInUser() {
+		return loggedInUser;
     }
 
 

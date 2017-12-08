@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Main extends Application {
     private static Stage primaryStage;
-    private static User currentUser;
+
 
     public static void main(String[] args) throws IOException {
         MegaDB.load();
@@ -27,14 +27,6 @@ public class Main extends Application {
 
     private void setPrimaryStage(Stage primStage) {
         primaryStage = primStage;
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(User curUser) {
-        currentUser = curUser;
     }
 
 

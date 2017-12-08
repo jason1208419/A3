@@ -96,7 +96,7 @@ public class EditProfileController {
     @FXML
     protected void initialize() {
         //set up the basic details on screen
-        this.user = Main.getCurrentUser();
+        this.user = MegaDB.getLoggedInUser();
         Image avatarImage = new Image(user.getAvatarPath());
         this.avatar.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
