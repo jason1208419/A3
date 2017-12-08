@@ -20,7 +20,10 @@ import cs.group11.models.artworks.Sculpture;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -28,6 +31,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -173,11 +177,12 @@ public class CreateAuctionV2Controller {
 		// Set the image
 		image.setImage(defaultAuctionimage);
 		image.setOnMouseClicked((e) -> handleImageSelection());
-		
-		// Listen to clicks on create button and handle the click invoking createAuction();
+
+		// Listen to clicks on create button and handle the click invoking
+		// createAuction();
 		create.setOnAction((e) -> createAuction());
 
-		//Set the default date of the date field to the current date.
+		// Set the default date of the date field to the current date.
 		creationDate.setValue(LocalDate.now());
 	}
 
@@ -226,8 +231,8 @@ public class CreateAuctionV2Controller {
 		for (TextField field : textFields) {
 			field.textProperty().addListener((observable, oldValue, newValue) -> {
 				Matcher m = NON_NUMERICAL_INPUT_PATTERN.matcher(newValue);
-				if (m.find()) {//If there is non numeric input in the field
-					field.setText(m.replaceAll(""));//remove it
+				if (m.find()) {// If there is non numeric input in the field
+					field.setText(m.replaceAll(""));// remove it
 				}
 			});
 		}
@@ -260,7 +265,14 @@ public class CreateAuctionV2Controller {
 	 * @return an Auction object created using the data provided by the user.
 	 * @throw {@link InvalidDataException} if the input data is not valid.
 	 */
-	private Auction createAuction() {
+	private void createAuction() {
+		if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
+				|| (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
+			Alert alert = new Alert(AlertType.ERROR, "All fields must be completed before\ncreating the auction",
+					ButtonType.OK);
+			alert.show();
+			return;
+		}
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
 		double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
@@ -283,7 +295,21 @@ public class CreateAuctionV2Controller {
 			forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
 					artworkCreationDate.getYear(), auctionWidth, auctionLength);
 		}
-		return new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);
+		 new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);//Automatically added to megadb
+	}
+
+	/**
+	 * Checks if any of the parameter TextInputControlls has no text (left blank)
+	 * @param tf The text input controlls to check (TextField, TextArea etc are subclasses)
+	 * @return true if at least one of them is empty, false otherwise.
+	 */
+	private boolean isAnyEmpty(TextInputControl... tf) {
+		for (TextInputControl t : tf) {
+			if (t.getText().trim().isEmpty())
+				return true;
+		}
+		return false;
+
 	}
 
 	/**

@@ -606,4 +606,36 @@ public class TestFileHandler {
             }
         }
     }
+
+    @Test
+    public void testCommaEscape() {
+
+
+        String expectedString = "\\u002Cunicodetext.";
+        String result = FileHandler.escape(",unicodetext.");
+        assertThat(result, is(expectedString));
+    }
+
+    @Test
+    public void testCommaUnescape() {
+        String expectedString = ",unicodetext.";
+        String result = FileHandler.unescape("\\u002Cunicodetext.");
+        assertThat(result, is(expectedString));
+    }
+
+    @Test
+    public void testSemiColonEscape() {
+        String expectedString = "\\u003Bunicodetext.";
+        String result = FileHandler.escape(";unicodetext.");
+        assertThat(result, is(expectedString));
+    }
+
+    @Test
+    public void testSemiColonUnescape() {
+        String expectedString = ";unicodetext.";
+        String result = FileHandler.unescape("\\u003Bunicodetext.");
+        assertThat(result, is(expectedString));
+    }
+
+
 }
