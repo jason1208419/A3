@@ -2,9 +2,7 @@ package cs.group11;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -96,6 +94,7 @@ public final class MegaDB {
 	 * Warning: Same ids will result in overrides...
 	 */
 	public static void addAuction(Auction toAdd) {
+		toAdd.validate();// Only store valid data in the databse
 		auctions.put(toAdd.getId(), toAdd);
 	}
 
