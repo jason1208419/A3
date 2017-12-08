@@ -116,7 +116,12 @@ public class ViewAuctionController {
 		this.sellerAvatarImageView.setImage(avatarImage);
 
 		// Get most recent bid price
-		double lastBid = this.auction.getLastBid().getPrice();
+		double lastBid;
+		if (this.auction.getLastBid() == null) {
+			lastBid = auction.getReservePrice();
+		} else {
+			lastBid = this.auction.getLastBid().getPrice();
+		}
 
 		this.currentPrice.setText("Current price: " + String.valueOf(lastBid));
 		this.currentPrice2.setText("Current price: " + String.valueOf(lastBid));

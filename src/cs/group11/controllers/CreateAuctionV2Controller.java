@@ -295,7 +295,6 @@ public class CreateAuctionV2Controller {
 		double auctionLength = parseDecimal(this.length.getText());// length
 		LocalDate artworkCreationDate = this.creationDate.getValue();// creation
 		String auctionDescription = description.getText(); // date
-
 		Artwork forAuctioning;
 		if (sculptureRadio.isSelected()) {
 			double auctionDepth = parseDecimal(this.depth.getText());// depth
@@ -391,5 +390,4 @@ public class CreateAuctionV2Controller {
 		box.prefHeightProperty().bind(rootBox.heightProperty());
 		rootBox.getChildren().setAll(box);
 	}
-
 }
