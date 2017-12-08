@@ -8,6 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import com.sun.media.sound.InvalidDataException;
+
 import cs.group11.Main;
 import cs.group11.helpers.Validator;
 import cs.group11.models.Artwork;
@@ -15,37 +17,55 @@ import cs.group11.models.Auction;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * @author Filippos Pantekis
+ * The controller class for createAuction GUI
+ */
 public class CreateAuctionV2Controller {
 
+	/**
+	 * A Pattern to match non numecial inputs	
+	 */
 	private static final Pattern NON_NUMERICAL_INPUT_PATTERN = Pattern.compile("[^\\d.]+");
 
+	/**
+	 * The default auction image.
+	 */
 	private static final Image defaultAuctionimage = new Image(
 			ClassLoader.getSystemResourceAsStream("res/createAuctionDefaultIcon.png"));
 
+	/**
+	 * Supported image formats for file selection
+	 */
 	private static final ExtensionFilter IMAGE_FILE_EXTENTIONS = new ExtensionFilter("Image Files", ".png", ".gif",
 			".jpeg", ".jpg");
 
-	private static final int DEFAULT_WINDOW_HEIGHT = 430;
-	private static final int DEFAULT_WINDOW_WIDTH = 270;
-
+	/**
+	 * The width of images shown in the 'extra image' list for sculptures
+	 */
 	private static final int DEFAULT_EXTRA_IMAGE_LIST_CELL_WIDTH = 100;
+	/**
+	 * The height of images shown in the extra image list for sculptures
+	 */
 	private static final int DEFAULT_EXTRA_IMAGE_LIST_CELL_HEIGHT = 100;
 
 	@FXML
@@ -98,6 +118,9 @@ public class CreateAuctionV2Controller {
 	private String mainImagePath;
 	private User currentUser;
 
+	/**
+	 * The controller initialize method$
+	 */
 	@FXML
 	protected void initialize() {
 		this.currentUser = Main.getCurrentUser();
@@ -139,26 +162,28 @@ public class CreateAuctionV2Controller {
 			}
 		});
 
-		// set pane min width and height
-		//mainPane.setMinWidth(DEFAULT_WINDOW_WIDTH);
-		//mainPane.setMinHeight(DEFAULT_WINDOW_HEIGHT);
-
 		// Setup the toggle group for the radiobuttons.
 		ToggleGroup radioGroup = new ToggleGroup();
 		sculptureRadio.setToggleGroup(radioGroup);
 		paintingRadio.setToggleGroup(radioGroup);
-		sculptureRadio.selectedProperty().addListener((observVal, oldState, newState) -> sculptureInputs.setVisible(sculptureRadio.isSelected()));
+		sculptureRadio.selectedProperty().addListener(
+				(observVal, oldState, newState) -> sculptureInputs.setVisible(sculptureRadio.isSelected()));
 
 		// Set the image
 		image.setImage(defaultAuctionimage);
 		image.setOnMouseClicked((e) -> handleImageSelection());
-
+		
+		// Listen to clicks on create button and handle the click invoking createAuction();
 		create.setOnAction((e) -> createAuction());
 
+		//Set the default date of the date field to the current date.
 		creationDate.setValue(LocalDate.now());
 	}
 
-
+	/**
+	 * input an image from the user, and insert it into the
+	 * 'extra images' list for the sculpture prespective
+	 */
 	private void handleAddExtraImage() {
 		Pair<String, Image> userSelection = userSelectImage();
 		if (!Validator.isNull(userSelection)) {
@@ -167,6 +192,9 @@ public class CreateAuctionV2Controller {
 		}
 	}
 
+	/**
+	 * handle the selection of an image from the user.
+	 */
 	private void handleImageSelection() {
 		Pair<String, Image> selected = userSelectImage();
 		if (!Validator.isNull(selected)) {
@@ -189,17 +217,26 @@ public class CreateAuctionV2Controller {
 		}
 	}
 
+	/**
+	 * Makes a field only accept decimal input.
+	 * @param textFields
+	 */
 	private void makeFieldsNumeric(TextField... textFields) {
 		for (TextField field : textFields) {
 			field.textProperty().addListener((observable, oldValue, newValue) -> {
 				Matcher m = NON_NUMERICAL_INPUT_PATTERN.matcher(newValue);
-				if (m.find()) {
-					field.setText(m.replaceAll(""));
+				if (m.find()) {//If there is non numeric input in the field
+					field.setText(m.replaceAll(""));//remove it
 				}
 			});
 		}
 	}
 
+	/**
+	 * Prompts the user to select an image from the local filesystem.
+	 * @return a Pair of image and String where string represents the path
+	 * of the image in the filesystem and the image object is the loaded image.
+	 */
 	private Pair<String, Image> userSelectImage() {
 		FileChooser chooser = new FileChooser();
 		chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
@@ -210,6 +247,11 @@ public class CreateAuctionV2Controller {
 		return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
 	}
 
+	/**
+	 * Create an auction based on data inputed by the user
+	 * @return an Auction object created using the data provided by the user.
+	 * @throw {@link InvalidDataException} if the input data is not valid.
+	 */
 	private Auction createAuction() {
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
@@ -236,18 +278,26 @@ public class CreateAuctionV2Controller {
 		return new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);
 	}
 
+	/**
+	 * Get the extra image paths.
+	 * @return a List of String with the local path of each extra image in it.
+	 */
 	private List<String> getExtraImagePaths() {
 		// Take all images, map them to just the path and return the new list.
 		return extraImages.getItems().stream().map(Pair::getKey).collect(Collectors.toList());
 	}
 
+	/**
+	 * Convert a String to a double
+	 * @param str the input string
+	 * @return a double produced by parsing this string.
+	 */
 	private double parseDecimal(String str) {
 		return Double.parseDouble(str);
 	}
 
 	public void viewAuctionClick() throws IOException {
 		AuctionListController controller = new AuctionListController();
-
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
 		loader.setController(controller);
@@ -280,22 +330,4 @@ public class CreateAuctionV2Controller {
 		rootBox.getChildren().setAll(box);
 	}
 
-	// THIS WILL BE DELETED! JUST FOR TESTING PURPOSES!
-	public static class Test extends Application {
-
-		@Override
-		public void start(Stage s) throws Exception {
-			FXMLLoader l = new FXMLLoader();
-			Pane p = l.load(ClassLoader.getSystemResourceAsStream("cs/group11/views/createAuctionV2.fxml"));
-			s.setScene(new Scene(p));
-			s.setMinWidth(p.getMinWidth());
-			s.setMinHeight(p.getMinHeight());
-			s.show();
-		}
-
-		public static void main(String[] args) {
-			launch(args);
-		}
-
-	}
 }

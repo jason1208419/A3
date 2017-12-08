@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" xmlns="http://javafx.com/javafx/8.0.121">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBox" xmlns="http://javafx.com/javafx/8.0.121" >
     <HBox alignment="CENTER_LEFT" prefHeight="8.0" prefWidth="752.0" VBox.vgrow="NEVER">
         <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
             <ImageView fx:id="logo" fitHeight="49.0" fitWidth="173.0" pickOnBounds="true" preserveRatio="true"
