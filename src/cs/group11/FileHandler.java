@@ -118,13 +118,13 @@ public final class FileHandler {
 		int userId = Integer.parseInt(csvLine[0]);
 		Date lastLogin = new Date(Long.parseLong(csvLine[1]));
 
-		String username = csvLine[2];
-		String firstname = csvLine[3];
-		String lastname = csvLine[4];
-		String telNo = csvLine[5];
+		String username = FileHandler.unescape(csvLine[2]);
+		String firstname = FileHandler.unescape(csvLine[3]);
+		String lastname = FileHandler.unescape(csvLine[4]);
+		String telNo = FileHandler.unescape(csvLine[5]);
 
-		Address address = new Address(csvLine[6].split(";"), csvLine[7]);
-		String avatarPath = csvLine[8];
+		Address address = new Address(FileHandler.unescape(csvLine[6]).split(";"), FileHandler.unescape(csvLine[7]));
+		String avatarPath = FileHandler.unescape(csvLine[8]);
 
 		return new User(userId, lastLogin, username, firstname, lastname, telNo, address, avatarPath);
 	}
@@ -269,10 +269,10 @@ public final class FileHandler {
 		String[] csvLine = line.split(",");
 
 		int id = Integer.parseInt(csvLine[1]);
-		String title = csvLine[2];
-		String description = csvLine[3].equals("null") ? null : csvLine[3];
-		String imagePath = csvLine[4];
-		String artist = csvLine[5];
+		String title = FileHandler.unescape(csvLine[2]);
+		String description = csvLine[3].equals("null") ? null : FileHandler.unescape(csvLine[3]);
+		String imagePath = FileHandler.unescape(csvLine[4]);
+		String artist = FileHandler.unescape(csvLine[5]);
 		int creationYear = Integer.parseInt(csvLine[6]);
 		double width = Double.parseDouble(csvLine[7]);
 		double height = Double.parseDouble(csvLine[8]);
@@ -284,19 +284,19 @@ public final class FileHandler {
 		String[] csvLine = line.split(",");
 
 		int id = Integer.parseInt(csvLine[1]);
-		String title = csvLine[2];
-		String description = csvLine[3].equals("null") ? null : csvLine[3];
-		String imagePath = csvLine[4];
-		String artist = csvLine[5];
+		String title = FileHandler.unescape(csvLine[2]);
+		String description = csvLine[3].equals("null") ? null : FileHandler.unescape(csvLine[3]);
+		String imagePath = FileHandler.unescape(csvLine[4]);
+		String artist = FileHandler.unescape(csvLine[5]);
 		int creationYear = Integer.parseInt(csvLine[6]);
 		double width = Double.parseDouble(csvLine[7]);
 		double height = Double.parseDouble(csvLine[8]);
 		double depth = Double.parseDouble(csvLine[9]);
-		String material = csvLine[10];
+		String material = FileHandler.unescape(csvLine[10]);
 
 		List<String> photos = csvLine[11].equals("[]")
 			? new ArrayList<>()
-			: Arrays.asList(csvLine[11].split(";"));
+				: Arrays.asList(FileHandler.unescape(csvLine[11]).split(";"));
 
 		return new Sculpture(id, title, description, imagePath, artist, creationYear, width, height, depth, material,
 				photos);

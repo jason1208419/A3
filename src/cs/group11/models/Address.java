@@ -2,6 +2,7 @@ package cs.group11.models;
 
 import java.util.regex.Pattern;
 
+import cs.group11.FileHandler;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
@@ -49,11 +50,11 @@ public class Address implements Validatable {
 		StringBuilder builder = new StringBuilder();
 
 		for (String addressLine : this.lines) {
-			builder.append(addressLine).append(";");
+			builder.append(FileHandler.escape(addressLine)).append(";");
 		}
 		builder.append(",");
 
-		builder.append(this.postcode).append(",");
+		builder.append(FileHandler.escape(this.postcode)).append(",");
 
 		return builder.toString();
 	}

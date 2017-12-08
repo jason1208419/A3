@@ -26,8 +26,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-        user.addBid(this);
-        MegaDB.addBid(this);
+		user.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public Bid(double price, User user, Auction auction) {
@@ -40,8 +40,8 @@ public class Bid implements Validatable {
 		this.validate();
 
 		auction.addBid(this);
-        user.addBid(this);
-        MegaDB.addBid(this);
+		user.addBid(this);
+		MegaDB.addBid(this);
 	}
 
 	public User getUser() {
@@ -85,8 +85,8 @@ public class Bid implements Validatable {
 			throw new InvalidDataException("No auction set for this bid.");
 		}
 
-
-        if (this.auction.getLastBid().getId() == this.user.getId()) {
+		/*
+		if (this.auction.getLastBid().getId() == this.user.getId()) {
 
             throw new InvalidDataException("You are already the highest bidder.");
         }
@@ -105,6 +105,7 @@ public class Bid implements Validatable {
 
             throw new InvalidDataException("Auction is finished. No more bids accepted.");
         }
+        */
 
 	}
 }

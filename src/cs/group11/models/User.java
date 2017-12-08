@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cs.group11.FileHandler;
 import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
@@ -211,11 +212,11 @@ public class User implements Validatable, Serializable {
         builder.append(this.id).append(",");
         builder.append(this.lastLogin.getTime()).append(",");
         builder.append(this.username).append(",");
-        builder.append(this.firstname).append(",");
-        builder.append(this.lastname).append(",");
+        builder.append(FileHandler.escape(this.firstname)).append(",");
+        builder.append(FileHandler.escape(this.lastname)).append(",");
         builder.append(this.telNo).append(",");
         builder.append(this.address.toCsv());
-        builder.append(this.avatarPath).append(",");
+        builder.append(FileHandler.escape(this.avatarPath)).append(",");
 
         if (this.favouriteUsers.size() == 0) {
             builder.append("[]");
