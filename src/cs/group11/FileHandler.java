@@ -8,6 +8,28 @@ import java.util.*;
 
 public final class FileHandler {
 
+    private static final String COMMA_ESCAPE_CHAR = "\\u002C";
+    private static final String SEMICOLON_ESCAPE_CHAR = "\\u003B";
+    //private static final String COMMA_ESCAPE_CHAR = "%";
+    //private static final String SEMICOLON_ESCAPE_CHAR = "&";
+
+    public static String escape(String line) {
+        String escaped = line
+                .replace(",", COMMA_ESCAPE_CHAR)
+                .replace(";", SEMICOLON_ESCAPE_CHAR);
+
+        return escaped;
+    }
+
+    public static String unescape(String line) {
+        String unescaped = line
+                .replace(COMMA_ESCAPE_CHAR, ",")
+                .replace(SEMICOLON_ESCAPE_CHAR, ";");
+
+        return unescaped;
+
+    }
+
 	public static List<String> readLines(File file) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		List<String> lines = new ArrayList<>();
