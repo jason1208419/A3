@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
 import cs.group11.interfaces.OnHeaderAction;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -145,8 +146,9 @@ public class ViewAuctionController {
         Date createdDate = auction.getCreationDate();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         this.auctionCreation.setText("Auction creation: " + dateFormat.format(createdDate));
+    }
 
-        EventHandler<ActionEvent> onButtonClick = (ActionEvent event) -> previousScreen();
+
 
 	public void setHeaderAction(OnHeaderAction headerAction) {
 		this.headerAction = headerAction;

@@ -57,6 +57,7 @@ public class AuctionListController {
     private FilteredList<Auction> filteredAuctions;
 
     private User user;
+    private OnHeaderAction headerAction;
 
     @FXML
     /**
