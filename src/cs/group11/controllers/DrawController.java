@@ -179,7 +179,7 @@ public class DrawController {
 			WritableImage writableImage = new WritableImage(CANVAS_WIDTH, CANVAS_HEIGHT);
 			canvas.snapshot(null, writableImage);
 			RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-			ImageIO.write(renderedImage, "jpg", file);
+			ImageIO.write(renderedImage, "png", file);
 			return file.toURI().toString();
 		}
 		return null;

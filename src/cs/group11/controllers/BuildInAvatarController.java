@@ -7,12 +7,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class BuildInAvatarController {
-    private final String AVATAR0_PATH = "http://pixabay.com/static/img/no_hotlinking.png";
-    private final String AVATAR1_PATH = "res/avatars/creeper.jpg";
-    private final String AVATAR2_PATH = "res/avatars/creeper.jpg";
-    private final String AVATAR3_PATH = "res/avatars/creeper.jpg";
-    private final String AVATAR4_PATH = "res/avatars/creeper.jpg";
-    private final String AVATAR5_PATH = "res/avatars/creeper.jpg";
+    private final String AVATAR0_PATH = "res/avatars/avatar0.png";
+    private final String AVATAR1_PATH = "res/avatars/avatar1.png";
+    private final String AVATAR2_PATH = "res/avatars/avatar2.png";
+    private final String AVATAR3_PATH = "res/avatars/avatar3.png";
+    private final String AVATAR4_PATH = "res/avatars/avatar4.png";
+    private final String AVATAR5_PATH = "res/avatars/avatar5.png";
     @FXML
     private ImageView avatar0;
     @FXML
