@@ -11,6 +11,8 @@ import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 
+import javax.jws.soap.SOAPBinding;
+
 public class User implements Validatable, Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -30,9 +32,10 @@ public class User implements Validatable, Serializable {
     private List<Auction> createdAuctions;
 
     public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
-        this.id = 0;
-        this.lastLogin = new Date();
 
+        this.id = getNextId();
+
+        this.lastLogin = new Date();
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -47,6 +50,16 @@ public class User implements Validatable, Serializable {
         this.bids = new ArrayList<>();
         this.createdAuctions = new ArrayList<>();
         MegaDB.addUser(this);
+    }
+
+    private static int getNextId() {
+        List<User> users = MegaDB.getUsers();
+        User lastUser = users.get(users.size() - 1);
+        if (lastUser == null) {
+            return 0;
+        } else {
+            return lastUser.getId() + 1;
+        }
     }
 
     public User(int id, Date lastLogin, String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {

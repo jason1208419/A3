@@ -22,7 +22,8 @@ public class Auction implements Validatable {
 	private Date creationDate;
 
 	public Auction(User creator, int maxBids, double reservePrice, Artwork artwork) {
-		this.id = 0;
+		this.id = getNextId();
+
 		this.creationDate = new Date();
 
 		this.creator = creator;
@@ -36,6 +37,16 @@ public class Auction implements Validatable {
         creator.addCreatedAuction(this);
 
 		MegaDB.addAuction(this);
+	}
+
+	private static int getNextId() {
+		List<Auction> auctions = MegaDB.getAuctions();
+		Auction lastAuction = auctions.get(auctions.size() - 1);
+		if (lastAuction == null) {
+			return 0;
+		} else {
+			return lastAuction.getId() + 1;
+		}
 	}
 
 	public Auction(int id, Date creationDate, User creator, int maxBids, double reservePrice, Artwork artwork) {

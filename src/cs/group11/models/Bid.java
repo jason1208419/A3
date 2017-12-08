@@ -1,6 +1,7 @@
 package cs.group11.models;
 
 import java.util.Date;
+import java.util.List;
 
 import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
@@ -16,6 +17,22 @@ public class Bid implements Validatable {
 	private double price;
 	private Date creationDate;
 
+	public Bid(double price, User user, Auction auction) {
+		this.id = getNextId();
+
+		this.user = user;
+		this.price = price;
+		this.auction = auction;
+		this.creationDate = new Date();
+
+		this.validate();
+
+		auction.addBid(this);
+		user.addBid(this);
+		MegaDB.addBid(this);
+	}
+
+
 	public Bid(int id, Date creationDate, double price, User user, Auction auction) {
 		this.id = id;
 		this.user = user;
@@ -30,18 +47,14 @@ public class Bid implements Validatable {
 		MegaDB.addBid(this);
 	}
 
-	public Bid(double price, User user, Auction auction) {
-		this.id = 0;
-		this.user = user;
-		this.price = price;
-		this.auction = auction;
-		this.creationDate = new Date();
-
-		this.validate();
-
-		auction.addBid(this);
-		user.addBid(this);
-		MegaDB.addBid(this);
+	private static int getNextId() {
+		List<Bid> bids = MegaDB.getBids();
+		Bid lastBid = bids.get(bids.size() - 1);
+		if (lastBid == null) {
+			return 0;
+		} else {
+			return lastBid.getId() + 1;
+		}
 	}
 
 	public User getUser() {

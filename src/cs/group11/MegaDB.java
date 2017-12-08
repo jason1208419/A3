@@ -68,7 +68,7 @@ public final class MegaDB {
 
 	/**
 	 * Get a list of all users.
-	 * @return a clone of the data as a modifiable list. 
+	 * @return a clone of the data as a modifiable list.
 	 */
 	public static List<User> getUsers() {
 		return new ArrayList<>(users.values());
