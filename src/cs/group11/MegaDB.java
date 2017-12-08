@@ -2,7 +2,9 @@ package cs.group11;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -46,16 +48,16 @@ public final class MegaDB {
 		FileHandler.writeAuction(auctions, AUCTION_FILE);
 	}
 
-	public static Collection<Auction> getAuctions() {
-		return Collections.unmodifiableCollection(auctions.values());
+	public static List<Auction> getAuctions() {
+		return new ArrayList<>(auctions.values());
 	}
 
-	public static Collection<User> getUsers() {
-		return Collections.unmodifiableCollection(users.values());
+	public static List<User> getUsers() {
+		return new ArrayList<>(users.values());
 	}
 
-	public static Collection<Artwork> getArtworks() {
-		return Collections.unmodifiableCollection(artworks.values());
+	public static List<Artwork> getArtworks() {
+		return new ArrayList<>(artworks.values());
 	}
 
 	public static void addAuction(Auction toAdd) {
@@ -64,17 +66,14 @@ public final class MegaDB {
 	}
 
 	public static void addUser(User toAdd) {
-		toAdd.validate();
 		users.put(toAdd.getId(), toAdd);
 	}
 
 	public static void addArtwork(Artwork toAdd) {
-		toAdd.validate();
 		artworks.put(toAdd.getId(), toAdd);
 	}
 
 	public static void addBid(Bid toAdd) {
-		toAdd.validate();
 		bids.put(toAdd.getId(), toAdd);
 	}
 
