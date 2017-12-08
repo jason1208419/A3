@@ -35,8 +35,6 @@ import java.util.ArrayList;
  */
 public class AuctionListController {
     @FXML
-    private ImageView logo;
-    @FXML
     private ImageView avatar1;
     @FXML
     private Label username1;
@@ -63,7 +61,6 @@ public class AuctionListController {
     protected void initialize() {
         this.user = Main.getCurrentUser();
         Image avatarImage = new Image(user.getAvatarPath());
-        this.logo.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
         this.username1.setText(user.getUsername());
 

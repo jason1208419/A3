@@ -36,8 +36,6 @@ import javafx.util.Callback;
  */
 public class EditProfileController {
     @FXML
-    private ImageView logo;
-    @FXML
     private ImageView avatar1;
     @FXML
     private ImageView avatar;
@@ -100,7 +98,6 @@ public class EditProfileController {
         //set up the basic details on screen
         this.user = Main.getCurrentUser();
         Image avatarImage = new Image(user.getAvatarPath());
-        this.logo.setImage(avatarImage);
         this.avatar.setImage(avatarImage);
         this.avatar1.setImage(avatarImage);
         this.username1.setText(user.getUsername());

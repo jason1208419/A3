@@ -74,8 +74,6 @@ public class CreateAuctionV2Controller {
     private boolean opened = false;
 
 	@FXML
-	private ImageView logo;
-	@FXML
 	private ImageView avatar1;
 	@FXML
 	private Label username1;
@@ -130,7 +128,6 @@ public class CreateAuctionV2Controller {
 	protected void initialize() {
 		this.currentUser = Main.getCurrentUser();
 		Image avatarImage = new Image(currentUser.getAvatarPath());
-		this.logo.setImage(avatarImage);
 		this.avatar1.setImage(avatarImage);
 		this.username1.setText(currentUser.getUsername());
 

@@ -24,8 +24,6 @@ import javafx.util.Callback;
 
 public class ProfileController {
 
-    @FXML
-    private ImageView logo;
     @FXML private ImageView avatarImageView;
     @FXML
     private ImageView avatar1;
@@ -122,7 +120,6 @@ public class ProfileController {
 
         Image avatar1 = new Image(loginedUser.getAvatarPath());
         this.avatar1.setImage(avatar1);
-        this.logo.setImage(avatar1);
         Image avatar = new Image(viewingUser.getAvatarPath());
         this.avatarImageView.setImage(avatar);
         this.username1.setText(loginedUser.getUsername());

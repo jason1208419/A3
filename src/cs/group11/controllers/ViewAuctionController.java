@@ -25,8 +25,6 @@ import javafx.scene.layout.VBox;
 public class ViewAuctionController {
 
     @FXML
-    private ImageView logo;
-    @FXML
     private ImageView avatar1;
     @FXML
     private Label username1;
@@ -84,7 +82,6 @@ public class ViewAuctionController {
     protected void initialize() {
         this.user = Main.getCurrentUser();
         Image img = new Image(user.getAvatarPath());
-        this.logo.setImage(img);
         this.avatar1.setImage(img);
         this.username1.setText(user.getUsername());
 
