@@ -67,6 +67,7 @@ public class CreateAuctionV2Controller {
 	 * The height of images shown in the extra image list for sculptures
 	 */
 	private static final int DEFAULT_EXTRA_IMAGE_LIST_CELL_HEIGHT = 100;
+    private boolean opened = false;
 
 	@FXML
 	private ImageView logo;
@@ -238,14 +239,21 @@ public class CreateAuctionV2Controller {
 	 * of the image in the filesystem and the image object is the loaded image.
 	 */
 	private Pair<String, Image> userSelectImage() {
-		FileChooser chooser = new FileChooser();
-		chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
-		chooser.setTitle("Select Image");
-		File in = chooser.showOpenDialog(null);
-		if (!Validator.isFileValid(in))
-			return null;
-		return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
-	}
+        if (!opened) {
+            FileChooser chooser = new FileChooser();
+            chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
+            chooser.setTitle("Select Image");
+            opened = true;
+            File in = chooser.showOpenDialog(null);
+            if (Validator.isFileValid(in)) {
+                opened = false;
+                return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
+            } else {
+                opened = false;
+            }
+        }
+        return null;
+    }
 
 	/**
 	 * Create an auction based on data inputed by the user

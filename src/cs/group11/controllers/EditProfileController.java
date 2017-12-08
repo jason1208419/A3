@@ -85,6 +85,7 @@ public class EditProfileController {
 
     private User user;
     private final int UK_PHONE_MAX_LENGTH = 11;
+    private boolean opened = false;
     @FXML
     private Label error;
 
@@ -416,14 +417,20 @@ public class EditProfileController {
      * @return the path of the chosen image
      */
     private String userSelectImage() {
-        FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
-        chooser.setTitle("Select Image");
-        File in = chooser.showOpenDialog(null);
+        if (!opened) {
+            FileChooser chooser = new FileChooser();
+            chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
+            chooser.setTitle("Select Image");
+            opened = true;
+            File in = chooser.showOpenDialog(null);
 
-        //return path if a file chosen
-        if (Validator.isFileValid(in)) {
-            return in.toURI().toString();
+            //return path if a file chosen
+            if (Validator.isFileValid(in)) {
+                opened = false;
+                return in.toURI().toString();
+            } else {
+                opened = false;
+            }
         }
         return null;
     }
