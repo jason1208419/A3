@@ -37,6 +37,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 	private Scene auctionScene;
 
 	private CreateAuctionController createAuctionController;
+	private AuctionListController auctionListController;
 	private ProfileController profileController;
 	private ViewAuctionController viewAuctionController;
 	private EditProfileController editProfileController;
@@ -70,7 +71,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 			User creator = new User(0, new Date(), "admin", "Nasir", "Al Jabbouri", "07481173742", creatorAddress, "res/avatars/creeper.jpg");
 
 			Address bidderAddress = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
-			User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
+			User bidder = new User(1, new Date(), "bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
 		}
 	}
 
@@ -153,7 +154,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 	}
 
 	private void setupAuctionListPage() throws IOException {
-		AuctionListController auctionListController = new AuctionListController();
+		auctionListController = new AuctionListController();
 		auctionListController.setOnAuctionClick(this);
 		auctionListController.setOnHeaderAction(this);
 
