@@ -48,6 +48,11 @@ public class AuctionListController {
     @FXML
     private CheckBox sculptBtn;
     @FXML
+    private CheckBox completedBtn;
+    @FXML
+    private CheckBox myAuctionsBtn;
+
+    @FXML
     private ListView<Auction> filterAuc;
 
     @FXML
@@ -91,8 +96,21 @@ public class AuctionListController {
             boolean paintSelected = paintBtn.isSelected();
             boolean sculptureSelected = sculptBtn.isSelected();
 
+            boolean myAuctionSelected = myAuctionsBtn.isSelected();
+            boolean completedAuctionsSelected = completedBtn.isSelected();
+
+            if (event.getTarget() == myAuctionsBtn || event.getTarget() == completedBtn) {
+                paintBtn.setSelected(false);
+                sculptBtn.setSelected(false);
+            }
+
+            if (paintSelected || sculptureSelected) {
+                myAuctionsBtn.setSelected(false);
+                completedBtn.setSelected(false);
+            }
+
             filteredAuctions.setPredicate((Auction a) -> {
-                if (paintSelected == sculptureSelected) {
+                if (paintSelected == sculptureSelected && (!myAuctionSelected && !completedAuctionsSelected)) {
                     return true;
                 }
 
@@ -100,12 +118,29 @@ public class AuctionListController {
                     return a.getArtwork() instanceof Painting;
                 }
 
+                if (myAuctionSelected && completedAuctionsSelected) {
+                    return a.getCreator().equals(user) && a.isCompleted();
+                }
+
+                if (myAuctionSelected) {
+                    return a.getCreator().equals(user);
+                }
+
+                if (completedAuctionsSelected) {
+                    return a.isCompleted();
+                }
+
+
+
                 return a.getArtwork() instanceof Sculpture;
             });
         };
 
 		paintBtn.setOnAction(onCheckboxClick);
 		sculptBtn.setOnAction(onCheckboxClick);
+        myAuctionsBtn.setOnAction(onCheckboxClick);
+        completedBtn.setOnAction(onCheckboxClick);
+
 
 		filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
 	}
