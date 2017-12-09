@@ -80,7 +80,7 @@ public class SignUpController {
     }
 
     public void submitClick() {
-        String username = usernameInput.getText();
+        String username = usernameInput.getText().toLowerCase();
         String firstname = firstnameInput.getText();
         String lastname = lastnameInput.getText();
         String phoneNo = phoneNoInput.getText();
