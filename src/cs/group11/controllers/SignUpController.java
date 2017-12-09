@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,16 +44,25 @@ public class SignUpController {
     @FXML private Button submitButton;
     @FXML private Button cancelButton;
 
+    private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.gif", "*.jpeg", "*.jpg");
+
     private OnCancelClick onCancelClick;
     private OnSubmitClick onSubmitClick;
 
     private String avatarPath = "";
-
-    private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", ".png", ".gif", ".jpeg", ".jpg");
+    private final int UK_PHONE_MAX_LENGTH = 11;
+    @FXML
+    private Label error;
 
     @FXML
     public void initialize() {
-
+        phoneNoInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                phoneNoInput.setText(newValue.replaceAll("[^\\d]", ""));
+            } else if (phoneNoInput.getText().length() > UK_PHONE_MAX_LENGTH) {
+                phoneNoInput.setText(phoneNoInput.getText().substring(0, UK_PHONE_MAX_LENGTH));
+            }
+        });
     }
 
     public void setOnCancelClick(OnCancelClick onCancelClick) {
@@ -115,14 +125,16 @@ public class SignUpController {
         List<String> addressLines = new ArrayList<>();
         Collections.addAll(addressLines, addressInput.getText().split("\\n"));
         String[] lines = new String[addressLines.size()];
-        lines = addressLines.toArray(lines);
+        if (lines != null) {
+            lines = addressLines.toArray(lines);
+        }
 
         User user = null;
 
         try {
             Address address = new Address(lines, postcode);
             user = new User(username, firstname, lastname, phoneNo, address, avatarPath);
-        } catch (InvalidDataException e) {
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("User signup error");
             alert.setHeaderText("There was a problem with your signup details.");
@@ -140,7 +152,18 @@ public class SignUpController {
 
         MegaDB.login(user.getUsername());
 
+        clearAll();
         onSubmitClick.submit(user);
+    }
+
+    private void clearAll() {
+        usernameInput.clear();
+        firstnameInput.clear();
+        lastnameInput.clear();
+        phoneNoInput.clear();
+        postcodeInput.clear();
+        addressInput.clear();
+        avatarImg.setImage(null);
     }
 
     /**
@@ -172,9 +195,9 @@ public class SignUpController {
 
     private String userSelectImage() {
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(IMAGE_FILE_EXTENTIONS);
+        chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
         chooser.setTitle("Select Image");
-        File in = chooser.showOpenDialog(null);
+        File in = chooser.showOpenDialog(avatarImg.getScene().getWindow());
 
         //return path if a file chosen
         if (Validator.isFileValid(in)) {
