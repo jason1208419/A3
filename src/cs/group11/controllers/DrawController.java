@@ -1,16 +1,20 @@
 package cs.group11.controllers;
 
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import cs.group11.drawing.tools.AbstractDrawingTool;
 import cs.group11.drawing.tools.CircleBrush;
+import cs.group11.drawing.tools.EraserBrush;
 import cs.group11.drawing.tools.LineTool;
 import cs.group11.interfaces.OnSubmitClick;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -24,15 +28,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Filippos Pantekis
@@ -51,7 +48,7 @@ public class DrawController {
 	 * dynamically generate the gui representation.
 	 */
 	private static final AbstractDrawingTool[] AVAILABLE_TOOLS = { new LineTool(DEFAULT_TOOL_SIZE),
-			new CircleBrush(DEFAULT_TOOL_SIZE) };
+			new CircleBrush(DEFAULT_TOOL_SIZE),new EraserBrush(DEFAULT_TOOL_SIZE) };
 
 	@FXML
 	private Slider sizeSlider;
