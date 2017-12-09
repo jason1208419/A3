@@ -247,6 +247,9 @@ public class CreateAuctionController {
 	private void makeFieldsNumeric(TextField... textFields) {
 		for (TextField field : textFields) {
 			field.textProperty().addListener((observable, oldValue, newValue) -> {
+				if (newValue == null) {
+					return;
+				}
 				Matcher m = NON_NUMERICAL_INPUT_PATTERN.matcher(newValue);
 				if (m.find()) {// If there is non numeric input in the field
 					field.setText(m.replaceAll(""));// remove it

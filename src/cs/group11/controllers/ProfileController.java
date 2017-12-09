@@ -11,6 +11,7 @@ import cs.group11.interfaces.OnHeaderAction;
 import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -114,7 +115,7 @@ public class ProfileController {
     private ObservableList<Bid> bidsMadeList;
     private ObservableList<Bid> bidsReceivedList;
 
-    private ObservableList<User> favouriteUsersList;
+
     private ObservableList<Auction> favouriteAuctionsList;
     private User user;
 
@@ -128,17 +129,30 @@ public class ProfileController {
         setupFavouriteArtTable();
 
         ChangeListener<Bid> onBidClick = (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             Auction auction = newValue.getAuction();
             onAuctionClick.clicked(auction);
         };
 
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            if (newValue == null) {
+                return;
+            }
+
             onUserClick.clicked(newValue);
+
         };
 
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             onAuctionClick.clicked(newValue);
         };
+
 
         bidsWon.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         bidsMade.getSelectionModel().selectedItemProperty().addListener(onBidClick);
@@ -168,26 +182,24 @@ public class ProfileController {
 
         User loggedInUser = MegaDB.getLoggedInUser();
 
+
         bidsWonList = FXCollections.observableArrayList(user.getWonBids());
         bidsWon.setItems(bidsWonList);
 
         bidsMadeList = FXCollections.observableArrayList(user.getBids());
-        bidsMade.setItems(bidsWonList);
+        bidsMade.setItems(bidsMadeList);
+
 
         bidsReceivedList = FXCollections.observableArrayList(user.getReceivedBids());
         bidsReceived.setItems(bidsReceivedList);
 
         favouriteAuctionsList = FXCollections.observableArrayList(user.getFavouriteAuctions());
-
-        favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
-        favouriteUsers.setItems(favouriteUsersList);
-
-        favouriteAuctionsList = FXCollections.observableArrayList(user.getFavouriteAuctions());
         favouriteAuctions.setItems(favouriteAuctionsList);
 
-
-
-
+        Platform.runLater(()->{
+            ObservableList<User> favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
+            favouriteUsers.setItems(favouriteUsersList);
+        });
 
 
         Image avatar1 = new Image(loggedInUser.getAvatarPath());

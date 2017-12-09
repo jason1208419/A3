@@ -120,15 +120,24 @@ public class EditProfileController {
 
         //Let users to click on contents inside the favourite user table and show the page of the user being clicked on
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             onUserClick.clicked(newValue);
         };
 
         //Let users to click on contents inside the favourite artwork table and show the page of the artwork being clicked on
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             onAuctionClick.clicked(newValue);
         };
 
         phoneIn.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             if (!newValue.matches("\\d*")) {
                 phoneIn.setText(newValue.replaceAll("[^\\d]", ""));
             } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) {

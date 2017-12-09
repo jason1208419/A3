@@ -192,6 +192,10 @@ public class ViewAuctionController {
 	public void setAuction(Auction auction) {
 		this.auction = auction;
 
+		if(user.getId() == auction.getCreator().getId()) {
+			favUserBtn.setVisible(false);
+			favArtBtn.setVisible(false);
+		}
 		Artwork artwork = auction.getArtwork();
 		this.artType.setText("Type: " + getType(artwork));
 
