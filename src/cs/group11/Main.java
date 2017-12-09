@@ -48,7 +48,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
-				MegaDB.save();//Save on shutdown
+				MegaDB.save();// Save on shutdown
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -195,6 +195,8 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 		primaryStage.setTitle("Artatawe");
 		primaryStage.setScene(signInScene);
 		primaryStage.show();
+
+		this.primaryStage = primaryStage;
 	}
 
 	@Override
