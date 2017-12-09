@@ -125,9 +125,7 @@ public class SignUpController {
         List<String> addressLines = new ArrayList<>();
         Collections.addAll(addressLines, addressInput.getText().split("\\n"));
         String[] lines = new String[addressLines.size()];
-        if (lines != null) {
-            lines = addressLines.toArray(lines);
-        }
+        lines = addressLines.toArray(lines);
 
         User user = null;
 
