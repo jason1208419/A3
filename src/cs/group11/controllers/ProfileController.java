@@ -137,7 +137,6 @@ public class ProfileController {
         };
 
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
-            System.out.println(newValue);
             if (newValue == null) {
                 return;
             }
