@@ -77,6 +77,10 @@ public class AuctionListController {
 
         //Handles event when user clicks on an auction
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
+
             onAuctionClick.clicked(newValue);
         };
 
