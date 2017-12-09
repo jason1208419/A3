@@ -153,7 +153,10 @@ public class CreateAuctionController {
 		});
 
 		extraImages.getSelectionModel().selectedItemProperty().addListener((value, oldState, newState) -> {
-			image.setImage(value.getValue().getValue());
+            if (newState == null) {
+                return;
+            }
+            image.setImage(value.getValue().getValue());
 			mainImagePath = value.getValue().getKey();
 			removeImg.setDisable(Validator.isNull(value.getValue()) || extraImages.getItems().size() <= 1);
 		});
@@ -279,42 +282,62 @@ public class CreateAuctionController {
 	 * @return an Auction object created using the data provided by the user.
 	 * @throw {@link InvalidDataException} if the input data is not valid.
 	 */
-	private void createAuction() throws IOException {
-		if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
-				|| (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
-			Alert alert = new Alert(AlertType.ERROR, "All fields must be completed before\ncreating the auction",
-					ButtonType.OK);
-			alert.show();
-			return;
-		}
+    private void createAuction() throws IOException {
+        if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
+                || (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
+            Alert alert = new Alert(AlertType.ERROR, "All fields must be completed before\ncreating the auction",
+                    ButtonType.OK);
+            alert.show();
+            return;
+        }
 
-		String auctionTitle = this.title.getText();// title
-		String auctionAuthor = this.artist.getText();// artist
-		double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
-		int auctionMaxBids = (int) parseDecimal(this.maxBids.getText());
-		double auctionWidth = parseDecimal(this.width.getText());// width
-		double auctionLength = parseDecimal(this.length.getText());// length
-		LocalDate artworkCreationDate = this.creationDate.getValue();// creation
-		String auctionDescription = description.getText(); // date
-		Artwork forAuctioning;
+        String auctionTitle = this.title.getText();// title
+        String auctionAuthor = this.artist.getText();// artist
+        double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
+        int auctionMaxBids = (int) parseDecimal(this.maxBids.getText());
+        double auctionWidth = parseDecimal(this.width.getText());// width
+        double auctionLength = parseDecimal(this.length.getText());// length
+        LocalDate artworkCreationDate = this.creationDate.getValue();// creation
+        String auctionDescription = description.getText(); // date
+        Artwork forAuctioning;
 
-		if (sculptureRadio.isSelected()) {
-			double auctionDepth = parseDecimal(this.depth.getText());// depth
-			String auctionMaterial = this.material.getText(); // material
-			List<String> extraImagePaths = getExtraImagePaths();
+        if (sculptureRadio.isSelected()) {
+            double auctionDepth = parseDecimal(this.depth.getText());// depth
+            String auctionMaterial = this.material.getText(); // material
+            List<String> extraImagePaths = getExtraImagePaths();
 
-			forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-					artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
-					extraImagePaths);
-		} else {
-			forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-					artworkCreationDate.getYear(), auctionWidth, auctionLength);
-		}
+            forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+                    artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
+                    extraImagePaths);
+        } else {
+            forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+                    artworkCreationDate.getYear(), auctionWidth, auctionLength);
+        }
 
-		Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
-		MegaDB.getLoggedInUser().addCreatedAuction(auction);
-		onAuctionClick.clicked(auction);
-	}
+        Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
+        MegaDB.getLoggedInUser().addCreatedAuction(auction);
+
+        onAuctionClick.clicked(auction);
+
+        clearAll();
+    }
+
+    private void clearAll() {
+        mainImagePath = "";
+
+        image.setImage(null);
+        title.clear();
+        startPrice.clear();
+        maxBids.clear();
+        artist.clear();
+        width.clear();
+        length.clear();
+        description.clear();
+        depth.clear();
+        material.clear();
+        extraImages.getItems().clear();
+        sculptureImages.clear();
+    }
 
 	/**
 	 * Checks if any of the parameter TextInputControlls has no text (left blank)
