@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -38,7 +35,8 @@ public class SignUpController {
     @FXML private TextField firstnameInput;
     @FXML private TextField lastnameInput;
     @FXML private TextField phoneNoInput;
-    @FXML private TextField addressInput;
+    @FXML
+    private TextArea addressInput;
     @FXML private TextField postcodeInput;
 
     @FXML private Button submitButton;
