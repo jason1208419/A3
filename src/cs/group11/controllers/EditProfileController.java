@@ -524,7 +524,16 @@ public class EditProfileController {
         if (inputValid) {
             viewingUser.save();
             onSubmitClick.submit(viewingUser);
+            clearAll();
         }
+    }
+
+    private void clearAll() {
+        firstNameIn.clear();
+        lastNameIn.clear();
+        phoneIn.clear();
+        addressIn.clear();
+        postcodeIn.clear();
     }
 
     /**
