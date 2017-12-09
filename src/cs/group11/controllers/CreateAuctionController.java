@@ -131,8 +131,8 @@ public class CreateAuctionController {
 
 		sculptureImages = new ArrayList<>();
 		mainImagePath = "";
-		
-		//TODO fix header code.
+
+		// TODO refactor header code.
 		Image avatarImage = new Image(MegaDB.getLoggedInUser().getAvatarPath());
 		this.avatar1.setImage(avatarImage);
 		this.username1.setText(MegaDB.getLoggedInUser().getUsername());
@@ -285,7 +285,6 @@ public class CreateAuctionController {
 			return;
 		}
 
-
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
 		double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
@@ -309,8 +308,8 @@ public class CreateAuctionController {
 					artworkCreationDate.getYear(), auctionWidth, auctionLength);
 		}
 
-		Auction auction = new Auction(loggedInUser, auctionMaxBids, auctionStartPrice, forAuctioning);
-		loggedInUser.addCreatedAuction(auction);
+		Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
+		MegaDB.getLoggedInUser().addCreatedAuction(auction);
 		onAuctionClick.clicked(auction);
 	}
 
