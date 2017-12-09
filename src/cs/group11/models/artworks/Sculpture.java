@@ -8,7 +8,6 @@ import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 import cs.group11.models.Artwork;
-import javafx.scene.image.Image;
 
 public class Sculpture extends Artwork implements Validatable {
 	private double width;
@@ -18,8 +17,8 @@ public class Sculpture extends Artwork implements Validatable {
 
 	private List<String> photos;
 
-	public Sculpture(int id, String title, String description, String imagePath, String artist, int creationYear, double width,
-					 double height, double depth, String material, List<String> photos) {
+	public Sculpture(int id, String title, String description, String imagePath, String artist, int creationYear,
+			double width, double height, double depth, String material, List<String> photos) {
 		super(id, title, description, imagePath, artist, creationYear);
 
 		this.width = width;
@@ -34,8 +33,8 @@ public class Sculpture extends Artwork implements Validatable {
 	}
 
 	public Sculpture(String title, String description, String imagePath, String artist, int creationYear, double width,
-                     double height, double depth, String material, List<String> photos) {
-        super(title, description, imagePath, artist, creationYear);
+			double height, double depth, String material, List<String> photos) {
+		super(title, description, imagePath, artist, creationYear);
 
 		this.width = width;
 		this.height = height;
@@ -74,22 +73,22 @@ public class Sculpture extends Artwork implements Validatable {
 
 		builder.append("sculpture").append(",");
 		builder.append(this.getId()).append(",");
-        builder.append(FileHandler.escape(this.getName())).append(",");
-        builder.append(FileHandler.escape(this.getDescription())).append(",");
-        builder.append(FileHandler.escape(this.getImagePath())).append(",");
-        builder.append(FileHandler.escape(this.getArtist())).append(",");
-        builder.append(this.getCreationYear()).append(",");
+		builder.append(FileHandler.escape(this.getName())).append(",");
+		builder.append(FileHandler.escape(this.getDescription())).append(",");
+		builder.append(FileHandler.escape(this.getImagePath())).append(",");
+		builder.append(FileHandler.escape(this.getArtist())).append(",");
+		builder.append(this.getCreationYear()).append(",");
 		builder.append(this.getWidth()).append(",");
 		builder.append(this.getHeight()).append(",");
 		builder.append(this.getDepth()).append(",");
-        builder.append(FileHandler.escape(this.getMaterial())).append(",");
+		builder.append(FileHandler.escape(this.getMaterial())).append(",");
 
 		if (photos.size() == 0) {
 			builder.append("[]");
 		} else {
 			for (String photo : photos) {
-                builder.append(FileHandler.escape(photo)).append(";");
-            }
+				builder.append(FileHandler.escape(photo)).append(";");
+			}
 		}
 		builder.append(",");
 
@@ -114,5 +113,34 @@ public class Sculpture extends Artwork implements Validatable {
 		}
 	}
 
-}
+	@Override
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Sculpture)) {
+			return false;
+		}
+		Sculpture other = (Sculpture) obj;
+		if ((int) depth != (int) other.depth) {
+			return false;
+		}
+		if ((int) height != (int) other.height) {
+			return false;
+		}
+		if (!material.equals(other.material)) {
+			return false;
+		}
+		if (!photos.equals(other.photos)) {
+			return false;
+		}
+		if ((int) width != (int) other.width) {
+			return false;
+		}
+		return true;
+	}
 
+}
