@@ -82,11 +82,6 @@ public class User implements Validatable, Serializable {
 		MegaDB.addUser(this);
 	}
 
-	public static User login(String username) {
-		// set users lastLogin to "new Date()"
-		return null;
-	}
-
 	public int getId() {
 		return id;
 	}

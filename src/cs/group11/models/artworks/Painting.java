@@ -76,17 +76,22 @@ public class Painting extends Artwork implements Validatable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Painting other = (Painting) obj;
-		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height))
+		if ((int) height != (int) other.height) {
 			return false;
-		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+		}
+		if ((int) width != (int) other.width) {
 			return false;
+		}
 		return true;
 	}
 
