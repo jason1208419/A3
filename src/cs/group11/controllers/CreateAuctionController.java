@@ -18,6 +18,7 @@ import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -159,6 +160,10 @@ public class CreateAuctionController {
             image.setImage(value.getValue().getValue());
 			mainImagePath = value.getValue().getKey();
 			removeImg.setDisable(Validator.isNull(value.getValue()) || extraImages.getItems().size() <= 1);
+
+			Platform.runLater(() -> {
+				extraImages.getSelectionModel().clearSelection();
+			});
 		});
 
 		addExtraImg.setOnAction((e) -> handleAddExtraImage());
@@ -301,25 +306,30 @@ public class CreateAuctionController {
         String auctionDescription = description.getText(); // date
         Artwork forAuctioning;
 
-        if (sculptureRadio.isSelected()) {
-            double auctionDepth = parseDecimal(this.depth.getText());// depth
-            String auctionMaterial = this.material.getText(); // material
-            List<String> extraImagePaths = getExtraImagePaths();
+        try {
+			if (sculptureRadio.isSelected()) {
+				double auctionDepth = parseDecimal(this.depth.getText());// depth
+				String auctionMaterial = this.material.getText(); // material
+				List<String> extraImagePaths = getExtraImagePaths();
 
-            forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-                    artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
-                    extraImagePaths);
-        } else {
-            forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-                    artworkCreationDate.getYear(), auctionWidth, auctionLength);
-        }
+				forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+						artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
+						extraImagePaths);
+			} else {
+				forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+						artworkCreationDate.getYear(), auctionWidth, auctionLength);
+			}
 
-        Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
-        MegaDB.getLoggedInUser().addCreatedAuction(auction);
+			Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
+			MegaDB.getLoggedInUser().addCreatedAuction(auction);
+			onAuctionClick.clicked(auction);
+			clearAll();
+		} catch (InvalidDataException e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(),
+					ButtonType.OK);
 
-        onAuctionClick.clicked(auction);
-
-        clearAll();
+			alert.showAndWait();
+		}
     }
 
     private void clearAll() {
@@ -349,8 +359,8 @@ public class CreateAuctionController {
 			if (t.getText().trim().isEmpty())
 				return true;
 		}
-		return false;
 
+		return false;
 	}
 
 	/**

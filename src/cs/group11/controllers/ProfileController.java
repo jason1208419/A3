@@ -132,8 +132,13 @@ public class ProfileController {
             if (newValue == null) {
                 return;
             }
+
             Auction auction = newValue.getAuction();
             onAuctionClick.clicked(auction);
+
+            Platform.runLater(() -> {
+                bidsWon.getSelectionModel().clearSelection();
+            });
         };
 
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
@@ -143,13 +148,22 @@ public class ProfileController {
 
             onUserClick.clicked(newValue);
 
+            Platform.runLater(() -> {
+                favouriteUsers.getSelectionModel().clearSelection();
+            });
+
         };
 
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
             }
+
             onAuctionClick.clicked(newValue);
+            
+            Platform.runLater(() -> {
+                favouriteAuctions.getSelectionModel().clearSelection();
+            });
         };
 
 
@@ -210,6 +224,7 @@ public class ProfileController {
         this.username1.setText(loggedInUser.getUsername());
         this.username.setText(user.getUsername());
         if (loggedInUser.equals(user)) {
+            editProfile.setVisible(true);
             this.firstname.setText(user.getFirstname());
             this.firstname.setTextFill(Color.BLACK);
             this.lastname.setText(user.getLastname());
@@ -297,7 +312,7 @@ public class ProfileController {
         });
         wonPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         wonDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        bidsWon.setItems(bidsWonList);
+
     }
 
     private void setupBidsMadeTable() {
@@ -350,7 +365,7 @@ public class ProfileController {
         });
         madePrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         madeDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        bidsMade.setItems(bidsMadeList);
+
     }
 
     private void setupBidsReceivedTable() {
@@ -423,7 +438,7 @@ public class ProfileController {
                 };
             }
         });
-        bidsReceived.setItems(bidsReceivedList);
+
     }
 
     private void setupFavouriteArtTable() {
