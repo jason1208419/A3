@@ -10,6 +10,7 @@ import cs.group11.models.Auction;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -86,6 +87,10 @@ public class AuctionListController {
             }
 
             onAuctionClick.clicked(newValue);
+
+            Platform.runLater(() -> {
+                filterAuc.getSelectionModel().clearSelection();
+            });
         };
 
 

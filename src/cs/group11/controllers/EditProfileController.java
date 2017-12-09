@@ -10,6 +10,7 @@ import cs.group11.helpers.Validator;
 import cs.group11.interfaces.*;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -124,7 +125,12 @@ public class EditProfileController {
             if (newValue == null) {
                 return;
             }
+
             onUserClick.clicked(newValue);
+
+            Platform.runLater(() -> {
+                removeFavouriteUsers.getSelectionModel().clearSelection();
+            });
         };
 
         //Let users to click on contents inside the favourite artwork table and show the page of the artwork being clicked on
@@ -132,7 +138,12 @@ public class EditProfileController {
             if (newValue == null) {
                 return;
             }
+
             onAuctionClick.clicked(newValue);
+
+            Platform.runLater(() -> {
+                removeFavouriteArtworks.getSelectionModel().clearSelection();
+            });
         };
 
         phoneIn.textProperty().addListener((observable, oldValue, newValue) -> {

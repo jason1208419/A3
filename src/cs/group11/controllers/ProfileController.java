@@ -132,8 +132,13 @@ public class ProfileController {
             if (newValue == null) {
                 return;
             }
+
             Auction auction = newValue.getAuction();
             onAuctionClick.clicked(auction);
+
+            Platform.runLater(() -> {
+                bidsWon.getSelectionModel().clearSelection();
+            });
         };
 
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
@@ -143,13 +148,22 @@ public class ProfileController {
 
             onUserClick.clicked(newValue);
 
+            Platform.runLater(() -> {
+                favouriteUsers.getSelectionModel().clearSelection();
+            });
+
         };
 
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
             }
+
             onAuctionClick.clicked(newValue);
+            
+            Platform.runLater(() -> {
+                favouriteAuctions.getSelectionModel().clearSelection();
+            });
         };
 
 

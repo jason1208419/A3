@@ -18,6 +18,7 @@ import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -159,6 +160,10 @@ public class CreateAuctionController {
             image.setImage(value.getValue().getValue());
 			mainImagePath = value.getValue().getKey();
 			removeImg.setDisable(Validator.isNull(value.getValue()) || extraImages.getItems().size() <= 1);
+
+			Platform.runLater(() -> {
+				extraImages.getSelectionModel().clearSelection();
+			});
 		});
 
 		addExtraImg.setOnAction((e) -> handleAddExtraImage());
