@@ -267,7 +267,7 @@ public class CreateAuctionController {
 		FileChooser chooser = new FileChooser();
 		chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
 		chooser.setTitle("Select Image");
-		File in = chooser.showOpenDialog(null);
+		File in = chooser.showOpenDialog(image.getScene().getWindow());
 		if (Validator.isFileValid(in)) {
 			return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
 		}
