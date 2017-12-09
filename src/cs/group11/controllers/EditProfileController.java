@@ -79,7 +79,6 @@ public class EditProfileController {
     private TextField postcodeIn;
 
     private final int UK_PHONE_MAX_LENGTH = 11;
-    private boolean opened = false;
     @FXML
     private Label error;
 
@@ -367,21 +366,15 @@ public class EditProfileController {
      * @return the path of the chosen image
      */
     private String userSelectImage() {
-        if (!opened) {
             FileChooser chooser = new FileChooser();
             chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
             chooser.setTitle("Select Image");
-            opened = true;
-            File in = chooser.showOpenDialog(null);
+        File in = chooser.showOpenDialog(avatar.getScene().getWindow());
 
             //return path if a file chosen
             if (Validator.isFileValid(in)) {
-                opened = false;
                 return in.toURI().toString();
-            } else {
-                opened = false;
             }
-        }
         return null;
     }
 
