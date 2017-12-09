@@ -312,7 +312,7 @@ public class ProfileController {
         });
         wonPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         wonDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        bidsWon.setItems(bidsWonList);
+
     }
 
     private void setupBidsMadeTable() {
@@ -365,7 +365,7 @@ public class ProfileController {
         });
         madePrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         madeDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        bidsMade.setItems(bidsMadeList);
+
     }
 
     private void setupBidsReceivedTable() {
@@ -438,7 +438,7 @@ public class ProfileController {
                 };
             }
         });
-        bidsReceived.setItems(bidsReceivedList);
+
     }
 
     private void setupFavouriteArtTable() {
