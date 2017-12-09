@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" />
       <HBox prefHeight="229.0" prefWidth="600.0">
@@ -17,12 +16,12 @@
             <VBox prefHeight="237.0" prefWidth="325.0">
                <children>
                   <Label text="Select Avatar" />
-                  <ImageView fitHeight="137.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="avatarImg" fitHeight="137.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Upload" />
-                        <Button mnemonicParsing="false" text="Draw Avatar" />
-                        <Button mnemonicParsing="false" text="Select Built in Avatars" />
+                        <Button mnemonicParsing="false" onAction="#uploadClick" text="Upload" />
+                        <Button mnemonicParsing="false" onAction="#drawAvatarClick" text="Draw Avatar" />
+                        <Button mnemonicParsing="false" onAction="#builtInAvatarClick" text="Select Built in Avatars" />
                      </children>
                   </HBox>
                </children>
@@ -32,37 +31,37 @@
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="Username" />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="usernameInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="First Name" />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="firstnameInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="Surname" />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="lastnameInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="Phone No." />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="phoneNoInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="Address" />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="addressInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="90.0" text="Post Code" />
-                        <TextField prefHeight="40.0" prefWidth="175.0" />
+                        <TextField fx:id="postcodeInput" prefHeight="40.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                </children>
@@ -82,7 +81,7 @@
                               <VBox prefHeight="52.0" prefWidth="120.0" />
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Cancel">
+                                    <Button mnemonicParsing="false" onAction="#cancelClick" text="Cancel">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -100,7 +99,7 @@
                               <HBox prefHeight="100.0" prefWidth="200.0" />
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Create">
+                                    <Button mnemonicParsing="false" onAction="#submitClick" text="Create">
                                        <font>
                                           <Font size="14.0" />
                                        </font>

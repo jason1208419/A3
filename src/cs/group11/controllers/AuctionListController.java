@@ -3,8 +3,8 @@ package cs.group11.controllers;
 import java.io.IOException;
 import java.util.List;
 
-import cs.group11.Main;
 import cs.group11.MegaDB;
+import cs.group11.interfaces.OnAuctionClick;
 import cs.group11.interfaces.OnHeaderAction;
 import cs.group11.models.Auction;
 import cs.group11.models.User;
@@ -57,7 +57,8 @@ public class AuctionListController {
     private FilteredList<Auction> filteredAuctions;
 
     private User user;
-    private OnHeaderAction headerAction;
+    private OnAuctionClick onAuctionClick;
+    private OnHeaderAction onHeaderAction;
 
     @FXML
     /**
@@ -75,25 +76,8 @@ public class AuctionListController {
         filterAuc.setCellFactory(param -> new AuctionCell());
 
         //Handles event when user clicks on an auction
-        ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on the auction for " + newValue.getArtwork().getName());
-
-            ViewAuctionController controller = new ViewAuctionController();
-            controller.setAuction(newValue);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-            loader.setController(controller);
-            VBox box = null;
-            try {
-                box = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (box != null) {
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-            }
-            rootBox.getChildren().setAll(box);
+        ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            onAuctionClick.clicked(newValue);
         };
 
 
@@ -118,7 +102,7 @@ public class AuctionListController {
 		paintBtn.setOnAction(onCheckboxClick);
 		sculptBtn.setOnAction(onCheckboxClick);
 
-		filterAuc.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
+		filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
 
 		List<Auction> aucList = MegaDB.getAuctions();
 		for (Auction auction : aucList) {
@@ -126,67 +110,33 @@ public class AuctionListController {
 		}
 	}
 
-	public void setHeaderAction(OnHeaderAction headerAction) {
-		this.headerAction = headerAction;
-	}
+    public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
+        this.onAuctionClick = onAuctionClick;
+    }
+    public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+        this.onHeaderAction = onHeaderAction;
+    }
 
-	/**
+    /**
 	 * Switches to the individual auction screen.
 	 *
 	 * @param auction The individual auction to be viewed.
 	 */
 	private void switchScreen(Auction auction) {
-		try {
-			ViewAuctionController controller = new ViewAuctionController();
-			controller.setUser(this.user);
-			controller.setAuction(auction);
-
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-			loader.setController(controller);
-			VBox box = loader.load();
-
-			box.prefHeightProperty().bind(rootBox.heightProperty());
-			box.prefWidthProperty().bind(rootBox.widthProperty());
-			rootBox.getChildren().setAll(box);
-		} catch (IOException e) {
-			System.out.println("Failed to load fxml file");
-		}
+	    onAuctionClick.clicked(auction);
 	}
 
 
     public void createAuctionClick() throws IOException {
-        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
-        loader.setController(controller);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+	    onHeaderAction.createAuctionsClick();
     }
 
     public void avatarClick() throws IOException {
-        ProfileController profileCon = new ProfileController();
-        profileCon.setLoginedUser(this.user);
-        profileCon.setViewingUser(this.user);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-        loader.setController(profileCon);
-        profileCon.addTestBids();
-
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.browseProfileClick();
     }
 
     public void logoutClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.logoutClick();
     }
 
     /**

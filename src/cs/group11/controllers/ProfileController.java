@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.Date;
 
 import cs.group11.Main;
+import cs.group11.MegaDB;
+import cs.group11.interfaces.OnAction;
+import cs.group11.interfaces.OnAuctionClick;
+import cs.group11.interfaces.OnHeaderAction;
+import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.value.ChangeListener;
@@ -99,15 +104,18 @@ public class ProfileController {
     @FXML
     private VBox rootBox;
 
+    private OnAuctionClick onAuctionClick;
+    private OnUserClick onUserClick;
+    private OnHeaderAction onHeaderAction;
+    private OnAction onEditProfileClick;
 
-    private User loginedUser;
-    private User viewingUser;
     private ObservableList<Bid> bidsWonList;
     private ObservableList<Bid> bidsMadeList;
     private ObservableList<Bid> bidsReceivedList;
 
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Auction> favouriteAuctionsList;
+    private User user;
 
     @FXML
     protected void initialize() {
@@ -118,101 +126,44 @@ public class ProfileController {
         setupFavouriteUserTable();
         setupFavouriteArtTable();
 
-        Image avatar1 = new Image(loginedUser.getAvatarPath());
-        this.avatar1.setImage(avatar1);
-        Image avatar = new Image(viewingUser.getAvatarPath());
-        this.avatarImageView.setImage(avatar);
-        this.username1.setText(loginedUser.getUsername());
-        this.username.setText(viewingUser.getUsername());
-        this.firstname.setText(viewingUser.getFirstname());
-        this.lastname.setText(viewingUser.getLastname());
-        this.phoneNumber.setText(viewingUser.getTelNo());
-
-        for (String addressLine : viewingUser.getAddress().getLines()) {
-            Label label = new Label(addressLine);
-            this.addressLines.getChildren().add(label);
-        }
-
-        this.postcode.setText(viewingUser.getAddress().getPostcode());
-
-        if (!loginedUser.equals(viewingUser)) {
-            editProfile.setVisible(false);
-        }
-
         ChangeListener<Bid> onBidClick = (observable, oldValue, newValue) -> {
             Auction auction = newValue.getAuction();
-            System.out.println("Clicked on " + auction.getArtwork().getName());
-
-            // TODO: Change to auction page
-            try {
-                ViewAuctionController controller = new ViewAuctionController();
-                controller.setUser(this.loginedUser);
-                controller.setAuction(newValue.getAuction());
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                loader.setController(controller);
-                VBox box = loader.load();
-
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-                box.prefWidthProperty().bind(rootBox.widthProperty());
-                rootBox.getChildren().setAll(box);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            onAuctionClick.clicked(auction);
         };
 
-        ChangeListener<User> onUserClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on " + newValue.getUsername());
-
-            ProfileController profileCon = new ProfileController();
-            profileCon.setViewingUser(newValue);
-            profileCon.setLoginedUser(this.loginedUser);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-            loader.setController(profileCon);
-            VBox box = null;
-            try {
-                box = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (box != null) {
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-            }
-
-            rootBox.getChildren().setAll(box);
+        ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            onUserClick.clicked(newValue);
         };
 
-        ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on " + newValue.getArtwork().getName());
-
-            // TODO: Change to auction page
-            try {
-                ViewAuctionController controller = new ViewAuctionController();
-                controller.setUser(this.loginedUser);
-                controller.setAuction(newValue);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-                loader.setController(controller);
-                VBox box = loader.load();
-
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-                rootBox.getChildren().setAll(box);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            onAuctionClick.clicked(newValue);
         };
 
         bidsWon.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         bidsMade.getSelectionModel().selectedItemProperty().addListener(onBidClick);
         bidsReceived.getSelectionModel().selectedItemProperty().addListener(onBidClick);
-        favouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
-        favouriteAuctions.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
+        favouriteUsers.getSelectionModel().selectedItemProperty().addListener(userClicked);
+        favouriteAuctions.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
+    }
+
+    public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
+        this.onAuctionClick = onAuctionClick;
+    }
+
+    public void setOnUserClick(OnUserClick onUserClick) {
+        this.onUserClick = onUserClick;
+    }
+
+    public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+        this.onHeaderAction = onHeaderAction;
+    }
+
+    public void setOnEditProfileClick(OnAction onEditProfileClick) {
+        this.onEditProfileClick = onEditProfileClick;
     }
 
     public void addTestBids() {
-        User creator = this.loginedUser;
+        User creator = MegaDB.getLoggedInUser();
 
         String description = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889, " +
                 "it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition " +
@@ -226,19 +177,47 @@ public class ProfileController {
         User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
 
         Bid bid = new Bid(11.21, bidder, auction);
-        this.loginedUser.addBid(bid);
-    }
-
-    public void setLoginedUser(User user) {
-        this.loginedUser = user;
+        creator.addBid(bid);
     }
 
     public void setViewingUser(User user) {
-        this.viewingUser = user;
+        this.user = user;
+
+        User loggedInUser = MegaDB.getLoggedInUser();
+
+        bidsWonList = FXCollections.observableArrayList(user.getWonBids());
+        bidsMadeList = FXCollections.observableArrayList(user.getBids());
+        bidsReceivedList = FXCollections.observableArrayList(user.getReceivedBids());
+
+        favouriteAuctionsList = FXCollections.observableArrayList(user.getFavouriteAuctions());
+        favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
+
+        Image avatar1 = new Image(loggedInUser.getAvatarPath());
+        this.avatar1.setImage(avatar1);
+
+        Image avatar = new Image(user.getAvatarPath());
+        this.avatarImageView.setImage(avatar);
+
+        this.username1.setText(loggedInUser.getUsername());
+        this.username.setText(user.getUsername());
+        this.firstname.setText(user.getFirstname());
+        this.lastname.setText(user.getLastname());
+        this.phoneNumber.setText(user.getTelNo());
+
+        for (String addressLine : user.getAddress().getLines()) {
+            Label label = new Label(addressLine);
+            this.addressLines.getChildren().add(label);
+        }
+
+        this.postcode.setText(user.getAddress().getPostcode());
+
+        if (!loggedInUser.equals(user)) {
+            editProfile.setVisible(false);
+        }
     }
 
     private void setupBidsWonTable() {
-        bidsWonList = FXCollections.observableArrayList(this.viewingUser.getWonBids());
+        bidsWonList = FXCollections.observableArrayList();
 
         wonPic.setCellValueFactory(new PropertyValueFactory<>("auction"));
         wonPic.setPrefWidth(100);
@@ -291,7 +270,7 @@ public class ProfileController {
     }
 
     private void setupBidsMadeTable() {
-        bidsMadeList = FXCollections.observableArrayList(this.viewingUser.getBids());
+        bidsMadeList = FXCollections.observableArrayList();
 
         madePic.setCellValueFactory(new PropertyValueFactory<>("auction"));
         madePic.setPrefWidth(100);
@@ -344,7 +323,7 @@ public class ProfileController {
     }
 
     private void setupBidsReceivedTable() {
-        bidsReceivedList = FXCollections.observableArrayList(this.viewingUser.getReceivedBids());
+        bidsReceivedList = FXCollections.observableArrayList();
 
         receivedPic.setCellValueFactory(new PropertyValueFactory<>("auction"));
         receivedPic.setPrefWidth(100);
@@ -417,7 +396,7 @@ public class ProfileController {
     }
 
     private void setupFavouriteArtTable() {
-        favouriteAuctionsList = FXCollections.observableArrayList(this.viewingUser.getFavouriteAuctions());
+        favouriteAuctionsList = FXCollections.observableArrayList();
 
         tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tablePic.setPrefWidth(100);
@@ -508,7 +487,7 @@ public class ProfileController {
     }
 
     private void setupFavouriteUserTable() {
-        favouriteUsersList = FXCollections.observableArrayList(this.viewingUser.getFavouriteUsers());
+        favouriteUsersList = FXCollections.observableArrayList();
 
         tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
         tableAvatar.setPrefWidth(100);
@@ -543,62 +522,22 @@ public class ProfileController {
     }
 
     public void avatarClick() throws IOException {
-        ProfileController profileCon = new ProfileController();
-        profileCon.setViewingUser(this.loginedUser);
-        profileCon.setLoginedUser(this.loginedUser);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-        loader.setController(profileCon);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.browseProfileClick();
     }
 
     public void viewAuctionClick() throws IOException {
-        AuctionListController controller = new AuctionListController();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-        loader.setController(controller);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.browseAuctionsClick();
     }
 
     public void createAuctionClick() throws IOException {
-        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
-        loader.setController(controller);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.createAuctionsClick();
     }
 
     public void logoutClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.logoutClick();
     }
 
     public void editProfileClick() throws IOException {
-        EditProfileController editProfileCon = new EditProfileController();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/editProfile.fxml"));
-        loader.setController(editProfileCon);
-        Parent root = loader.load();
-
-        loader.getController();
-        Scene viewAuc = new Scene(root, 600, 500);
-        Stage primaryStage = Main.getPrimaryStage();
-        primaryStage.setScene(viewAuc);
+        onEditProfileClick.call(user);
     }
 }

@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import cs.group11.Main;
-import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
-import cs.group11.interfaces.OnSubmitClick;
+import cs.group11.interfaces.*;
 import cs.group11.models.*;
 import cs.group11.models.artworks.Painting;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -81,7 +78,6 @@ public class EditProfileController {
     @FXML
     private TextField postcodeIn;
 
-    private User user;
     private final int UK_PHONE_MAX_LENGTH = 11;
     private boolean opened = false;
     @FXML
@@ -90,68 +86,47 @@ public class EditProfileController {
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Auction> favouriteArtworkList;
 
+    private OnUserClick onUserClick;
+    private OnAuctionClick onAuctionClick;
+    private OnCancelClick onCancelClick;
+    private OnSubmitClick onSubmitClick;
+    private OnHeaderAction onHeaderAction;
+
+    private User viewingUser;
+
+    public void setOnUserClick(OnUserClick onUserClick) {
+        this.onUserClick = onUserClick;
+    }
+    public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
+        this.onAuctionClick = onAuctionClick;
+    }
+    public void setOnCancelClick(OnCancelClick onCancelClick) {
+        this.onCancelClick = onCancelClick;
+    }
+    public void setOnSubmitClick(OnSubmitClick onSubmitClick) {
+        this.onSubmitClick = onSubmitClick;
+    }
+    public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+        this.onHeaderAction = onHeaderAction;
+    }
+
     /**
      * set and display the correct information on the GUI. Allow users to click on the content of table and change to a more detailed page.
      */
     @FXML
     protected void initialize() {
-        //set up the basic details on screen
-        this.user = MegaDB.getLoggedInUser();
-        Image avatarImage = new Image(user.getAvatarPath());
-        this.avatar.setImage(avatarImage);
-        this.avatar1.setImage(avatarImage);
-        this.username1.setText(user.getUsername());
-        this.username2.setText(user.getUsername());
-
         //setup the two tables
         setupFavouriteArtTable();
         setupFavouriteUserTable();
 
         //Let users to click on contents inside the favourite user table and show the page of the user being clicked on
-        ChangeListener<User> onUserClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on " + newValue.getUsername());
-
-            ProfileController profileCon = new ProfileController();
-            profileCon.setViewingUser(newValue);
-            profileCon.setLoginedUser(this.user);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-            loader.setController(profileCon);
-            VBox box = null;
-            try {
-                box = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (box != null) {
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-            }
-
-            rootBox.getChildren().setAll(box);
+        ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            onUserClick.clicked(newValue);
         };
 
         //Let users to click on contents inside the favourite artwork table and show the page of the artwork being clicked on
-        ChangeListener<Auction> onAuctionClick = (observable, oldValue, newValue) -> {
-            System.out.println("Clicked on " + newValue.getArtwork().getName());
-
-            ViewAuctionController controller = new ViewAuctionController();
-            controller.setUser(this.user);
-            controller.setAuction(newValue);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-            loader.setController(controller);
-            VBox box = null;
-            try {
-                box = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (box != null) {
-                box.prefHeightProperty().bind(rootBox.heightProperty());
-            }
-            rootBox.getChildren().setAll(box);
+        ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            onAuctionClick.clicked(newValue);
         };
 
         phoneIn.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -161,8 +136,22 @@ public class EditProfileController {
                 phoneIn.setText(phoneIn.getText().substring(0, UK_PHONE_MAX_LENGTH));
             }
         });
-        removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(onUserClick);
-        removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(onAuctionClick);
+        removeFavouriteUsers.getSelectionModel().selectedItemProperty().addListener(userClicked);
+        removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
+    }
+
+    public void setViewingUser(User user) {
+        favouriteArtworkList = FXCollections.observableArrayList(user.getFavouriteAuctions());
+        favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
+
+        //set up the basic details on screen
+        Image avatarImage = new Image(user.getAvatarPath());
+        this.avatar.setImage(avatarImage);
+        this.avatar1.setImage(avatarImage);
+        this.username1.setText(user.getUsername());
+        this.username2.setText(user.getUsername());
+
+        this.viewingUser = user;
     }
 
     /**
@@ -170,7 +159,7 @@ public class EditProfileController {
      */
     private void setupFavouriteArtTable() {
         //add a list of auctions need to be displayed
-        favouriteArtworkList = FXCollections.observableArrayList(this.user.getFavouriteAuctions());
+        favouriteArtworkList = FXCollections.observableArrayList();
 
         //set the picture of artwork inside each cell of the picture column
         tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
@@ -277,18 +266,16 @@ public class EditProfileController {
                     return;
                 }
                 setGraphic(remove);
-                remove.setOnAction(
-                        event -> {
-                            favouriteArtworkList.remove(art);
-                            user.removeFavouriteAuction(art);
-                            try {
-                                user.save();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            printFavouriteAuction();
-                        }
-                );
+                remove.setOnAction(event -> {
+                    favouriteArtworkList.remove(art);
+                    viewingUser.removeFavouriteAuction(art);
+
+                    try {
+                        viewingUser.save();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         });
 
@@ -301,7 +288,7 @@ public class EditProfileController {
      */
     private void setupFavouriteUserTable() {
         //add a list of users need to be displayed
-        favouriteUsersList = FXCollections.observableArrayList(this.user.getFavouriteUsers());
+        favouriteUsersList = FXCollections.observableArrayList();
 
         //set the avatar of user inside each cell of the avatar column
         tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
@@ -350,17 +337,15 @@ public class EditProfileController {
                     return;
                 }
                 setGraphic(remove);
-                remove.setOnAction(
-                        event -> {
-                            favouriteUsersList.remove(user1);
-                            user.removeFavouriteUser(user1);
-                            try {
-                                user.save();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            printFavouriteUsers();
+                remove.setOnAction(event -> {
+                        favouriteUsersList.remove(user1);
+                        viewingUser.removeFavouriteUser(user1);
+                        try {
+                            viewingUser.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                    }
                 );
             }
         });
@@ -380,29 +365,15 @@ public class EditProfileController {
         Painting painting = new Painting("Starry Night", description, imgPath, "Vincent Van Gogh", 1889, 200, 300);
         Auction auction = new Auction(creator, 7, 10.00, painting);
         Bid testBid = new Bid(15.25, creator, auction);
-        this.user.addFavouriteAuction(auction);
+        viewingUser.addFavouriteAuction(auction);
 
     }
 
     public void setTestUsers() {
         User df = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
         User abc = new User("abc", "Jason", "Lee", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
-        this.user.addFavouriteUser(abc);
-        this.user.addFavouriteUser(df);
-    }
-
-    private void printFavouriteUsers() {
-        System.out.println(user.getUsername() + "'s Favourite User:");
-        for (int i = 0; i < user.getFavouriteUsers().size(); i++) {
-            System.out.println(user.getFavouriteUsers().get(i).getUsername());
-        }
-    }
-
-    private void printFavouriteAuction() {
-        System.out.println(user.getUsername() + "'s Favourite Auction:");
-        for (int i = 0; i < user.getFavouriteAuctions().size(); i++) {
-            System.out.println(user.getFavouriteAuctions().get(i).getArtwork().getName());
-        }
+        viewingUser.addFavouriteUser(abc);
+        viewingUser.addFavouriteUser(df);
     }
 
     /**
@@ -436,20 +407,7 @@ public class EditProfileController {
      */
     @FXML
     private void cancelClick() throws IOException {
-
-        ProfileController profileCon = new ProfileController();
-        profileCon.setLoginedUser(this.user);
-        profileCon.setViewingUser(this.user);
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-        loader.setController(profileCon);
-        profileCon.addTestBids();
-
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        this.onCancelClick.cancel(viewingUser);
     }
 
     /**
@@ -465,16 +423,7 @@ public class EditProfileController {
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void viewAuctionClick() throws IOException {
-        AuctionListController controller = new AuctionListController();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-        loader.setController(controller);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.browseAuctionsClick();
     }
 
     /**
@@ -482,16 +431,7 @@ public class EditProfileController {
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void createAuctionClick() throws IOException {
-        CreateAuctionV2Controller controller = new CreateAuctionV2Controller();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/createAuctionV2.fxml"));
-        loader.setController(controller);
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.createAuctionsClick();
     }
 
     /**
@@ -499,25 +439,23 @@ public class EditProfileController {
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void logoutClick() throws IOException {
-        VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-        rootBox.getChildren().setAll(box);
+        onHeaderAction.logoutClick();
     }
 
     /**
      * Pop up a window for user to choose avatar from local disk
      */
     public void uploadClick() {
-        String currentAvatarPath = user.getAvatarPath();
+        String currentAvatarPath = viewingUser.getAvatarPath();
         try {
-            user.setAvatarPath(userSelectImage());
-            user.save();
-            Image avatarImage = new Image(user.getAvatarPath());
+            viewingUser.setAvatarPath(userSelectImage());
+            viewingUser.save();
+            Image avatarImage = new Image(viewingUser.getAvatarPath());
             this.avatar.setImage(avatarImage);
             this.avatar1.setImage(avatarImage);
         } catch (NullPointerException e) {
             System.out.println("Path not specified");
-            user.setAvatarPath(currentAvatarPath);
+            viewingUser.setAvatarPath(currentAvatarPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -528,20 +466,20 @@ public class EditProfileController {
      * Pop up a window to let user create avatar
      */
     public void drawAvatarClick() throws IOException {
-        String currentAvatarPath = user.getAvatarPath();
+        String currentAvatarPath = viewingUser.getAvatarPath();
         Stage drawingStage = new Stage();
 
         OnSubmitClick onSave = avatarPath -> {
             try {
-                user.setAvatarPath((String) avatarPath);
-                user.save();
+                viewingUser.setAvatarPath((String) avatarPath);
+                viewingUser.save();
                 drawingStage.close();
-                Image img = new Image(user.getAvatarPath());
+                Image img = new Image(viewingUser.getAvatarPath());
                 avatar.setImage(img);
                 avatar1.setImage(img);
             } catch (NullPointerException e) {
                 System.out.println("Path not specified");
-                user.setAvatarPath(currentAvatarPath);
+                viewingUser.setAvatarPath(currentAvatarPath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -564,19 +502,18 @@ public class EditProfileController {
      */
     public void submitClick() throws IOException {
         boolean inputValid = true;
-        printUser();
 
         //save changes if user input something
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
-            this.user.setFirstname(firstNameIn.getText());
+            this.viewingUser.setFirstname(firstNameIn.getText());
         }
         //save changes if user input something
         if (lastNameIn.getText() != null && !lastNameIn.getText().isEmpty()) {
-            this.user.setLastname(lastNameIn.getText());
+            this.viewingUser.setLastname(lastNameIn.getText());
         }
         //save changes if user input something
         if (phoneIn.getText() != null && !phoneIn.getText().isEmpty()) {
-            this.user.setTelNo(phoneIn.getText());
+            this.viewingUser.setTelNo(phoneIn.getText());
         }
         //save changes if user input something
         if (addressIn.getText() != null && !addressIn.getText().isEmpty()) {
@@ -584,13 +521,13 @@ public class EditProfileController {
             Collections.addAll(address, addressIn.getText().split("\\n"));
             String[] lines = new String[address.size()];
             lines = address.toArray(lines);
-            this.user.getAddress().setLines(lines);
+            this.viewingUser.getAddress().setLines(lines);
         }
         //save changes if user input valid postcode
         if (postcodeIn.getText() != null && !postcodeIn.getText().isEmpty()) {
             if (Address.isPostcodeValid(postcodeIn.getText())) {
                 inputValid = true;
-                this.user.getAddress().setPostcode(postcodeIn.getText());
+                this.viewingUser.getAddress().setPostcode(postcodeIn.getText());
             } else {
                 inputValid = false;
                 error.setText("Postcode not valid!");
@@ -598,29 +535,9 @@ public class EditProfileController {
         }
         //save changes and change to profile page if user input valid postcode
         if (inputValid) {
-            printUser();
-            user.save();
-
-            ProfileController profileCon = new ProfileController();
-            profileCon.setLoginedUser(this.user);
-            profileCon.setViewingUser(this.user);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-            loader.setController(profileCon);
-            profileCon.addTestBids();
-            VBox box = loader.load();
-            box.prefHeightProperty().bind(rootBox.heightProperty());
-
-            rootBox.getChildren().setAll(box);
+            viewingUser.save();
+            onSubmitClick.submit(viewingUser);
         }
-    }
-
-    private void printUser() {
-        System.out.println("Username: " + this.user.getUsername() + "\nFirst Name: " + this.user.getFirstname() + "\nLast Name: " + this.user.getLastname() + "\nPhone Number: " + this.user.getTelNo() + "\nAddress:");
-        for (int i = 0; i < this.user.getAddress().getLines().length; i++) {
-            System.out.println(this.user.getAddress().getLine(i + 1));
-        }
-        System.out.println(this.user.getAddress().getPostcode());
     }
 
     /**
@@ -631,14 +548,14 @@ public class EditProfileController {
         Stage stage = new Stage();
 
         OnSubmitClick onAvatarSubmit = avatarPath -> {
-            user.setAvatarPath((String) avatarPath);
+            viewingUser.setAvatarPath((String) avatarPath);
             try {
-                user.save();
+                viewingUser.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             stage.close();
-            Image img = new Image(user.getAvatarPath());
+            Image img = new Image(viewingUser.getAvatarPath());
             avatar.setImage(img);
             avatar1.setImage(img);
         };

@@ -17,6 +17,9 @@ import com.sun.media.sound.InvalidDataException;
 import cs.group11.Main;
 import cs.group11.MegaDB;
 import cs.group11.helpers.Validator;
+import cs.group11.interfaces.OnAuctionClick;
+import cs.group11.interfaces.OnHeaderAction;
+import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
 import cs.group11.models.Bid;
@@ -50,7 +53,7 @@ import javafx.util.Pair;
  * @author Filippos Pantekis
  * The controller class for createAuction GUI
  */
-public class CreateAuctionV2Controller {
+public class CreateAuctionController {
 
 	/**
 	 * A Pattern to match non numecial inputs	
@@ -125,20 +128,24 @@ public class CreateAuctionV2Controller {
 	private VBox rootBox;
 
 	private String mainImagePath;
-	private User currentUser;
     private List<String> sculptureImages;
+
+    private OnAuctionClick onAuctionClick;
+    private OnHeaderAction onHeaderAction;
 
 	/**
 	 * The controller initialize method$
 	 */
 	@FXML
 	protected void initialize() {
-        sculptureImages = new ArrayList<>();
+		User loggedInUser = MegaDB.getLoggedInUser();
 
-		this.currentUser = MegaDB.getLoggedInUser();
-		Image avatarImage = new Image(currentUser.getAvatarPath());
+        sculptureImages = new ArrayList<>();
+        mainImagePath = "";
+
+		Image avatarImage = new Image(loggedInUser.getAvatarPath());
 		this.avatar1.setImage(avatarImage);
-		this.username1.setText(currentUser.getUsername());
+		this.username1.setText(loggedInUser.getUsername());
 
 		makeFieldsNumeric(depth, length, startPrice, maxBids, width);
 
@@ -196,6 +203,13 @@ public class CreateAuctionV2Controller {
 
 		// Set the default date of the date field to the current date.
 		creationDate.setValue(LocalDate.now());
+	}
+
+	public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
+		this.onAuctionClick = onAuctionClick;
+	}
+	public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+		this.onHeaderAction = onHeaderAction;
 	}
 
 	/**
@@ -287,6 +301,9 @@ public class CreateAuctionV2Controller {
 			alert.show();
 			return;
 		}
+
+		User loggedInUser = MegaDB.getLoggedInUser();
+
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
 		double auctionStartPrice = parseDecimal(this.startPrice.getText());// startPrice
@@ -296,6 +313,7 @@ public class CreateAuctionV2Controller {
 		LocalDate artworkCreationDate = this.creationDate.getValue();// creation
 		String auctionDescription = description.getText(); // date
 		Artwork forAuctioning;
+
 		if (sculptureRadio.isSelected()) {
 			double auctionDepth = parseDecimal(this.depth.getText());// depth
 			String auctionMaterial = this.material.getText(); // material
@@ -308,21 +326,9 @@ public class CreateAuctionV2Controller {
 			forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
 					artworkCreationDate.getYear(), auctionWidth, auctionLength);
 		}
-        Auction auction = new Auction(currentUser, auctionMaxBids, auctionStartPrice, forAuctioning);//Automatically added to megadb
-        ViewAuctionController controller = new ViewAuctionController();
 
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/viewAuction.fxml"));
-        loader.setController(controller);
-
-        controller.setAuction(auction);
-
-
-        VBox box = loader.load();
-
-        box.prefHeightProperty().bind(rootBox.heightProperty());
-
-        rootBox.getChildren().setAll(box);
+		Auction auction = new Auction(loggedInUser, auctionMaxBids, auctionStartPrice, forAuctioning);
+		onAuctionClick.clicked(auction);
     }
 
 	/**
@@ -358,36 +364,14 @@ public class CreateAuctionV2Controller {
 	}
 
 	public void viewAuctionClick() throws IOException {
-		AuctionListController controller = new AuctionListController();
-
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/auctionList.fxml"));
-		loader.setController(controller);
-		VBox box = loader.load();
-
-		box.prefHeightProperty().bind(rootBox.heightProperty());
-
-		rootBox.getChildren().setAll(box);
+		onHeaderAction.browseAuctionsClick();
 	}
 
 	public void avatarClick() throws IOException {
-		ProfileController profileCon = new ProfileController();
-		profileCon.setLoginedUser(this.currentUser);
-		profileCon.setViewingUser(this.currentUser);
-
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/profile.fxml"));
-		loader.setController(profileCon);
-		profileCon.addTestBids();
-
-		VBox box = loader.load();
-
-		box.prefHeightProperty().bind(rootBox.heightProperty());
-
-		rootBox.getChildren().setAll(box);
+		onHeaderAction.browseProfileClick();
 	}
 
 	public void logoutClick() throws IOException {
-		VBox box = FXMLLoader.load(getClass().getResource("../views/signIn.fxml"));
-		box.prefHeightProperty().bind(rootBox.heightProperty());
-		rootBox.getChildren().setAll(box);
+		onHeaderAction.logoutClick();
 	}
 }

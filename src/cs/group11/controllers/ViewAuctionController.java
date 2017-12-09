@@ -5,24 +5,30 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cs.group11.Main;
 import cs.group11.MegaDB;
+import cs.group11.helpers.InvalidDataException;
+import cs.group11.interfaces.OnAction;
 import cs.group11.interfaces.OnHeaderAction;
+import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
+import cs.group11.models.Bid;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class ViewAuctionController {
@@ -75,6 +81,11 @@ public class ViewAuctionController {
 	@FXML
 	private VBox rootBox;
 
+	@FXML
+	private TextField bidAmountInput;
+
+	private OnHeaderAction onHeaderAction;
+	private OnUserClick onUserClick;
     @FXML
     private CheckBox favUserBtn;
 
@@ -85,12 +96,79 @@ public class ViewAuctionController {
 	private User user;
 	private Auction auction;
 
-    @FXML
+	public void setOnUserClick(OnUserClick onUserClick) {
+		this.onUserClick = onUserClick;
+	}
+
+	@FXML
     protected void initialize() {
         this.user = MegaDB.getLoggedInUser();
         Image img = new Image(user.getAvatarPath());
         this.avatar1.setImage(img);
         this.username1.setText(user.getUsername());
+
+        sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> {
+        	onUserClick.clicked(this.auction.getCreator());
+		});
+	}
+
+	public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+		this.onHeaderAction = onHeaderAction;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	private String getHeight(Artwork artwork) {
+		// Gets the Height
+		double artHeight = 0;
+
+		if (artwork instanceof Painting) {
+			Painting painting = (Painting) artwork;
+
+			artHeight = painting.getHeight();
+
+		} else if (artwork instanceof Sculpture) {
+			Sculpture sculpture = (Sculpture) artwork;
+
+			artHeight = sculpture.getHeight();
+		}
+		return Double.toString(artHeight);
+	}
+
+	public void placeBidClick() {
+    	double bidAmount = Double.parseDouble(bidAmountInput.getText());
+
+    	try {
+			new Bid(bidAmount, user, auction);
+			setAuction(auction);
+		} catch (InvalidDataException e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Bid error");
+			alert.setHeaderText("There was a problem with bid.");
+			alert.setContentText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
+	private String getType(Artwork artwork) {
+		if (artwork instanceof Painting) {
+			return "Painting";
+		} else if (artwork instanceof Sculpture) {
+			return "Sculpture";
+		}
+		return "Artwork";
+	}
+
+	/**
+	 * Displays all info about an auction in the GUI.
+	 *
+	 * @param auction
+	 */
+	public void setAuction(Auction auction) {
+		this.auction = auction;
 
 		Artwork artwork = auction.getArtwork();
 		this.artType.setText("Type: " + getType(artwork));
@@ -101,7 +179,6 @@ public class ViewAuctionController {
 			this.width.setText("Width: " + Double.toString(painting.getWidth()));
 			this.depth.setVisible(false);
 			this.material.setVisible(false);
-
 		} else if (artwork instanceof Sculpture) {
 			Sculpture sculpture = (Sculpture) artwork;
 			this.width.setText("Width: " + Double.toString(sculpture.getWidth()));
@@ -125,10 +202,10 @@ public class ViewAuctionController {
 
 		// Get most recent bid price
 		double lastBid;
-		if (this.auction.getLastBid() == null) {
+		if (auction.getLastBid() == null) {
 			lastBid = auction.getReservePrice();
 		} else {
-			lastBid = this.auction.getLastBid().getPrice();
+			lastBid = auction.getLastBid().getPrice();
 		}
 
 		this.currentPrice.setText("Current price: " + String.valueOf(lastBid));
@@ -148,7 +225,7 @@ public class ViewAuctionController {
 		this.placedBids.setText("Number of bids placed: " + Integer.toString(currentBids));
 
 		// Get Starting Price (aka reserve price)
-		this.startingPrice.setText("Starting Price: " + String.valueOf(this.auction.getReservePrice()));
+		this.startingPrice.setText("Starting Price: " + String.valueOf(auction.getReservePrice()));
 
 		// Gets auction creation date
 		Date createdDate = auction.getCreationDate();
@@ -176,65 +253,22 @@ public class ViewAuctionController {
                 favUserBtn.setSelected(true);
             }
         }
-    }
-
-	public void setHeaderAction(OnHeaderAction headerAction) {
-		this.headerAction = headerAction;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	private String getHeight(Artwork artwork) {
-		// Gets the Height
-		double artHeight = 0;
-
-		if (artwork instanceof Painting) {
-			Painting painting = (Painting) artwork;
-
-			artHeight = painting.getHeight();
-
-		} else if (artwork instanceof Sculpture) {
-			Sculpture sculpture = (Sculpture) artwork;
-
-			artHeight = sculpture.getHeight();
-		}
-		return Double.toString(artHeight);
-	}
-
-	private String getType(Artwork artwork) {
-		if (artwork instanceof Painting) {
-			return "Painting";
-		} else if (artwork instanceof Sculpture) {
-			return "Sculpture";
-		}
-		return "Artwork";
-	}
-
-	/**
-	 * Displays all info about an auction in the GUI.
-	 *
-	 * @param auction
-	 */
-	public void setAuction(Auction auction) {
-		this.auction = auction;
 	}
 
 	public void viewAuctionClick() throws IOException {
-		headerAction.browseAuctionsClick();
+		onHeaderAction.browseAuctionsClick();
 	}
 
 	@FXML
 	public void createAuctionClick() throws IOException {
-		headerAction.createAuctionsClick();
+		onHeaderAction.createAuctionsClick();
 	}
 
 	public void avatarClick() throws IOException {
-		headerAction.browseProfileClick();
+		onHeaderAction.browseProfileClick();
 	}
 
 	public void logoutClick() throws IOException {
-		headerAction.logoutClick();
+		onHeaderAction.logoutClick();
 	}
 }

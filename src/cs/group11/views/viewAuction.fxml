@@ -70,8 +70,8 @@
                 </VBox>
         <VBox prefHeight="100.0" prefWidth="54.0" />
                 <VBox prefHeight="100.0" prefWidth="130.0">
-                    <TextField promptText="Enter your new bid" />
-                    <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Submit" />
+                    <TextField fx:id="bidAmountInput" promptText="Enter your new bid" />
+                    <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick" text="Submit" />
                 </VBox>
         </HBox>
 </VBox>

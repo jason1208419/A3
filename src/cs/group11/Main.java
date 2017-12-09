@@ -1,27 +1,32 @@
 package cs.group11;
 
-import cs.group11.controllers.AuctionListController;
-import cs.group11.controllers.EditProfileController;
-import cs.group11.controllers.SignInController;
-import cs.group11.controllers.SignUpController;
-import cs.group11.interfaces.OnAction;
-import cs.group11.interfaces.OnSubmitClick;
+import cs.group11.controllers.*;
+import cs.group11.interfaces.*;
 import cs.group11.models.Address;
+import cs.group11.models.Auction;
 import cs.group11.models.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application {
-    private static Stage primaryStage;
+public class Main extends Application implements OnHeaderAction, OnAuctionClick, OnUserClick {
+    private Stage primaryStage;
 
-    private FXMLLoader signUpLoader;
-    private FXMLLoader signInLoader;
-    private FXMLLoader auctionListLoader;
+    private Scene signInScene;
+    private Scene signUpScene;
+    private Scene auctionListScene;
+    private Scene createAuctionScene;
+    private Scene editProfileScene;
+    private Scene browseProfileScene;
+    private Scene auctionScene;
+
+    private CreateAuctionController createAuctionController;
+    private ProfileController profileController;
+    private ViewAuctionController viewAuctionController;
+    private EditProfileController editProfileController;
 
     public static void main(String[] args) throws IOException {
         MegaDB.load();
@@ -32,67 +37,179 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static Stage getPrimaryStage() {
-        return primaryStage;
+    private void setupAllPages() throws IOException {
+        setupAuctionPage();
+        setupAuctionListPage();
+        setupCreateAuctionPage();
+        setupBrowseProfilePage();
+        setupEditProfilePage();
+        setupCreateAuctionPage();
     }
 
-    private void setPrimaryStage(Stage primStage) {
-        primaryStage = primStage;
-    }
-
-    private void setupSigninPage() {
+    private void setupSigninPage() throws IOException {
         SignInController signInController = new SignInController();
 
         signInController.setOnSubmitClick((Object o) -> {
-            User user = (User) o;
-
             try {
-                Parent root = auctionListLoader.load();
-                Scene mainScreen = new Scene(root, 600, 500);
-                primaryStage.setScene(mainScreen);
+                setupAllPages();
+                primaryStage.setScene(auctionListScene);
             } catch (IOException e) {
-                System.out.println("Failed to load fxml file");
                 e.printStackTrace();
             }
         });
-
         signInController.setOnSignupClick((Object o) -> {
-            try {
-                Parent root = signUpLoader.load();
-                Scene mainScreen = new Scene(root, 600, 500);
-                primaryStage.setScene(mainScreen);
-            } catch (IOException e) {
-                e.printStackTrace();
+            primaryStage.setScene(signUpScene);
+        });
+
+        FXMLLoader signInLoader = new FXMLLoader(getClass().getResource("views/signIn.fxml"));
+        signInLoader.setController(signInController);
+
+        signInScene = new Scene(signInLoader.load(), 600, 500);
+    }
+
+    private void setupSignupPage() throws IOException {
+        SignUpController signUpController = new SignUpController();
+
+        signUpController.setOnCancelClick((Object o) -> {
+            primaryStage.setScene(signInScene);
+        });
+
+        signUpController.setOnSubmitClick(new OnSubmitClick() {
+            @Override
+            public void submit(Object o) {
+                try {
+                    setupAllPages();
+                    primaryStage.setScene(auctionListScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        signInLoader = new FXMLLoader(getClass().getResource("views/signIn.fxml"));
-        signInLoader.setController(signInController);
-    }
-
-    private void setupSignupPage() {
-        SignUpController signUpController = new SignUpController();
-        signUpLoader = new FXMLLoader(getClass().getResource("views/signUp.fxml"));
+        FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("views/signUp.fxml"));
         signUpLoader.setController(signUpController);
+
+        signUpScene = new Scene(signUpLoader.load(), 600, 500);
     }
 
-    private void setupAuctionListPage() {
+    private void setupAuctionListPage() throws IOException {
         AuctionListController auctionListController = new AuctionListController();
-        auctionListLoader = new FXMLLoader(getClass().getResource("views/auctionList.fxml"));
+        auctionListController.setOnAuctionClick(this);
+        auctionListController.setOnHeaderAction(this);
+
+        FXMLLoader auctionListLoader = new FXMLLoader(getClass().getResource("views/auctionList.fxml"));
         auctionListLoader.setController(auctionListController);
+
+        auctionListScene = new Scene(auctionListLoader.load(), 600, 500);
+    }
+
+    private void setupCreateAuctionPage() throws IOException {
+        createAuctionController = new CreateAuctionController();
+        createAuctionController.setOnAuctionClick(this);
+        createAuctionController.setOnHeaderAction(this);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/createAuctionV2.fxml"));
+        loader.setController(createAuctionController);
+
+        createAuctionScene = new Scene(loader.load(), 600,500);
+    }
+
+    private void setupBrowseProfilePage() throws IOException {
+        profileController = new ProfileController();
+
+        profileController.setOnAuctionClick(this);
+        profileController.setOnUserClick(this);
+        profileController.setOnHeaderAction(this);
+
+        profileController.setOnEditProfileClick((Object o) -> {
+            editProfileController.setViewingUser((User) o);
+            primaryStage.setScene(editProfileScene);
+        });
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
+        loader.setController(profileController);
+        profileController.addTestBids();
+
+        browseProfileScene = new Scene(loader.load(), 600,500);
+    }
+
+    private void setupEditProfilePage() throws IOException {
+        editProfileController = new EditProfileController();
+
+        editProfileController.setOnCancelClick((Object o) -> {
+            profileController.setViewingUser((User) o);
+            primaryStage.setScene(browseProfileScene);
+        });
+
+        editProfileController.setOnSubmitClick((Object o) -> {
+            profileController.setViewingUser((User) o);
+            primaryStage.setScene(browseProfileScene);
+        });
+
+        editProfileController.setOnAuctionClick(this);
+        editProfileController.setOnUserClick(this);
+        editProfileController.setOnHeaderAction(this);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/editProfile.fxml"));
+        loader.setController(editProfileController);
+
+        editProfileScene = new Scene(loader.load(), 600,500);
+    }
+
+    private void setupAuctionPage() throws IOException {
+        viewAuctionController = new ViewAuctionController();
+        viewAuctionController.setOnHeaderAction(this);
+        viewAuctionController.setOnUserClick(this);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/viewAuction.fxml"));
+        loader.setController(viewAuctionController);
+
+        auctionScene = new Scene(loader.load(), 600,500);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        setupAuctionListPage();
         setupSigninPage();
         setupSignupPage();
 
-        Parent root = signInLoader.load();
-        setPrimaryStage(primaryStage);
-
         primaryStage.setTitle("Artatawe");
-        primaryStage.setScene(new Scene(root, 750, 650));
+        primaryStage.setScene(signInScene);
         primaryStage.show();
+
+        this.primaryStage = primaryStage;
+    }
+
+    @Override
+    public void browseAuctionsClick() {
+        primaryStage.setScene(auctionListScene);
+    }
+
+    @Override
+    public void createAuctionsClick() {
+        primaryStage.setScene(createAuctionScene);
+    }
+
+    @Override
+    public void browseProfileClick() {
+        profileController.setViewingUser(MegaDB.getLoggedInUser());
+        primaryStage.setScene(browseProfileScene);
+    }
+
+    @Override
+    public void logoutClick() {
+        MegaDB.logout();
+        primaryStage.setScene(signInScene);
+    }
+
+    @Override
+    public void clicked(Auction auction) {
+        viewAuctionController.setAuction(auction);
+        primaryStage.setScene(auctionScene);
+    }
+
+    @Override
+    public void clicked(User user) {
+        profileController.setViewingUser(user);
+        primaryStage.setScene(browseProfileScene);
     }
 }

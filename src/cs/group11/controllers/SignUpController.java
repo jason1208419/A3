@@ -1,5 +1,7 @@
 package cs.group11.controllers;
 
+import cs.group11.MegaDB;
+import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.OnCancelClick;
 import cs.group11.interfaces.OnSubmitClick;
@@ -9,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -91,8 +94,28 @@ public class SignUpController {
         String[] lines = new String[addressLines.size()];
         lines = addressLines.toArray(lines);
 
-        Address address = new Address(lines, postcode);
-        User user = new User(username, firstname, lastname, phoneNo, address, avatarPath);
+        User user = null;
+
+        try {
+            Address address = new Address(lines, postcode);
+            user = new User(username, firstname, lastname, phoneNo, address, avatarPath);
+        } catch (InvalidDataException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("User signup error");
+            alert.setHeaderText("There was a problem with your signup details.");
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            user.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        MegaDB.login(user.getUsername());
 
         onSubmitClick.submit(user);
     }
