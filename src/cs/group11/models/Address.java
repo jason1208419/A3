@@ -1,5 +1,6 @@
 package cs.group11.models;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import cs.group11.FileHandler;
@@ -11,7 +12,7 @@ public class Address implements Validatable {
 
 	private static final int MINIMUM_ADDRESS_LINES = 1;
 	private static final Pattern UK_ADDRESS_REGEX = Pattern.compile("([A-Z0-9]{2,4} ?){2}", Pattern.CASE_INSENSITIVE);
-	
+
 	private String[] lines;
 	private String postcode;
 
@@ -83,4 +84,26 @@ public class Address implements Validatable {
 		}
 
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Address)) {
+			return false;
+		}
+		Address other = (Address) obj;
+		if (!Arrays.equals(lines, other.lines)) {
+			return false;
+		}
+		if (!postcode.equals(other.postcode)) {
+			return false;
+		}
+		return true;
+	}
+
 }

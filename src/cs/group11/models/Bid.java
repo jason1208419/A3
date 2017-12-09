@@ -32,7 +32,6 @@ public class Bid implements Validatable {
 		MegaDB.addBid(this);
 	}
 
-
 	public Bid(int id, Date creationDate, double price, User user, Auction auction) {
 		this.id = id;
 		this.user = user;
@@ -105,18 +104,59 @@ public class Bid implements Validatable {
 			throw new InvalidDataException("You're already the highest bidder.");
 		}
 
-        if (lastBid != null && this.price <= lastBid.getPrice()) {
-            throw new InvalidDataException("Bid must be greater than the previous bid.");
-        }
+		if (lastBid != null && this.price <= lastBid.getPrice()) {
+			throw new InvalidDataException("Bid must be greater than the previous bid.");
+		}
 
-        if (lastBid != null && this.price <= this.auction.getReservePrice()) {
-            throw new InvalidDataException("Bid must be greater than the reserve price.");
-        }
+		if (lastBid != null && this.price <= this.auction.getReservePrice()) {
+			throw new InvalidDataException("Bid must be greater than the reserve price.");
+		}
 
-        if (this.auction.isCompleted()) {
-            throw new InvalidDataException("Auction is finished. No more bids accepted.");
-        }
-
-
+		if (this.auction.isCompleted()) {
+			throw new InvalidDataException("Auction is finished. No more bids accepted.");
+		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((auction == null) ? 0 : auction.hashCode());
+		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Bid))
+			return false;
+		Bid other = (Bid) obj;
+		if (auction == null) {
+			if (other.auction != null)
+				return false;
+		} else if (!auction.equals(other.auction))
+			return false;
+		if (creationDate == null) {
+			if (other.creationDate != null)
+				return false;
+		} else if (!creationDate.equals(other.creationDate))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
+	}
+
 }

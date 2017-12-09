@@ -12,8 +12,6 @@ import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 
-import javax.jws.soap.SOAPBinding;
-
 public class User implements Validatable, Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -284,11 +282,13 @@ public class User implements Validatable, Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj instanceof User) {
-			return ((User) obj).getUsername().equals(getUsername());
+		if (obj != null) {
+			if (obj == this) {
+				return true;
+			}
+			if (obj instanceof User) {
+				return ((User) obj).getUsername().equals(getUsername());
+			}
 		}
 		return false;
 	}

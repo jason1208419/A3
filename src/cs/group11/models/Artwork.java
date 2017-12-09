@@ -7,7 +7,6 @@ import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
-import javafx.scene.image.Image;
 
 public abstract class Artwork implements Validatable {
 
@@ -94,4 +93,32 @@ public abstract class Artwork implements Validatable {
 					"The specified creation year is either negative or beyond the current year.");
 		}
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Artwork)) {
+			return false;
+		}
+		Artwork other = (Artwork) obj;
+		if (!artist.equals(other.artist)) {
+			return false;
+		}
+		if (creationYear != other.creationYear) {
+			return false;
+		}
+		if (!imagePath.equals(other.imagePath)) {
+			return false;
+		}
+		if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
 }
