@@ -46,7 +46,7 @@
                                 <Label fx:id="firstname" layoutX="10.0" layoutY="10.0" text="Firstname" />
                                 <Label fx:id="lastname" layoutX="10.0" layoutY="27.0" text="Lastname" />
                                 <Label fx:id="phoneNumber" layoutX="10.0" layoutY="44.0" text="Phone Number" />
-                                <VBox fx:id="addressLines" />
+                            <Label fx:id="address" text="Address"/>
                                 <Label fx:id="postcode" text="Postcode" />
                         </VBox>
                     <Button fx:id="editProfile" mnemonicParsing="false" onAction="#editProfileClick" text="Edit Profile"

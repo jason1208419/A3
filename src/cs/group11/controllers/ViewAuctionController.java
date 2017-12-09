@@ -9,6 +9,7 @@ import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
 import cs.group11.interfaces.OnAction;
 import cs.group11.interfaces.OnHeaderAction;
+import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -107,9 +108,7 @@ public class ViewAuctionController {
         this.avatar1.setImage(img);
         this.username1.setText(user.getUsername());
 
-        sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> {
-        	onUserClick.clicked(this.auction.getCreator());
-		});
+		sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> onUserClick.clicked(this.auction.getCreator()));
 	}
 
 	public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
@@ -208,8 +207,8 @@ public class ViewAuctionController {
 			lastBid = auction.getLastBid().getPrice();
 		}
 
-		this.currentPrice.setText("Current price: " + String.valueOf(lastBid));
-		this.currentPrice2.setText("Current price: " + String.valueOf(lastBid));
+		this.currentPrice.setText("Current price: £" + String.valueOf(lastBid));
+		this.currentPrice2.setText("Current price: £" + String.valueOf(lastBid));
 
 		// Gets the Maximum amount of bids
 		int theMaxBids = auction.getMaxBids();

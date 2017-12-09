@@ -55,6 +55,7 @@ public class SignInController {
         User user = MegaDB.login(username);
 
         if (user != null) {
+            usernameTXT.clear();
             onSubmitClick.submit(user);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

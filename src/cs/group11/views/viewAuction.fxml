@@ -69,7 +69,7 @@
                     <Label fx:id="remainingBids" text="No. bids remaining" />
                 </VBox>
         <VBox prefHeight="100.0" prefWidth="54.0" />
-                <VBox prefHeight="100.0" prefWidth="130.0">
+        <VBox prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
                     <TextField fx:id="bidAmountInput" promptText="Enter your new bid" />
                     <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick" text="Submit" />
                 </VBox>

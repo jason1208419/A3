@@ -1,9 +1,9 @@
 package cs.group11.controllers;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
 
-import cs.group11.Main;
 import cs.group11.MegaDB;
 import cs.group11.interfaces.OnAction;
 import cs.group11.interfaces.OnAuctionClick;
@@ -15,17 +15,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.scene.paint.Color;
 
 public class ProfileController {
 
@@ -38,7 +37,7 @@ public class ProfileController {
     @FXML private Label firstname;
     @FXML private Label lastname;
     @FXML private Label phoneNumber;
-    @FXML private VBox addressLines;
+    private final String HIDE = "Confidential Information";
     @FXML private Label postcode;
     @FXML
     private Button editProfile;
@@ -103,6 +102,8 @@ public class ProfileController {
 
     @FXML
     private VBox rootBox;
+    @FXML
+    private Label address;
 
     private OnAuctionClick onAuctionClick;
     private OnUserClick onUserClick;
@@ -200,19 +201,41 @@ public class ProfileController {
 
         this.username1.setText(loggedInUser.getUsername());
         this.username.setText(user.getUsername());
-        this.firstname.setText(user.getFirstname());
-        this.lastname.setText(user.getLastname());
-        this.phoneNumber.setText(user.getTelNo());
+        if (loggedInUser.equals(user)) {
+            this.firstname.setText(user.getFirstname());
+            this.firstname.setTextFill(Color.BLACK);
+            this.lastname.setText(user.getLastname());
+            this.lastname.setTextFill(Color.BLACK);
+            this.phoneNumber.setText(user.getTelNo());
+            this.phoneNumber.setTextFill(Color.BLACK);
 
-        for (String addressLine : user.getAddress().getLines()) {
-            Label label = new Label(addressLine);
-            this.addressLines.getChildren().add(label);
-        }
+            String addressResult = "";
 
-        this.postcode.setText(user.getAddress().getPostcode());
 
-        if (!loggedInUser.equals(user)) {
+            for (String addressLine : user.getAddress().getLines()) {
+                addressResult += addressLine + "\n";
+            }
+
+            if (!this.address.getText().equals(addressResult)) {
+                this.address.setText(addressResult);
+            }
+
+            this.address.setTextFill(Color.BLACK);
+
+            this.postcode.setText(user.getAddress().getPostcode());
+            this.postcode.setTextFill(Color.BLACK);
+        } else {
             editProfile.setVisible(false);
+            this.firstname.setText(HIDE);
+            this.firstname.setTextFill(Color.RED);
+            this.lastname.setText(HIDE);
+            this.lastname.setTextFill(Color.RED);
+            this.phoneNumber.setText(HIDE);
+            this.phoneNumber.setTextFill(Color.RED);
+            this.address.setText(HIDE);
+            this.address.setTextFill(Color.RED);
+            this.postcode.setText(HIDE);
+            this.postcode.setTextFill(Color.RED);
         }
     }
 
