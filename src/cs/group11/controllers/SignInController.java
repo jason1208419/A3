@@ -51,7 +51,7 @@ public class SignInController {
     }
 
     public void loginSubmit() {
-        String username = usernameTXT.getText();
+        String username = usernameTXT.getText().toLowerCase();
         User user = MegaDB.login(username);
 
         if (user != null) {
