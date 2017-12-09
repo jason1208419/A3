@@ -33,7 +33,6 @@ public class User implements Validatable, Serializable {
     private List<Auction> createdAuctions;
 
     public User(String username, String firstname, String lastname, String telNo, Address address, String avatarPath) {
-
         this.id = getNextId();
 
         this.lastLogin = new Date();

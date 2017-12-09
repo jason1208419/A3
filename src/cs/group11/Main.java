@@ -1,6 +1,8 @@
 package cs.group11;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 import cs.group11.controllers.AuctionListController;
 import cs.group11.controllers.CreateAuctionController;
@@ -15,11 +17,10 @@ import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.Address;
 import cs.group11.models.Auction;
+import cs.group11.models.Bid;
 import cs.group11.models.User;
+import cs.group11.models.artworks.Painting;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -43,8 +44,8 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 	public static void main(String[] args) throws IOException {
 		MegaDB.load();
 
-		Address address = new Address(new String[] { "29 Flintstones Avenue", "Ding Dong Street", "UK" }, "PDT 0KL");
-		User creator = new User("admin", "Nasir", "Al Jabbouri", "07481173742", address, "res/avatars/creeper.jpg");
+		// TODO: Remove me before submission
+		addTestData();
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
@@ -55,6 +56,45 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 		}));
 
 		launch(args);
+	}
+
+	private static void addTestData() {
+		addTestUser();
+		addTestAuction();
+		addTestBids();
+	}
+
+	private static void addTestUser() {
+		if (MegaDB.getUsers().size() == 0) {
+			Address creatorAddress = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
+			User creator = new User(0, new Date(), "admin", "Nasir", "Al Jabbouri", "07481173742", creatorAddress, "res/avatars/creeper.jpg");
+
+			Address bidderAddress = new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL");
+			User bidder = new User("bidder", "Not Nasir", "Not Al Jabbouri", "072481844193", bidderAddress, "/res/avatars/creeper.jpg");
+		}
+	}
+
+	private static void addTestAuction() {
+		User creator = MegaDB.getUsers().get(0);
+
+		if (MegaDB.getAuctions().size() == 0) {
+			String description = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889, " +
+					"it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition " +
+					"of an idealized village";
+
+			String artworkImagePath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
+			Painting painting = new Painting("Starry Night", description, artworkImagePath, "Vincent Van Gogh", 1889, 200, 300);
+			Auction auction = new Auction(creator, 7, 10.00, painting);
+		}
+	}
+
+	private static void addTestBids() {
+		User bidder = MegaDB.getUsers().get(1);
+		Auction auction = MegaDB.getAuctions().get(0);
+
+		if (auction.getBids().size() == 0) {
+			Bid bid = new Bid(auction.getReservePrice() + 2, bidder, auction);
+		}
 	}
 
 	private void setupAllPages() throws IOException {
@@ -148,7 +188,6 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("views/profile.fxml"));
 		loader.setController(profileController);
-		profileController.addTestBids();
 
 		browseProfileScene = new Scene(loader.load(), 600, 500);
 	}

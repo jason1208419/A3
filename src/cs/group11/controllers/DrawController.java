@@ -194,21 +194,4 @@ public class DrawController {
 		onViewSubmit.submit(saveImage());
 	}
 
-	// TODO THIS WILL BE DELETED! JUST FOR TESTING PURPOSES!
-	public static class Test extends Application {
-
-		@Override
-		public void start(Stage s) throws Exception {
-			FXMLLoader l = new FXMLLoader();
-			Pane p = l.load(ClassLoader.getSystemResourceAsStream("cs/group11/views/drawer.fxml"));
-			s.setScene(new Scene(p));
-			s.show();
-		}
-
-		public static void main(String[] args) {
-			launch(args);
-		}
-
-	}
-
 }

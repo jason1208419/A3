@@ -354,21 +354,6 @@ public class EditProfileController {
         removeFavouriteUsers.setItems(favouriteUsersList);
     }
 
-    public void setTestArt() {
-        User creator = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
-
-        String description = "The Starry Night is an oil on canvas by the Dutch post-impressionist painter Vincent van Gogh. Painted in June 1889, " +
-                "it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition " +
-                "of an idealized village";
-
-        String imgPath = "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg";
-        Painting painting = new Painting("Starry Night", description, imgPath, "Vincent Van Gogh", 1889, 200, 300);
-        Auction auction = new Auction(creator, 7, 10.00, painting);
-        Bid testBid = new Bid(15.25, creator, auction);
-        viewingUser.addFavouriteAuction(auction);
-
-    }
-
     public void setTestUsers() {
         User df = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
         User abc = new User("abc", "Jason", "Lee", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
