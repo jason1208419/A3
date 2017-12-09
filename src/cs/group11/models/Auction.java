@@ -34,7 +34,7 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
-        creator.addCreatedAuction(this);
+		creator.addCreatedAuction(this);
 
 		MegaDB.addAuction(this);
 	}
@@ -62,7 +62,7 @@ public class Auction implements Validatable {
 		this.validate();
 
 		this.bids = new ArrayList<>();
-        creator.addCreatedAuction(this);
+		creator.addCreatedAuction(this);
 
 		MegaDB.addAuction(this);
 	}
@@ -86,7 +86,7 @@ public class Auction implements Validatable {
 	public Bid getLastBid() {
 		if (bids.size() == 0)
 			return null;
-		return bids.get(bids.size() - 1);//top element = last bid.
+		return bids.get(bids.size() - 1);// top element = last bid.
 	}
 
 	public void addBid(Bid bid) {
@@ -146,4 +146,48 @@ public class Auction implements Validatable {
 			throw new InvalidDataException("Negative reserve price not permited. Reserve price must be >= 0");
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((artwork == null) ? 0 : artwork.hashCode());
+		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+		result = prime * result + ((creator == null) ? 0 : creator.hashCode());
+		result = prime * result + maxBids;
+		long temp;
+		temp = Double.doubleToLongBits(reservePrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof Auction) {
+			Auction other = (Auction) obj;
+			if (!artwork.equals(other.artwork)) {
+				return false;
+			}
+			if (!creationDate.equals(other.creationDate)) {
+				return false;
+			}
+			if (!creator.equals(other.creator)) {
+				return false;
+			}
+			if (maxBids != other.maxBids) {
+				return false;
+			}
+			if ((int) reservePrice != (int) other.reservePrice) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
