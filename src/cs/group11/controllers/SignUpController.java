@@ -46,7 +46,7 @@ public class SignUpController {
     private OnCancelClick onCancelClick;
     private OnSubmitClick onSubmitClick;
 
-    private String avatarPath = null;
+    private String avatarPath = "";
 
     private static final FileChooser.ExtensionFilter IMAGE_FILE_EXTENTIONS = new FileChooser.ExtensionFilter("Image Files", ".png", ".gif", ".jpeg", ".jpg");
 
@@ -74,8 +74,31 @@ public class SignUpController {
         }
     }
 
-    public void drawAvatarClick() {
-        System.out.println("draw avatar click");
+    public void drawAvatarClick() throws IOException {
+        Stage drawingStage = new Stage();
+
+        OnSubmitClick onSave = (Object selectedAvatar) -> {
+            try {
+                avatarPath = (String) selectedAvatar;
+                drawingStage.close();
+                Image image = new Image(avatarPath);
+                this.avatarImg.setImage(image);
+
+            } catch (NullPointerException e) {
+                System.out.println("Path not specified");
+                avatarPath = "";
+            }
+        };
+
+        DrawController drawController = new DrawController();
+        drawController.setOnSave(onSave);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/drawer.fxml"));
+        loader.setController(drawController);
+        Parent root = loader.load();
+        drawingStage.setTitle("Drawing tool");
+        drawingStage.setScene(new Scene(root));
+        drawingStage.show();
     }
 
     public void cancelClick() {

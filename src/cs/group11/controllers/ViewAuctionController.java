@@ -84,6 +84,8 @@ public class ViewAuctionController {
 
 	@FXML
 	private TextField bidAmountInput;
+	@FXML
+	private Button submitButton;
 
 	private OnHeaderAction onHeaderAction;
 	private OnUserClick onUserClick;
@@ -137,10 +139,16 @@ public class ViewAuctionController {
 	}
 
 	public void placeBidClick() {
+
+		if (bidAmountInput.getText().isEmpty()) {
+			return;
+		}
+
     	double bidAmount = Double.parseDouble(bidAmountInput.getText());
+		Bid placedBid = null;
 
     	try {
-			new Bid(bidAmount, user, auction);
+			placedBid = new Bid(bidAmount, user, auction);
 			setAuction(auction);
 		} catch (InvalidDataException e) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -149,6 +157,18 @@ public class ViewAuctionController {
 			alert.setContentText(e.getMessage());
 
 			alert.showAndWait();
+		}
+		if (this.auction.isCompleted()) {
+			this.submitButton.setDisable(true);
+			this.bidAmountInput.setDisable(true);
+
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("Congratulations");
+			alert.setHeaderText("You are the auction winner!");
+
+			alert.showAndWait();
+
+
 		}
 	}
 

@@ -101,9 +101,9 @@ public class Bid implements Validatable {
 
 		Bid lastBid = this.auction.getLastBid();
 
-		if (lastBid != null && lastBid.getId() == this.user.getId()) {
-            throw new InvalidDataException("You're already the highest bidder.");
-        }
+		if (lastBid != null && lastBid.getUser().getId() == this.user.getId()) {
+			throw new InvalidDataException("You're already the highest bidder.");
+		}
 
         if (lastBid != null && this.price <= lastBid.getPrice()) {
             throw new InvalidDataException("Bid must be greater than the previous bid.");
@@ -116,6 +116,7 @@ public class Bid implements Validatable {
         if (this.auction.isCompleted()) {
             throw new InvalidDataException("Auction is finished. No more bids accepted.");
         }
+
 
 	}
 }

@@ -20,7 +20,8 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#uploadClick" text="Upload" />
-                        <Button mnemonicParsing="false" onAction="#drawAvatarClick" text="Draw Avatar" />
+                        <Button fx:id="drawAvatarButton" mnemonicParsing="false" onAction="#drawAvatarClick"
+                                text="Draw Avatar"/>
                         <Button mnemonicParsing="false" onAction="#builtInAvatarClick" text="Select Built in Avatars" />
                      </children>
                   </HBox>
