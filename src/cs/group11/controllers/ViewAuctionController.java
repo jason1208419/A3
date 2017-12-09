@@ -208,6 +208,7 @@ public class ViewAuctionController {
 			favUserBtn.setVisible(true);
 			favArtBtn.setVisible(true);
 		}
+
 		Artwork artwork = auction.getArtwork();
 		this.artType.setText("Type: " + getType(artwork));
 
@@ -277,51 +278,66 @@ public class ViewAuctionController {
         /**
          * Adds favourite user to MegaDB
          */
-        EventHandler<ActionEvent> onFavUserClick = (ActionEvent event) -> {
-        	//TODO validate user not already in list
-			MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
-        };
 
+
+        EventHandler<ActionEvent> onFavUserClick = (ActionEvent event) -> {
+        	if(favUserBtn.isSelected()) {
+				MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
+
+			} else {
+				MegaDB.getLoggedInUser().removeFavouriteUser(this.auction.getCreator());
+			}
+        };
         favUserBtn.setOnAction(onFavUserClick);
 
 		EventHandler<ActionEvent> onFavAucClick = (ActionEvent event) -> {
-			//TODO validate user not already in auction
-			MegaDB.getLoggedInUser().addFavouriteAuction(this.auction);
-		};
+			if(favArtBtn.isSelected()) {
+				MegaDB.getLoggedInUser().addFavouriteAuction(this.auction);
 
+			} else {
+				MegaDB.getLoggedInUser().removeFavouriteAuction(this.auction);
+			}
+		};
 		favArtBtn.setOnAction(onFavAucClick);
 
-        for (User user : user.getFavouriteUsers()) {
-            if (user.getId() == (this.auction.getCreator().getId())) {
-                favUserBtn.setSelected(true);
-            }
-        }
 
-		for (Auction a : user.getFavouriteAuctions()) {
-			if (a.getId() == this.auction.getId()) {
-				favUserBtn.setSelected(true);
+		if(MegaDB.getLoggedInUser().getFavouriteUsers().size() == 0) {
+			favUserBtn.setSelected(false);
+		} else {
+			for (User u : MegaDB.getLoggedInUser().getFavouriteUsers()) {
+				if (u.getId() == (this.auction.getCreator().getId())) {
+					System.out.println("b");
+					favUserBtn.setSelected(true);
+				}
 			}
 		}
+
+			if (MegaDB.getLoggedInUser().getFavouriteAuctions().size() == 0) {
+				favArtBtn.setSelected(false);
+			} else {
+				for (Auction a : user.getFavouriteAuctions()) {
+					if (a.getId() == this.auction.getId()) {
+						favArtBtn.setSelected(true);
+					}
+				}
+			}
+
 	}
 
 	public void viewAuctionClick() throws IOException {
-		favUserBtn.setSelected(false);
 		onHeaderAction.browseAuctionsClick();
 	}
 
 	@FXML
 	public void createAuctionClick() throws IOException {
-		favUserBtn.setSelected(false);
 		onHeaderAction.createAuctionsClick();
 	}
 
 	public void avatarClick() throws IOException {
-		favUserBtn.setSelected(false);
 		onHeaderAction.browseProfileClick();
 	}
 
 	public void logoutClick() throws IOException {
-		favUserBtn.setSelected(false);
 		onHeaderAction.logoutClick();
 	}
 }
