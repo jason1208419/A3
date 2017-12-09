@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -36,9 +37,11 @@
     </HBox>
     <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                 <HBox prefHeight="210.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                        <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <CheckBox fx:id="favArtBtn" mnemonicParsing="false" text="Favourite Artwork"/>
+                    <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="226.0" HBox.hgrow="ALWAYS">
+                        <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <ListView fx:id="artworkListView" maxHeight="200.0" orientation="HORIZONTAL" prefHeight="200.0"
+                                  prefWidth="196.0"/>
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="189.0" prefWidth="215.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="artType" text="Art Type" />
@@ -64,6 +67,8 @@
     <HBox prefHeight="100.0" prefWidth="200.0">
         <VBox prefHeight="100.0" prefWidth="103.0" />
                 <VBox prefHeight="100.0" prefWidth="160.0">
+                    <VBox maxHeight="10" prefHeight="10"/>
+                    <CheckBox fx:id="favArtBtn" mnemonicParsing="false" text="Favourite Artwork"/>
                     <Label fx:id="currentPrice2" text="Current Price" />
                     <Label fx:id="maxBids" text="Total bids allowed" />
                     <Label fx:id="placedBids" text="No. bids placed" />

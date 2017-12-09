@@ -7,9 +7,7 @@ import java.util.Date;
 
 import cs.group11.MegaDB;
 import cs.group11.helpers.InvalidDataException;
-import cs.group11.interfaces.OnAction;
 import cs.group11.interfaces.OnHeaderAction;
-import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.interfaces.OnUserClick;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
@@ -17,16 +15,13 @@ import cs.group11.models.Bid;
 import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -40,8 +35,8 @@ public class ViewAuctionController {
 	private Label username1;
 
 	@FXML
-	private ImageView artworkImageView;
-	@FXML
+    private ListView<String> artworkListView;
+    @FXML
 	private Label artType;
 	@FXML
 	private Label title;
@@ -81,6 +76,8 @@ public class ViewAuctionController {
 	private Label sellerUsername;
 	@FXML
 	private ImageView sellerAvatarImageView;
+    @FXML
+    private ImageView artworkImageView;
 
 	@FXML
 	private VBox rootBox;
@@ -98,10 +95,11 @@ public class ViewAuctionController {
     @FXML
     private CheckBox favArtBtn;
 
-
 	private OnHeaderAction headerAction;
 	private User user;
 	private Auction auction;
+
+    private ObservableList<String> artworkImageList;
 
 
 	public void setOnUserClick(OnUserClick onUserClick) {
@@ -114,6 +112,25 @@ public class ViewAuctionController {
         Image img = new Image(user.getAvatarPath());
         this.avatar1.setImage(img);
         this.username1.setText(user.getUsername());
+
+        this.artworkListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            public void updateItem(String i, boolean empty) {
+                super.updateItem(i, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Image image = new Image(i);
+
+                    ImageView node = new ImageView(image);
+                    node.setPreserveRatio(true);
+                    node.setFitHeight(150);
+
+                    setGraphic(node);
+                }
+            }
+        });
 
 		sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> onUserClick.clicked(this.auction.getCreator()));
 	}
@@ -151,7 +168,6 @@ public class ViewAuctionController {
      * Attempts to create bid instance for auction
      */
     public void placeBidClick() {
-
         if (bidAmountInput.getText().isEmpty()) {
             return;
         }
@@ -179,8 +195,6 @@ public class ViewAuctionController {
             alert.setHeaderText("You are the auction winner!");
 
             alert.showAndWait();
-
-
         }
     }
 
@@ -212,23 +226,31 @@ public class ViewAuctionController {
 		Artwork artwork = auction.getArtwork();
 		this.artType.setText("Type: " + getType(artwork));
 
+        Image image = new Image(artwork.getImagePath());
+        artworkImageView.setImage(image);
+
 		// Gets the Width and depth and material
 		if (artwork instanceof Painting) {
 			Painting painting = (Painting) artwork;
 			this.width.setText("Width: " + Double.toString(painting.getWidth()) + " cm");
 			this.depth.setVisible(false);
 			this.material.setVisible(false);
-		} else if (artwork instanceof Sculpture) {
+
+            this.artworkListView.setVisible(false);
+        } else if (artwork instanceof Sculpture) {
 			Sculpture sculpture = (Sculpture) artwork;
 			this.width.setText("Width: " + Double.toString(sculpture.getWidth()) + " cm");
 			this.depth.setText("Depth: " + Double.toString(sculpture.getDepth()) + " cm");
 			this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
-		}
+
+            this.artworkListView.setVisible(true);
+
+            this.artworkImageList = FXCollections.observableArrayList(sculpture.getPhotos());
+            this.artworkListView.setItems(this.artworkImageList);
+        }
 
 		this.height.setText("Height: " + getHeight(artwork) + " cm");
 
-		Image image = new Image(auction.getArtwork().getImagePath());
-		this.artworkImageView.setImage(image);
 		this.title.setText("Title: " + artwork.getName());
 		this.author.setText("Artist: " + artwork.getArtist());
 
