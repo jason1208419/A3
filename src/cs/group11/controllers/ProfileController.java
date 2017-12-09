@@ -27,6 +27,12 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.scene.paint.Color;
 
+/**
+ * Help to make functions of buttons and tables for the profile.fxml
+ *
+ * @author
+ */
+
 public class ProfileController {
 
     @FXML private ImageView avatarImageView;
@@ -119,6 +125,9 @@ public class ProfileController {
     private ObservableList<Auction> favouriteAuctionsList;
     private User user;
 
+    /**
+     * set and display the correct information on the GUI. Allow users to click on the content of table and change to a more detailed page.
+     */
     @FXML
     protected void initialize() {
         setupBidsWonTable();
@@ -129,6 +138,7 @@ public class ProfileController {
         setupFavouriteArtTable();
 
         ChangeListener<Bid> onBidClick = (observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
@@ -136,34 +146,30 @@ public class ProfileController {
             Auction auction = newValue.getAuction();
             onAuctionClick.clicked(auction);
 
-            Platform.runLater(() -> {
-                bidsWon.getSelectionModel().clearSelection();
-            });
+            Platform.runLater(() -> bidsWon.getSelectionModel().clearSelection());
         };
 
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
 
             onUserClick.clicked(newValue);
 
-            Platform.runLater(() -> {
-                favouriteUsers.getSelectionModel().clearSelection();
-            });
+            Platform.runLater(() -> favouriteUsers.getSelectionModel().clearSelection());
 
         };
 
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
 
             onAuctionClick.clicked(newValue);
-            
-            Platform.runLater(() -> {
-                favouriteAuctions.getSelectionModel().clearSelection();
-            });
+
+            Platform.runLater(() -> favouriteAuctions.getSelectionModel().clearSelection());
         };
 
 
@@ -174,22 +180,43 @@ public class ProfileController {
         favouriteAuctions.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
     }
 
+    /**
+     * set the OnAuctionClick interface instance
+     *
+     * @param onAuctionClick the instance
+     */
     public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
         this.onAuctionClick = onAuctionClick;
     }
 
+    /**
+     * set the OnUserClick interface instance
+     * @param onUserClick the instance
+     */
     public void setOnUserClick(OnUserClick onUserClick) {
         this.onUserClick = onUserClick;
     }
 
+    /**
+     * set the OnHeaderClick interface instance
+     * @param onHeaderAction the instance
+     */
     public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
         this.onHeaderAction = onHeaderAction;
     }
 
+    /**
+     * set the OnEditProfileClick interface instance
+     * @param onEditProfileClick the instance
+     */
     public void setOnEditProfileClick(OnAction onEditProfileClick) {
         this.onEditProfileClick = onEditProfileClick;
     }
 
+    /**
+     * set the user instance and update the value of that user on the page
+     * @param user the user which is being viewed
+     */
     public void setViewingUser(User user) {
         this.user = user;
 
@@ -223,6 +250,8 @@ public class ProfileController {
 
         this.username1.setText(loggedInUser.getUsername());
         this.username.setText(user.getUsername());
+
+        //the user being viewed is the logined in user
         if (loggedInUser.equals(user)) {
             editProfile.setVisible(true);
             this.firstname.setText(user.getFirstname());
@@ -234,11 +263,12 @@ public class ProfileController {
 
             String addressResult = "";
 
-
+            //get the address with next line symbol in the form of string
             for (String addressLine : user.getAddress().getLines()) {
                 addressResult += addressLine + "\n";
             }
 
+            //update the address
             if (!this.address.getText().equals(addressResult)) {
                 this.address.setText(addressResult);
             }
@@ -247,7 +277,7 @@ public class ProfileController {
 
             this.postcode.setText(user.getAddress().getPostcode());
             this.postcode.setTextFill(Color.BLACK);
-        } else {
+        } else { //the logined user viewing another user's profile
             editProfile.setVisible(false);
             this.firstname.setText(HIDE);
             this.firstname.setTextFill(Color.RED);
@@ -262,6 +292,9 @@ public class ProfileController {
         }
     }
 
+    /**
+     * setup the table content of bids won
+     */
     private void setupBidsWonTable() {
         bidsWonList = FXCollections.observableArrayList();
 
@@ -275,9 +308,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
                             Image image = new Image(auction.getArtwork().getImagePath());
                             node.setImage(image);
@@ -299,9 +333,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(auction.getArtwork().getName());
                             setGraphic(node);
@@ -315,6 +350,9 @@ public class ProfileController {
 
     }
 
+    /**
+     * setup the table content of bids made
+     */
     private void setupBidsMadeTable() {
         bidsMadeList = FXCollections.observableArrayList();
 
@@ -328,9 +366,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
                             Image image = new Image(auction.getArtwork().getImagePath());
                             node.setImage(image);
@@ -352,9 +391,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(auction.getArtwork().getName());
                             setGraphic(node);
@@ -368,6 +408,9 @@ public class ProfileController {
 
     }
 
+    /**
+     * setup the table content of bids received
+     */
     private void setupBidsReceivedTable() {
         bidsReceivedList = FXCollections.observableArrayList();
 
@@ -381,9 +424,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
                             Image image = new Image(auction.getArtwork().getImagePath());
                             node.setImage(image);
@@ -405,9 +449,10 @@ public class ProfileController {
                     public void updateItem(Auction auction, boolean empty) {
                         super.updateItem(auction, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(auction.getArtwork().getName());
                             setGraphic(node);
@@ -427,9 +472,10 @@ public class ProfileController {
                     public void updateItem(User user, boolean empty) {
                         super.updateItem(user, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(user.getUsername());
                             setGraphic(node);
@@ -441,6 +487,9 @@ public class ProfileController {
 
     }
 
+    /**
+     * setup the table content of favourite artwork
+     */
     private void setupFavouriteArtTable() {
 
         tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
@@ -453,9 +502,10 @@ public class ProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
                             Image image = new Image(artwork.getImagePath());
                             node.setImage(image);
@@ -477,9 +527,10 @@ public class ProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(artwork.getName());
                             setGraphic(node);
@@ -497,9 +548,10 @@ public class ProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(artwork.getArtist());
                             setGraphic(node);
@@ -517,9 +569,10 @@ public class ProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(Integer.toString(artwork.getCreationYear()));
                             setGraphic(node);
@@ -531,6 +584,9 @@ public class ProfileController {
 
     }
 
+    /**
+     * setup the table content of favourite user
+     */
     private void setupFavouriteUserTable() {
 
         tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
@@ -543,9 +599,10 @@ public class ProfileController {
                     public void updateItem(String avatarPath, boolean empty) {
                         super.updateItem(avatarPath, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
 
                             Image image = new Image(avatarPath);
@@ -564,22 +621,42 @@ public class ProfileController {
         tableLastName.setCellValueFactory(new PropertyValueFactory<>("lastname"));
     }
 
+    /**
+     * This function get called when you pressed the avatar button which will trigger the action
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void avatarClick() throws IOException {
         onHeaderAction.browseProfileClick();
     }
 
+    /**
+     * This function get called when you pressed the browse auction button which will trigger the action
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void viewAuctionClick() throws IOException {
         onHeaderAction.browseAuctionsClick();
     }
 
+    /**
+     * This function get called when you pressed the create auction button which will trigger the action
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void createAuctionClick() throws IOException {
         onHeaderAction.createAuctionsClick();
     }
 
+    /**
+     * This function get called when you pressed the logout button which will trigger the action
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void logoutClick() throws IOException {
         onHeaderAction.logoutClick();
     }
 
+    /**
+     * This function get called when you pressed the edit profile button which will trigger the action
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
+     */
     public void editProfileClick() throws IOException {
         onEditProfileClick.call(user);
     }

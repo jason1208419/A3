@@ -79,10 +79,10 @@ public class EditProfileController {
     private TextArea addressIn;
     @FXML
     private TextField postcodeIn;
-
-    private final int UK_PHONE_MAX_LENGTH = 11;
     @FXML
     private Label error;
+
+    private final int UK_PHONE_MAX_LENGTH = 11;
 
     private ObservableList<User> favouriteUsersList;
     private ObservableList<Auction> favouriteArtworkList;
@@ -95,18 +95,43 @@ public class EditProfileController {
 
     private User viewingUser;
 
+    /**
+     * set the OnUserClick interface instance
+     *
+     * @param onUserClick the instance
+     */
     public void setOnUserClick(OnUserClick onUserClick) {
         this.onUserClick = onUserClick;
     }
+
+    /**
+     * set the OnUserClick interface instance
+     * @param onAuctionClick the instance
+     */
     public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
         this.onAuctionClick = onAuctionClick;
     }
+
+    /**
+     * set the OnCancelClick interface instance
+     * @param onCancelClick the instance
+     */
     public void setOnCancelClick(OnCancelClick onCancelClick) {
         this.onCancelClick = onCancelClick;
     }
+
+    /**
+     * set the OnSubmitClick interface instance
+     * @param onSubmitClick the instance
+     */
     public void setOnSubmitClick(OnSubmitClick onSubmitClick) {
         this.onSubmitClick = onSubmitClick;
     }
+
+    /**
+     * set the OnHeaderClick interface instance
+     * @param onHeaderAction the instance
+     */
     public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
         this.onHeaderAction = onHeaderAction;
     }
@@ -122,6 +147,7 @@ public class EditProfileController {
 
         //Let users to click on contents inside the favourite user table and show the page of the user being clicked on
         ChangeListener<User> userClicked = (observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
@@ -135,6 +161,7 @@ public class EditProfileController {
 
         //Let users to click on contents inside the favourite artwork table and show the page of the artwork being clicked on
         ChangeListener<Auction> auctionClicked = (observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
@@ -147,12 +174,15 @@ public class EditProfileController {
         };
 
         phoneIn.textProperty().addListener((observable, oldValue, newValue) -> {
+            //nothing to do when nothing selected
             if (newValue == null) {
                 return;
             }
+
+            //replace non numerical inputs to ""
             if (!newValue.matches("\\d*")) {
                 phoneIn.setText(newValue.replaceAll("[^\\d]", ""));
-            } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) {
+            } else if (phoneIn.getText().length() > UK_PHONE_MAX_LENGTH) { //can't input more than 11 digits
                 phoneIn.setText(phoneIn.getText().substring(0, UK_PHONE_MAX_LENGTH));
             }
         });
@@ -160,6 +190,10 @@ public class EditProfileController {
         removeFavouriteArtworks.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
     }
 
+    /**
+     * Set the user and display it on the page
+     * @param user the logined user
+     */
     public void setViewingUser(User user) {
         favouriteArtworkList = FXCollections.observableArrayList(user.getFavouriteAuctions());
         favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
@@ -192,9 +226,10 @@ public class EditProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
                             Image image = new Image(artwork.getImagePath());
                             node.setImage(image);
@@ -217,9 +252,10 @@ public class EditProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(artwork.getName());
                             setGraphic(node);
@@ -239,9 +275,10 @@ public class EditProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(artwork.getArtist());
                             setGraphic(node);
@@ -261,9 +298,10 @@ public class EditProfileController {
                     public void updateItem(Artwork artwork, boolean empty) {
                         super.updateItem(artwork, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             Label node = new Label();
                             node.setText(Integer.toString(artwork.getCreationYear()));
                             setGraphic(node);
@@ -281,6 +319,8 @@ public class EditProfileController {
             @Override
             protected void updateItem(Auction art, boolean empty) {
                 super.updateItem(art, empty);
+
+                //nothing to do when nothing to set
                 if (art == null) {
                     setGraphic(null);
                     return;
@@ -321,9 +361,10 @@ public class EditProfileController {
                     public void updateItem(String avatarPath, boolean empty) {
                         super.updateItem(avatarPath, empty);
 
+                        //display nothing inside the table if there is nothing
                         if (empty) {
                             setGraphic(null);
-                        } else {
+                        } else { //display the content if there is something
                             ImageView node = new ImageView();
 
                             Image image = new Image(avatarPath);
@@ -352,6 +393,8 @@ public class EditProfileController {
             @Override
             protected void updateItem(User user1, boolean empty) {
                 super.updateItem(user1, empty);
+
+                //nothing to do when nothing to set
                 if (user1 == null) {
                     setGraphic(null);
                     return;
@@ -400,7 +443,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the profile page when cancel button clicked
+     * This function get called when you pressed the cancel button which will trigger the action
      *
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
@@ -410,7 +453,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the profile page when avatar on header clicked
+     * This function get called when you pressed the avatar button which will trigger the action
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void avatarClick() throws IOException {
@@ -418,7 +461,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the auction list page when browse auction button clicked
+     * This function get called when you pressed the browse auction button which will trigger the action
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void viewAuctionClick() throws IOException {
@@ -426,7 +469,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the create auction page when create auction button clicked
+     * This function get called when you pressed the create auction button which will trigger the action
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void createAuctionClick() throws IOException {
@@ -434,7 +477,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the sign in page when logout button clicked
+     * This function get called when you pressed the logout button which will trigger the action
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void logoutClick() throws IOException {
@@ -463,6 +506,7 @@ public class EditProfileController {
 
     /**
      * Pop up a window to let user create avatar
+     * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void drawAvatarClick() throws IOException {
         String currentAvatarPath = viewingUser.getAvatarPath();
@@ -496,7 +540,7 @@ public class EditProfileController {
     }
 
     /**
-     * Change to the profile page and save changed data when submit button clicked
+     * This function get called when you pressed the submit button which will trigger the action
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void submitClick() throws IOException {
