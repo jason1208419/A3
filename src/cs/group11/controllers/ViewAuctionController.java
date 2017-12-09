@@ -255,14 +255,8 @@ public class ViewAuctionController {
          * Adds favourite user to MegaDB
          */
         EventHandler<ActionEvent> onFavUserClick = (ActionEvent event) -> {
-            if (!favUserBtn.isSelected()) {
-                MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
-                try {
-                    user.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        	//TODO validate user not already in list
+			MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
         };
 
         favUserBtn.setOnAction(onFavUserClick);
@@ -275,19 +269,23 @@ public class ViewAuctionController {
 	}
 
 	public void viewAuctionClick() throws IOException {
+		favUserBtn.setSelected(false);
 		onHeaderAction.browseAuctionsClick();
 	}
 
 	@FXML
 	public void createAuctionClick() throws IOException {
+		favUserBtn.setSelected(false);
 		onHeaderAction.createAuctionsClick();
 	}
 
 	public void avatarClick() throws IOException {
+		favUserBtn.setSelected(false);
 		onHeaderAction.browseProfileClick();
 	}
 
 	public void logoutClick() throws IOException {
+		favUserBtn.setSelected(false);
 		onHeaderAction.logoutClick();
 	}
 }

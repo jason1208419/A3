@@ -187,11 +187,26 @@ public class ProfileController {
         User loggedInUser = MegaDB.getLoggedInUser();
 
         bidsWonList = FXCollections.observableArrayList(user.getWonBids());
+        bidsWon.setItems(bidsWonList);
+
         bidsMadeList = FXCollections.observableArrayList(user.getBids());
+        bidsMade.setItems(bidsWonList);
+
         bidsReceivedList = FXCollections.observableArrayList(user.getReceivedBids());
+        bidsReceived.setItems(bidsReceivedList);
 
         favouriteAuctionsList = FXCollections.observableArrayList(user.getFavouriteAuctions());
+
         favouriteUsersList = FXCollections.observableArrayList(user.getFavouriteUsers());
+        favouriteUsers.setItems(favouriteUsersList);
+
+        favouriteAuctionsList = FXCollections.observableArrayList(user.getFavouriteAuctions());
+        favouriteAuctions.setItems(favouriteAuctionsList);
+
+
+
+
+
 
         Image avatar1 = new Image(loggedInUser.getAvatarPath());
         this.avatar1.setImage(avatar1);
@@ -419,7 +434,6 @@ public class ProfileController {
     }
 
     private void setupFavouriteArtTable() {
-        favouriteAuctionsList = FXCollections.observableArrayList();
 
         tablePic.setCellValueFactory(new PropertyValueFactory<>("artwork"));
         tablePic.setPrefWidth(100);
@@ -506,11 +520,10 @@ public class ProfileController {
                 };
             }
         });
-        favouriteAuctions.setItems(favouriteAuctionsList);
+
     }
 
     private void setupFavouriteUserTable() {
-        favouriteUsersList = FXCollections.observableArrayList();
 
         tableAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
         tableAvatar.setPrefWidth(100);
@@ -541,7 +554,6 @@ public class ProfileController {
         tableUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
         tableFirstName.setCellValueFactory(new PropertyValueFactory<>("firstname"));
         tableLastName.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-        favouriteUsers.setItems(favouriteUsersList);
     }
 
     public void avatarClick() throws IOException {
