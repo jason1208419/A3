@@ -52,6 +52,7 @@
                         <Label fx:id="depth" text="?depth?" />
                         <Label fx:id="artworkCreation" text="Artwork Creation date" />
                         <Label fx:id="auctionCreation" text="Auction Creation date" />
+                        <Label fx:id="description" text="Description"/>
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="210.0" prefWidth="123.0" HBox.hgrow="ALWAYS">
                         <ImageView fx:id="sellerAvatarImageView" fitHeight="80.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" />
@@ -68,11 +69,12 @@
                     <Label fx:id="placedBids" text="No. bids placed" />
                     <Label fx:id="remainingBids" text="No. bids remaining" />
                 </VBox>
-        <VBox prefHeight="100.0" prefWidth="54.0" />
-        <VBox prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
-                    <TextField fx:id="bidAmountInput" promptText="Enter your new bid" />
-                    <Button fx:id="submitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick"
-                            text="Submit"/>
+        <VBox prefHeight="100.0" prefWidth="54.0" HBox.hgrow="ALWAYS"/>
+        <VBox fillWidth="false" prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="bidAmountInput" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="163.0"
+                       promptText="Enter your new bid"/>
+            <Button fx:id="submitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick"
+                    text="Submit"/>
                 </VBox>
         </HBox>
 </VBox>

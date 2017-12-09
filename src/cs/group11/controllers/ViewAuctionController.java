@@ -63,6 +63,9 @@ public class ViewAuctionController {
 	private Label artworkCreation;
 	@FXML
 	private Label auctionCreation;
+    @FXML
+    private Label description;
+
 
 	@FXML
 	private Label currentPrice2;
@@ -211,6 +214,10 @@ public class ViewAuctionController {
 		this.artworkImageView.setImage(image);
 		this.title.setText("Title: " + artwork.getName());
 		this.author.setText("Artist: " + artwork.getArtist());
+
+        //Get art description
+        this.description.setText("Description: " + artwork.getDescription());
+
 
 		// Gets artworks creation year
 		this.artworkCreation.setText("Art creation: " + Integer.toString(artwork.getCreationYear()));
