@@ -2,33 +2,24 @@ package cs.group11.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.sun.media.sound.InvalidDataException;
-
-import cs.group11.Main;
 import cs.group11.MegaDB;
+import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.OnAuctionClick;
 import cs.group11.interfaces.OnHeaderAction;
-import cs.group11.interfaces.OnSubmitClick;
 import cs.group11.models.Artwork;
 import cs.group11.models.Auction;
-import cs.group11.models.Bid;
-import cs.group11.models.User;
 import cs.group11.models.artworks.Painting;
 import cs.group11.models.artworks.Sculpture;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -80,7 +71,6 @@ public class CreateAuctionController {
 	 * The height of images shown in the extra image list for sculptures
 	 */
 	private static final int DEFAULT_EXTRA_IMAGE_LIST_CELL_HEIGHT = 100;
-    private boolean opened = false;
 
 	@FXML
 	private ImageView avatar1;
@@ -128,24 +118,24 @@ public class CreateAuctionController {
 	private VBox rootBox;
 
 	private String mainImagePath;
-    private List<String> sculptureImages;
+	private List<String> sculptureImages;
 
-    private OnAuctionClick onAuctionClick;
-    private OnHeaderAction onHeaderAction;
+	private OnAuctionClick onAuctionClick;
+	private OnHeaderAction onHeaderAction;
 
 	/**
 	 * The controller initialize method$
 	 */
 	@FXML
 	protected void initialize() {
-		User loggedInUser = MegaDB.getLoggedInUser();
 
-        sculptureImages = new ArrayList<>();
-        mainImagePath = "";
-
-		Image avatarImage = new Image(loggedInUser.getAvatarPath());
+		sculptureImages = new ArrayList<>();
+		mainImagePath = "";
+		
+		//TODO fix header code.
+		Image avatarImage = new Image(MegaDB.getLoggedInUser().getAvatarPath());
 		this.avatar1.setImage(avatarImage);
-		this.username1.setText(loggedInUser.getUsername());
+		this.username1.setText(MegaDB.getLoggedInUser().getUsername());
 
 		makeFieldsNumeric(depth, length, startPrice, maxBids, width);
 
@@ -166,7 +156,6 @@ public class CreateAuctionController {
 			image.setImage(value.getValue().getValue());
 			mainImagePath = value.getValue().getKey();
 			removeImg.setDisable(Validator.isNull(value.getValue()) || extraImages.getItems().size() <= 1);
-
 		});
 
 		addExtraImg.setOnAction((e) -> handleAddExtraImage());
@@ -175,7 +164,6 @@ public class CreateAuctionController {
 		removeImg.setOnAction((e) -> {
 			int selectedIndex = extraImages.getSelectionModel().getSelectedIndex();
 			if (selectedIndex != -1) {
-
 				extraImages.getItems().remove(selectedIndex);
 			}
 		});
@@ -193,13 +181,13 @@ public class CreateAuctionController {
 
 		// Listen to clicks on create button and handle the click invoking
 		// createAuction();
-        create.setOnAction((e) -> {
-            try {
-                createAuction();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
+		create.setOnAction((e) -> {
+			try {
+				createAuction();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
 
 		// Set the default date of the date field to the current date.
 		creationDate.setValue(LocalDate.now());
@@ -208,6 +196,7 @@ public class CreateAuctionController {
 	public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
 		this.onAuctionClick = onAuctionClick;
 	}
+
 	public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
 		this.onHeaderAction = onHeaderAction;
 	}
@@ -219,10 +208,10 @@ public class CreateAuctionController {
 	private void handleAddExtraImage() {
 		Pair<String, Image> userSelection = userSelectImage();
 		if (!Validator.isNull(userSelection)) {
-            String imgPath = userSelection.getKey();
-            sculptureImages.add(imgPath);
-            extraImages.getItems().add(userSelection);
-            extraImages.getSelectionModel().select(userSelection);
+			String imgPath = userSelection.getKey();
+			sculptureImages.add(imgPath);
+			extraImages.getItems().add(userSelection);
+			extraImages.getSelectionModel().select(userSelection);
 		}
 	}
 
@@ -272,37 +261,30 @@ public class CreateAuctionController {
 	 * of the image in the filesystem and the image object is the loaded image.
 	 */
 	private Pair<String, Image> userSelectImage() {
-        if (!opened) {
-            FileChooser chooser = new FileChooser();
-            chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
-            chooser.setTitle("Select Image");
-            opened = true;
-            File in = chooser.showOpenDialog(null);
-            if (Validator.isFileValid(in)) {
-                opened = false;
-                return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
-            } else {
-                opened = false;
-            }
-        }
-        return null;
-    }
+		FileChooser chooser = new FileChooser();
+		chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
+		chooser.setTitle("Select Image");
+		File in = chooser.showOpenDialog(null);
+		if (Validator.isFileValid(in)) {
+			return new Pair<>(in.toURI().toString(), new Image(in.toURI().toString()));
+		}
+		return null;
+	}
 
 	/**
 	 * Create an auction based on data inputed by the user
 	 * @return an Auction object created using the data provided by the user.
 	 * @throw {@link InvalidDataException} if the input data is not valid.
 	 */
-    private void createAuction() throws IOException {
-        if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
-                || (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
+	private void createAuction() throws IOException {
+		if (isAnyEmpty(title, artist, startPrice, maxBids, width, length, description)
+				|| (sculptureRadio.isSelected() && isAnyEmpty(depth, material))) {
 			Alert alert = new Alert(AlertType.ERROR, "All fields must be completed before\ncreating the auction",
 					ButtonType.OK);
 			alert.show();
 			return;
 		}
 
-		User loggedInUser = MegaDB.getLoggedInUser();
 
 		String auctionTitle = this.title.getText();// title
 		String auctionAuthor = this.artist.getText();// artist
@@ -330,7 +312,7 @@ public class CreateAuctionController {
 		Auction auction = new Auction(loggedInUser, auctionMaxBids, auctionStartPrice, forAuctioning);
 		loggedInUser.addCreatedAuction(auction);
 		onAuctionClick.clicked(auction);
-    }
+	}
 
 	/**
 	 * Checks if any of the parameter TextInputControlls has no text (left blank)
@@ -364,15 +346,18 @@ public class CreateAuctionController {
 		return Double.parseDouble(str);
 	}
 
-	public void viewAuctionClick() throws IOException {
+	@FXML
+	private void viewAuctionClick() throws IOException {
 		onHeaderAction.browseAuctionsClick();
 	}
 
-	public void avatarClick() throws IOException {
+	@FXML
+	private void avatarClick() throws IOException {
 		onHeaderAction.browseProfileClick();
 	}
 
-	public void logoutClick() throws IOException {
+	@FXML
+	private void logoutClick() throws IOException {
 		onHeaderAction.logoutClick();
 	}
 }
