@@ -98,6 +98,7 @@ public class ViewAuctionController {
     @FXML
     private CheckBox favArtBtn;
 
+
 	private OnHeaderAction headerAction;
 	private User user;
 	private Auction auction;
@@ -195,6 +196,9 @@ public class ViewAuctionController {
 		if(user.getId() == auction.getCreator().getId()) {
 			favUserBtn.setVisible(false);
 			favArtBtn.setVisible(false);
+		} else {
+			favUserBtn.setVisible(true);
+			favArtBtn.setVisible(true);
 		}
 		Artwork artwork = auction.getArtwork();
 		this.artType.setText("Type: " + getType(artwork));
@@ -272,11 +276,24 @@ public class ViewAuctionController {
 
         favUserBtn.setOnAction(onFavUserClick);
 
+		EventHandler<ActionEvent> onFavAucClick = (ActionEvent event) -> {
+			//TODO validate user not already in auction
+			MegaDB.getLoggedInUser().addFavouriteAuction(this.auction);
+		};
+
+		favArtBtn.setOnAction(onFavAucClick);
+
         for (User user : user.getFavouriteUsers()) {
             if (user.getId() == (this.auction.getCreator().getId())) {
                 favUserBtn.setSelected(true);
             }
         }
+
+		for (Auction a : user.getFavouriteAuctions()) {
+			if (a.getId() == this.auction.getId()) {
+				favUserBtn.setSelected(true);
+			}
+		}
 	}
 
 	public void viewAuctionClick() throws IOException {
