@@ -113,6 +113,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 		signInController.setOnSubmitClick((Object o) -> {
 			try {
 				setupAllPages();
+				auctionListController.updateAuctionList();
 				primaryStage.setScene(auctionListScene);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -241,6 +242,7 @@ public class Main extends Application implements OnHeaderAction, OnAuctionClick,
 
 	@Override
 	public void browseAuctionsClick() {
+		auctionListController.updateAuctionList();
 		primaryStage.setScene(auctionListScene);
 	}
 

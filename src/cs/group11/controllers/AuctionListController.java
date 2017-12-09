@@ -71,6 +71,7 @@ public class AuctionListController {
         this.username1.setText(user.getUsername());
 
         currentAuctions = FXCollections.observableArrayList();
+
         filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
         filterAuc.setItems(filteredAuctions);
         filterAuc.setCellFactory(param -> new AuctionCell());
@@ -107,12 +108,13 @@ public class AuctionListController {
 		sculptBtn.setOnAction(onCheckboxClick);
 
 		filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
-
-		List<Auction> aucList = MegaDB.getAuctions();
-		for (Auction auction : aucList) {
-			currentAuctions.add(auction);
-		}
 	}
+
+	public void updateAuctionList() {
+        currentAuctions = FXCollections.observableArrayList(MegaDB.getAuctions());
+        filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
+        filterAuc.setItems(filteredAuctions);
+    }
 
     public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
         this.onAuctionClick = onAuctionClick;
