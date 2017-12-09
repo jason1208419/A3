@@ -103,6 +103,7 @@ public class ViewAuctionController {
 	private User user;
 	private Auction auction;
 
+
 	public void setOnUserClick(OnUserClick onUserClick) {
 		this.onUserClick = onUserClick;
 	}
@@ -117,64 +118,71 @@ public class ViewAuctionController {
 		sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> onUserClick.clicked(this.auction.getCreator()));
 	}
 
-	public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
-		this.onHeaderAction = onHeaderAction;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	private String getHeight(Artwork artwork) {
-		// Gets the Height
-		double artHeight = 0;
-
-		if (artwork instanceof Painting) {
-			Painting painting = (Painting) artwork;
-
-			artHeight = painting.getHeight();
-
-		} else if (artwork instanceof Sculpture) {
-			Sculpture sculpture = (Sculpture) artwork;
-
-			artHeight = sculpture.getHeight();
-		}
-		return Double.toString(artHeight);
-	}
-
-	public void placeBidClick() {
-
-		if (bidAmountInput.getText().isEmpty()) {
-			return;
-		}
-
-    	double bidAmount = Double.parseDouble(bidAmountInput.getText());
-		Bid placedBid = null;
-
-    	try {
-			placedBid = new Bid(bidAmount, user, auction);
-			setAuction(auction);
-		} catch (InvalidDataException e) {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Bid error");
-			alert.setHeaderText("There was a problem with bid.");
-			alert.setContentText(e.getMessage());
-
-			alert.showAndWait();
-		}
-		if (this.auction.isCompleted()) {
-			this.submitButton.setDisable(true);
-			this.bidAmountInput.setDisable(true);
-
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("Congratulations");
-			alert.setHeaderText("You are the auction winner!");
-
-			alert.showAndWait();
+    /**
+     * Sets onHeaderAction interface instance
+     *
+     * @param onHeaderAction
+     */
+    public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
+        this.onHeaderAction = onHeaderAction;
+    }
 
 
-		}
-	}
+    private String getHeight(Artwork artwork) {
+        // Gets the Height
+        double artHeight = 0;
+
+        if (artwork instanceof Painting) {
+            Painting painting = (Painting) artwork;
+
+            artHeight = painting.getHeight();
+
+        } else if (artwork instanceof Sculpture) {
+            Sculpture sculpture = (Sculpture) artwork;
+
+            artHeight = sculpture.getHeight();
+        }
+        return Double.toString(artHeight);
+    }
+
+    /**
+     *Method that is called when bid button is clicked.
+     *
+     * Attempts to create bid instance for auction
+     */
+    public void placeBidClick() {
+
+        if (bidAmountInput.getText().isEmpty()) {
+            return;
+        }
+
+        double bidAmount = Double.parseDouble(bidAmountInput.getText());
+        Bid placedBid = null;
+
+        try {
+            placedBid = new Bid(bidAmount, user, auction);
+            setAuction(auction);
+        } catch (InvalidDataException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Bid error");
+            alert.setHeaderText("There was a problem with bid.");
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
+        }
+        if (this.auction.isCompleted()) {
+            this.submitButton.setDisable(true);
+            this.bidAmountInput.setDisable(true);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Congratulations");
+            alert.setHeaderText("You are the auction winner!");
+
+            alert.showAndWait();
+
+
+        }
+    }
 
 	private String getType(Artwork artwork) {
 		if (artwork instanceof Painting) {
