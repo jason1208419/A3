@@ -47,6 +47,10 @@ public final class MegaDB {
         return null;
     }
 
+    public static void logout() {
+    	loggedInUser = null;
+	}
+
 	public static User getLoggedInUser() {
 		return loggedInUser;
     }
