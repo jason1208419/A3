@@ -99,27 +99,23 @@ public class Bid implements Validatable {
 			throw new InvalidDataException("No auction set for this bid.");
 		}
 
-		/*
-		if (this.auction.getLastBid().getId() == this.user.getId()) {
+		Bid lastBid = this.auction.getLastBid();
 
-            throw new InvalidDataException("You are already the highest bidder.");
+		if (lastBid != null && lastBid.getId() == this.user.getId()) {
+            throw new InvalidDataException("You're already the highest bidder.");
         }
 
-        if (this.auction.getLastBid().getPrice() <= this.price) {
-
-            throw new InvalidDataException("Bid must be greater than the previous bid");
+        if (lastBid != null && this.price <= lastBid.getPrice()) {
+            throw new InvalidDataException("Bid must be greater than the previous bid.");
         }
 
-        if (this.auction.getLastBid().getPrice() <= this.auction.getReservePrice()) {
-
-            throw new InvalidDataException("Bid must be greater than or equal to the reserve price");
+        if (lastBid != null && this.price <= this.auction.getReservePrice()) {
+            throw new InvalidDataException("Bid must be greater than the reserve price.");
         }
 
         if (this.auction.isCompleted()) {
-
             throw new InvalidDataException("Auction is finished. No more bids accepted.");
         }
-        */
 
 	}
 }

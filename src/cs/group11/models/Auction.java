@@ -86,7 +86,7 @@ public class Auction implements Validatable {
 	public Bid getLastBid() {
 		if (bids.size() == 0)
 			return null;
-		return bids.get(0);//top element = last bid.
+		return bids.get(bids.size() - 1);//top element = last bid.
 	}
 
 	public void addBid(Bid bid) {
