@@ -71,7 +71,7 @@
                       <TextField fx:id="title" prefHeight="29.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="40.0" prefWidth="276.0">
-                        <Label prefHeight="30.0" prefWidth="103.0" text="Reserve Price: ">
+                      <Label prefHeight="30.0" prefWidth="103.0" text="Reserve Price:  (£)">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
@@ -95,7 +95,7 @@
                       <TextField fx:id="artist" prefHeight="25.0" prefWidth="149.0"/>
                   </HBox>
                   <HBox prefHeight="213.0" prefWidth="276.0">
-                        <Label prefHeight="17.0" prefWidth="103.0" text="Width:">
+                      <Label prefHeight="17.0" prefWidth="103.0" text="Width: (cm)">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
@@ -103,7 +103,7 @@
                         <TextField fx:id="width" />
                   </HBox>
                   <HBox prefHeight="286.0" prefWidth="276.0">
-                        <Label prefHeight="17.0" prefWidth="103.0" text="Length:">
+                      <Label prefHeight="17.0" prefWidth="103.0" text="Length: (cm)">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>
@@ -136,7 +136,7 @@
             <VBox fx:id="sculptureInputs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                   prefHeight="303.0" prefWidth="416.0" HBox.hgrow="ALWAYS">
                   <HBox prefHeight="70.0" prefWidth="295.0">
-                        <Label prefHeight="17.0" prefWidth="103.0" text="Depth:">
+                      <Label prefHeight="17.0" prefWidth="103.0" text="Depth: (cm)">
                            <opaqueInsets>
                               <Insets left="10.0" />
                            </opaqueInsets>

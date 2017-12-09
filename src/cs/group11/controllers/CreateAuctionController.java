@@ -328,6 +328,7 @@ public class CreateAuctionController {
 		}
 
 		Auction auction = new Auction(loggedInUser, auctionMaxBids, auctionStartPrice, forAuctioning);
+		loggedInUser.addCreatedAuction(auction);
 		onAuctionClick.clicked(auction);
     }
 

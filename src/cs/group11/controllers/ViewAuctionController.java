@@ -195,17 +195,17 @@ public class ViewAuctionController {
 		// Gets the Width and depth and material
 		if (artwork instanceof Painting) {
 			Painting painting = (Painting) artwork;
-			this.width.setText("Width: " + Double.toString(painting.getWidth()));
+			this.width.setText("Width: " + Double.toString(painting.getWidth()) + " cm");
 			this.depth.setVisible(false);
 			this.material.setVisible(false);
 		} else if (artwork instanceof Sculpture) {
 			Sculpture sculpture = (Sculpture) artwork;
-			this.width.setText("Width: " + Double.toString(sculpture.getWidth()));
-			this.depth.setText("Depth: " + Double.toString(sculpture.getDepth()));
+			this.width.setText("Width: " + Double.toString(sculpture.getWidth()) + " cm");
+			this.depth.setText("Depth: " + Double.toString(sculpture.getDepth()) + " cm");
 			this.material.setText("Material: " + ((Sculpture) artwork).getMaterial());
 		}
 
-		this.height.setText("Height: " + getHeight(artwork));
+		this.height.setText("Height: " + getHeight(artwork) + " cm");
 
 		Image image = new Image(auction.getArtwork().getImagePath());
 		this.artworkImageView.setImage(image);
@@ -244,7 +244,7 @@ public class ViewAuctionController {
 		this.placedBids.setText("Number of bids placed: " + Integer.toString(currentBids));
 
 		// Get Starting Price (aka reserve price)
-		this.startingPrice.setText("Starting Price: " + String.valueOf(auction.getReservePrice()));
+		this.startingPrice.setText("Starting Price: £" + String.valueOf(auction.getReservePrice()));
 
 		// Gets auction creation date
 		Date createdDate = auction.getCreationDate();
