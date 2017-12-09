@@ -224,6 +224,7 @@ public class ProfileController {
         this.username1.setText(loggedInUser.getUsername());
         this.username.setText(user.getUsername());
         if (loggedInUser.equals(user)) {
+            editProfile.setVisible(true);
             this.firstname.setText(user.getFirstname());
             this.firstname.setTextFill(Color.BLACK);
             this.lastname.setText(user.getLastname());
