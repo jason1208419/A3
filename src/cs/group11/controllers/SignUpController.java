@@ -130,7 +130,7 @@ public class SignUpController {
         try {
             Address address = new Address(lines, postcode);
             user = new User(username, firstname, lastname, phoneNo, address, avatarPath);
-        } catch (Exception e) {
+        } catch (InvalidDataException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("User signup error");
             alert.setHeaderText("There was a problem with your signup details.");

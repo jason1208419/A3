@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import cs.group11.helpers.InvalidDataException;
 import cs.group11.helpers.Validator;
 import cs.group11.interfaces.*;
 import cs.group11.models.*;
@@ -488,7 +489,6 @@ public class EditProfileController {
      * @throws IOException Error trace for unsuccessful call of profile fxml or controller
      */
     public void submitClick() throws IOException {
-        boolean inputValid = true;
 
         //save changes if user input something
         if (firstNameIn.getText() != null && !firstNameIn.getText().isEmpty()) {
@@ -512,20 +512,25 @@ public class EditProfileController {
         }
         //save changes if user input valid postcode
         if (postcodeIn.getText() != null && !postcodeIn.getText().isEmpty()) {
-            if (Address.isPostcodeValid(postcodeIn.getText())) {
-                inputValid = true;
                 this.viewingUser.getAddress().setPostcode(postcodeIn.getText());
-            } else {
-                inputValid = false;
-                error.setText("Postcode not valid!");
-            }
         }
+
+        try {
+            viewingUser.validate();
+        } catch (InvalidDataException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("User edit error");
+            alert.setHeaderText("There was a problem with your input details.");
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
+            return;
+        }
+
         //save changes and change to profile page if user input valid postcode
-        if (inputValid) {
             viewingUser.save();
             onSubmitClick.submit(viewingUser);
             clearAll();
-        }
     }
 
     private void clearAll() {
