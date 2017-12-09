@@ -306,25 +306,30 @@ public class CreateAuctionController {
         String auctionDescription = description.getText(); // date
         Artwork forAuctioning;
 
-        if (sculptureRadio.isSelected()) {
-            double auctionDepth = parseDecimal(this.depth.getText());// depth
-            String auctionMaterial = this.material.getText(); // material
-            List<String> extraImagePaths = getExtraImagePaths();
+        try {
+			if (sculptureRadio.isSelected()) {
+				double auctionDepth = parseDecimal(this.depth.getText());// depth
+				String auctionMaterial = this.material.getText(); // material
+				List<String> extraImagePaths = getExtraImagePaths();
 
-            forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-                    artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
-                    extraImagePaths);
-        } else {
-            forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
-                    artworkCreationDate.getYear(), auctionWidth, auctionLength);
-        }
+				forAuctioning = new Sculpture(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+						artworkCreationDate.getYear(), auctionWidth, auctionLength, auctionDepth, auctionMaterial,
+						extraImagePaths);
+			} else {
+				forAuctioning = new Painting(auctionTitle, auctionDescription, mainImagePath, auctionAuthor,
+						artworkCreationDate.getYear(), auctionWidth, auctionLength);
+			}
 
-        Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
-        MegaDB.getLoggedInUser().addCreatedAuction(auction);
+			Auction auction = new Auction(MegaDB.getLoggedInUser(), auctionMaxBids, auctionStartPrice, forAuctioning);
+			MegaDB.getLoggedInUser().addCreatedAuction(auction);
+			onAuctionClick.clicked(auction);
+			clearAll();
+		} catch (InvalidDataException e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(),
+					ButtonType.OK);
 
-        onAuctionClick.clicked(auction);
-
-        clearAll();
+			alert.showAndWait();
+		}
     }
 
     private void clearAll() {
@@ -354,8 +359,8 @@ public class CreateAuctionController {
 			if (t.getText().trim().isEmpty())
 				return true;
 		}
-		return false;
 
+		return false;
 	}
 
 	/**
