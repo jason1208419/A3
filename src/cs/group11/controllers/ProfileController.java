@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
 /**
  * Help to make functions of buttons and tables for the profile.fxml
  *
- * @author
+ * @author Kin Wah Lee 689591 & Nasir
  */
 
 public class ProfileController {
