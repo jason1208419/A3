@@ -132,6 +132,12 @@ public class ViewAuctionController {
             }
         });
 
+		bidAmountInput.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				bidAmountInput.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+
 		sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> onUserClick.clicked(this.auction.getCreator()));
 	}
 

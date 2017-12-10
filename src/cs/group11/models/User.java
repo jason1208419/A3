@@ -188,8 +188,8 @@ public class User implements Validatable, Serializable {
 		for (Bid bid : this.bids) {
 			Auction auction = bid.getAuction();
 
-			if (auction.isCompleted() && auction.getLastBid().getUser().equals(this)) {
-				wonBids.add(bid);
+			if (!wonBids.contains(bid) && auction.isCompleted() && auction.getLastBid().getUser().equals(this)) {
+				wonBids.add(auction.getLastBid());
 			}
 		}
 

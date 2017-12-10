@@ -103,6 +103,7 @@ public class AuctionCellController {
         this.setArtTitle(artwork.getName());
 
         boolean emptyBid = (auction.getBids().size() == 0);
+
         if (emptyBid) {
             this.setArtCurPrice(auction.getReservePrice());
         } else {
