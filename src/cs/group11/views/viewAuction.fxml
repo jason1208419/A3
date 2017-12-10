@@ -38,10 +38,8 @@
     <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                 <HBox prefHeight="210.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                     <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="226.0" HBox.hgrow="ALWAYS">
-                        <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
-                        <ListView fx:id="artworkListView" maxHeight="200.0" orientation="HORIZONTAL" prefHeight="200.0"
-                                  prefWidth="196.0"/>
+                        <ImageView fx:id="artworkImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ListView fx:id="artworkListView" maxHeight="200.0" prefHeight="200.0" prefWidth="196.0" />
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="189.0" prefWidth="215.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="artType" text="Art Type" />
@@ -55,31 +53,29 @@
                         <Label fx:id="depth" text="?depth?" />
                         <Label fx:id="artworkCreation" text="Artwork Creation date" />
                         <Label fx:id="auctionCreation" text="Auction Creation date" />
-                        <Label fx:id="description" text="Description"/>
+                        <Label fx:id="description" text="Description" />
                         </VBox>
                     <VBox alignment="CENTER_LEFT" prefHeight="210.0" prefWidth="123.0" HBox.hgrow="ALWAYS">
                         <ImageView fx:id="sellerAvatarImageView" fitHeight="80.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" />
                         <Label fx:id="sellerUsername" text="Seller username" />
-                        <CheckBox fx:id="favUserBtn" mnemonicParsing="false" text="Favourite User"/>
+                        <CheckBox fx:id="favUserBtn" mnemonicParsing="false" text="Favourite User" />
                         </VBox>
                 </HBox>
         </VBox>
     <HBox prefHeight="100.0" prefWidth="200.0">
         <VBox prefHeight="100.0" prefWidth="103.0" />
                 <VBox prefHeight="100.0" prefWidth="160.0">
-                    <VBox maxHeight="10" prefHeight="10"/>
-                    <CheckBox fx:id="favArtBtn" mnemonicParsing="false" text="Favourite Artwork"/>
+                    <VBox maxHeight="10" prefHeight="10" />
+                    <CheckBox fx:id="favArtBtn" mnemonicParsing="false" text="Favourite Artwork" />
                     <Label fx:id="currentPrice2" text="Current Price" />
                     <Label fx:id="maxBids" text="Total bids allowed" />
                     <Label fx:id="placedBids" text="No. bids placed" />
                     <Label fx:id="remainingBids" text="No. bids remaining" />
                 </VBox>
-        <VBox prefHeight="100.0" prefWidth="54.0" HBox.hgrow="ALWAYS"/>
+        <VBox prefHeight="100.0" prefWidth="54.0" HBox.hgrow="ALWAYS" />
         <VBox fillWidth="false" prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS">
-            <TextField fx:id="bidAmountInput" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="163.0"
-                       promptText="Enter your new bid"/>
-            <Button fx:id="submitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick"
-                    text="Submit"/>
+            <TextField fx:id="bidAmountInput" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="163.0" promptText="Enter your new bid" />
+            <Button fx:id="submitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#placeBidClick" text="Submit" />
                 </VBox>
         </HBox>
 </VBox>
