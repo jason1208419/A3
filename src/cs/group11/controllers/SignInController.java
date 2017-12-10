@@ -46,10 +46,16 @@ public class SignInController {
         users = MegaDB.getUsers();
     }
 
+    /**
+     * Switches to signup screen
+     */
     public void signupClick() {
         onSignupClick.call(null);
     }
 
+    /**
+     * Checks whether user exists in the system, gives them error message if not.
+     */
     public void loginSubmit() {
         String username = usernameTXT.getText().toLowerCase();
         User user = MegaDB.login(username);
@@ -68,14 +74,25 @@ public class SignInController {
         }
     }
 
+    /**
+     * Closes program //TODO find out if this is necessary
+     */
     public void shutdown() {
         System.exit(0);
     }
 
+    /**
+     * Sets actions to be performed when login data submitted.
+     * @param onSubmitClick The actions to be performed when login data submitted.
+     */
     public void setOnSubmitClick(OnSubmitClick onSubmitClick) {
         this.onSubmitClick = onSubmitClick;
     }
 
+    /**
+     * Sets actions to be performed when signup selected in the GUI.
+     * @param onSignupClick The actions to be performed when signup selected in the GUI.
+     */
     public void setOnSignupClick(OnAction onSignupClick) {
         this.onSignupClick = onSignupClick;
     }
