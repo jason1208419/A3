@@ -17,6 +17,9 @@ public class SquareBrush extends AbstractDrawingBrush {
 	}
 
 	@Override
+	/**
+	 * Determines whether to draw with filled squares or squares with empty centres.
+	 */
 	public void handleDraw(GraphicsContext on, int x, int y) {
 		if (isFilled()) {
 			on.fillRect(x, y, getRelativeToolSize(), getRelativeToolSize());
