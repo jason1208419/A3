@@ -80,7 +80,7 @@ public class SignInController {
     }
 
     /**
-     * Closes program //TODO find out if this is necessary
+     * Closes program 
      */
     public void shutdown() {
         System.exit(0);
