@@ -88,6 +88,7 @@ public class AuctionListController {
 
             onAuctionClick.clicked(newValue);
 
+            //Prevents unassigned values being passed between ChangeListeners and EventHandlers
             Platform.runLater(() -> {
                 filterAuc.getSelectionModel().clearSelection();
             });
@@ -135,15 +136,27 @@ public class AuctionListController {
 		filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
 	}
 
+    /**
+     * Adds list of filtered auctions into GUI
+     */
 	public void updateAuctionList() {
         currentAuctions = FXCollections.observableArrayList(MegaDB.getAuctions());
         filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
         filterAuc.setItems(filteredAuctions);
     }
 
+    /**
+     * Sets actions to be performed when an auction is clicked
+     * @param onAuctionClick A collection of actions to perform when an auction is clicked.
+     */
     public void setOnAuctionClick(OnAuctionClick onAuctionClick) {
         this.onAuctionClick = onAuctionClick;
     }
+
+    /**
+     * Sets actions to be performed when something in the header is clicked
+     * @param onHeaderAction A collection of actions to perform when something in the header is clicked.
+     */
     public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
         this.onHeaderAction = onHeaderAction;
     }
@@ -158,14 +171,26 @@ public class AuctionListController {
 	}
 
 
+    /**
+     * Switches to create auction screen
+     * @throws IOException Thrown if fxml file fails to load
+     */
     public void createAuctionClick() throws IOException {
 	    onHeaderAction.createAuctionsClick();
     }
 
+    /**
+     * Switches to screen showing a user's profile
+     * @throws IOException Thrown if fxml file fails to load
+     */
     public void avatarClick() throws IOException {
         onHeaderAction.browseProfileClick();
     }
 
+    /**
+     * Logs a user out when they
+     * @throws IOException Thrown if fxml file fails to load
+     */
     public void logoutClick() throws IOException {
         onHeaderAction.logoutClick();
     }
