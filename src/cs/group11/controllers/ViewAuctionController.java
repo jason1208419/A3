@@ -27,6 +27,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+/**
+ * Handles fxml files that displays all the info about a specific auction.
+ *
+ * @Author Lewis Smith
+ */
 public class ViewAuctionController {
 
 	@FXML
@@ -101,7 +106,10 @@ public class ViewAuctionController {
 
     private ObservableList<String> artworkImageList;
 
-
+	/**
+	 * Sets actions to be performed when a user in a list is clicked.
+	 * @param onUserClick A collection of actions to perform when a user is clicked.
+	 */
 	public void setOnUserClick(OnUserClick onUserClick) {
 		this.onUserClick = onUserClick;
 	}
@@ -113,6 +121,7 @@ public class ViewAuctionController {
         this.avatar1.setImage(img);
         this.username1.setText(user.getUsername());
 
+        //Loads extra images into GUI
         this.artworkListView.setCellFactory(param -> new ListCell<String>() {
             @Override
             public void updateItem(String i, boolean empty) {
@@ -132,6 +141,7 @@ public class ViewAuctionController {
             }
         });
 
+		// Removess any non-numbers in bidding input box
 		bidAmountInput.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				bidAmountInput.setText(newValue.replaceAll("[^\\d]", ""));
@@ -141,18 +151,20 @@ public class ViewAuctionController {
 		sellerAvatarImageView.setOnMouseClicked((MouseEvent e) -> onUserClick.clicked(this.auction.getCreator()));
 	}
 
-    /**
-     * Sets onHeaderAction interface instance
-     *
-     * @param onHeaderAction
-     */
+	/**
+	 * Sets actions to be performed when something in the header is clicked.
+	 * @param onHeaderAction A collection of actions to perform when something in the header is clicked.
+	 */
     public void setOnHeaderAction(OnHeaderAction onHeaderAction) {
         this.onHeaderAction = onHeaderAction;
     }
 
 
-    private String getHeight(Artwork artwork) {
-        // Gets the Height
+	/**
+	 * @param artwork The artwork you wish to get the height of.
+	 * @return The height of the artwork converted into text.
+	 */
+	private String getHeight(Artwork artwork) {
         double artHeight = 0;
 
         if (artwork instanceof Painting) {
@@ -169,9 +181,9 @@ public class ViewAuctionController {
     }
 
     /**
-     *Method that is called when bid button is clicked.
+     * Method that is called when bid button is clicked.
      *
-     * Attempts to create bid instance for auction
+     * Attempts to create bid instance for auction.
      */
     public void placeBidClick() {
         if (bidAmountInput.getText().isEmpty()) {
@@ -204,6 +216,10 @@ public class ViewAuctionController {
         }
     }
 
+	/**
+	 * @param artwork The artwork you wish to get the type of.
+	 * @return The type of artwork queried, returned as a String.
+	 */
 	private String getType(Artwork artwork) {
 		if (artwork instanceof Painting) {
 			return "Painting";
@@ -216,7 +232,7 @@ public class ViewAuctionController {
 	/**
 	 * Displays all info about an auction in the GUI.
 	 *
-	 * @param auction
+	 * @param auction The auction to be displayed in the GUI
 	 */
 	public void setAuction(Auction auction) {
 		this.auction = auction;
@@ -235,7 +251,7 @@ public class ViewAuctionController {
         Image image = new Image(artwork.getImagePath());
         artworkImageView.setImage(image);
 
-		// Gets the Width and depth and material
+		//Sets information depending on whether artwork is painting or sculpture
 		if (artwork instanceof Painting) {
 			Painting painting = (Painting) artwork;
 			this.width.setText("Width: " + Double.toString(painting.getWidth()) + " cm");
@@ -243,6 +259,7 @@ public class ViewAuctionController {
 			this.material.setVisible(false);
 
             this.artworkListView.setVisible(false);
+
         } else if (artwork instanceof Sculpture) {
 			Sculpture sculpture = (Sculpture) artwork;
 			this.width.setText("Width: " + Double.toString(sculpture.getWidth()) + " cm");
@@ -260,18 +277,17 @@ public class ViewAuctionController {
 		this.title.setText("Title: " + artwork.getName());
 		this.author.setText("Artist: " + artwork.getArtist());
 
-        //Get art description
+
         this.description.setText("Description: " + artwork.getDescription());
 
 
-		// Gets artworks creation year
+
 		this.artworkCreation.setText("Art creation: " + Integer.toString(artwork.getCreationYear()));
 
 		this.sellerUsername.setText("Seller: " + auction.getCreator().getUsername());
 		Image avatarImage = new Image(auction.getCreator().getAvatarPath());
 		this.sellerAvatarImageView.setImage(avatarImage);
 
-		// Get most recent bid price
 		double lastBid;
 		if (auction.getLastBid() == null) {
 			lastBid = auction.getReservePrice();
@@ -282,32 +298,23 @@ public class ViewAuctionController {
 		this.currentPrice.setText("Current price: £" + String.valueOf(lastBid));
 		this.currentPrice2.setText("Current price: £" + String.valueOf(lastBid));
 
-		// Gets the Maximum amount of bids
 		int theMaxBids = auction.getMaxBids();
 		String maxAsString = Integer.toString(theMaxBids);
 		this.maxBids.setText("Max number of bids: " + maxAsString);
 
-		// Get remaining number of allowed bids
-		// Get current number of bids
 		int currentBids = auction.getBids().size();
 		int remainingBids = theMaxBids - currentBids;
 
 		this.remainingBids.setText("Remaining bids: " + Integer.toString(remainingBids));
 		this.placedBids.setText("Number of bids placed: " + Integer.toString(currentBids));
 
-		// Get Starting Price (aka reserve price)
 		this.startingPrice.setText("Starting Price: £" + String.valueOf(auction.getReservePrice()));
 
-		// Gets auction creation date
 		Date createdDate = auction.getCreationDate();
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		this.auctionCreation.setText("Auction creation: " + dateFormat.format(createdDate));
 
-        /**
-         * Adds favourite user to MegaDB
-         */
-
-
+		// Adds/removes favourite user to/from MegaDB
         EventHandler<ActionEvent> onFavUserClick = (ActionEvent event) -> {
         	if(favUserBtn.isSelected()) {
 				MegaDB.getLoggedInUser().addFavouriteUser(this.auction.getCreator());
@@ -318,6 +325,7 @@ public class ViewAuctionController {
         };
         favUserBtn.setOnAction(onFavUserClick);
 
+        // Adds/removes favourite auction to/from MegaDB
 		EventHandler<ActionEvent> onFavAucClick = (ActionEvent event) -> {
 			if(favArtBtn.isSelected()) {
 				MegaDB.getLoggedInUser().addFavouriteAuction(this.auction);
@@ -328,27 +336,34 @@ public class ViewAuctionController {
 		};
 		favArtBtn.setOnAction(onFavAucClick);
 
-
+		//Sets checkbox as unchecked if no favourite users exist when switched to
 		if(MegaDB.getLoggedInUser().getFavouriteUsers().size() == 0) {
 			favUserBtn.setSelected(false);
 		} else {
 			for (User u : MegaDB.getLoggedInUser().getFavouriteUsers()) {
+				//Checkbox filled if user is already a favourite
 				if (u.getId() == (this.auction.getCreator().getId())) {
 					System.out.println("b");
 					favUserBtn.setSelected(true);
+				} else {
+					favUserBtn.setSelected(false);
 				}
 			}
 		}
 
-			if (MegaDB.getLoggedInUser().getFavouriteAuctions().size() == 0) {
-				favArtBtn.setSelected(false);
-			} else {
-				for (Auction a : user.getFavouriteAuctions()) {
-					if (a.getId() == this.auction.getId()) {
-						favArtBtn.setSelected(true);
-					}
+		//Sets checkbox as unchecked if no favourite users exist when switched to
+		if (MegaDB.getLoggedInUser().getFavouriteAuctions().size() == 0) {
+			favArtBtn.setSelected(false);
+		} else {
+			for (Auction a : user.getFavouriteAuctions()) {
+				//Checkbox filled if user is already a favourite
+				if (a.getId() == this.auction.getId()) {
+					favArtBtn.setSelected(true);
+				} else {
+					favArtBtn.setSelected(false);
 				}
 			}
+		}
 
 	}
 
