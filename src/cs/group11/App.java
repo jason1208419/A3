@@ -117,6 +117,7 @@ public class App extends Application implements OnHeaderAction, OnAuctionClick, 
             public void submit(Object o) {
                 try {
                     setupAllPages();
+                    auctionListController.updateAuctionList();
                     primaryStage.setScene(auctionListScene);
                 } catch (IOException e) {
                     e.printStackTrace();
