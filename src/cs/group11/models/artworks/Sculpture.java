@@ -9,14 +9,49 @@ import cs.group11.helpers.Validator;
 import cs.group11.interfaces.Validatable;
 import cs.group11.models.Artwork;
 
+/**
+ * An implementation of Artwork resembling a sculpture.
+ */
 public class Sculpture extends Artwork implements Validatable {
+	/**
+	 * Width of sculpture
+	 */
 	private double width;
+
+	/**
+	 * Height of sculpture
+	 */
 	private double height;
+
+	/**
+	 * Depth of sculpture
+	 */
 	private double depth;
+
+	/**
+	 * The material of the sculpture
+	 */
 	private String material;
 
+	/**
+	 * A list of the paths to the photos.
+	 */
 	private List<String> photos;
 
+	/**
+	 * Construct a new sculpture
+	 * @param id the ID of this sculpture
+	 * @param title the title of this sculpture.
+	 * @param description the description of this sculpture.
+	 * @param imagePath the imagePath of this sculpture.
+	 * @param artist the artist of this sculpture.
+	 * @param creationYear the creationYear of this sculpture.
+	 * @param width the width of this sculpture.
+	 * @param height the height of this sculpture.
+	 * @param depth the depth of this sculpture.
+	 * @param material the material of this sculpture.
+	 * @param photos the photos of this sculpture.
+	 */
 	public Sculpture(int id, String title, String description, String imagePath, String artist, int creationYear,
 			double width, double height, double depth, String material, List<String> photos) {
 		super(id, title, description, imagePath, artist, creationYear);
@@ -32,6 +67,18 @@ public class Sculpture extends Artwork implements Validatable {
 		MegaDB.addArtwork(this);
 	}
 
+	/**
+	 * @param title the title of this sculpture.
+	 * @param description the description of this sculpture.
+	 * @param imagePath the imagePath of this sculpture.
+	 * @param artist the artist of this sculpture.
+	 * @param creationYear the creationYear of this sculpture.
+	 * @param width the width of this sculpture.
+	 * @param height the height of this sculpture.
+	 * @param depth the depth of this sculpture.
+	 * @param material the material of this sculpture.
+	 * @param photos the photos of this sculpture.
+	 */
 	public Sculpture(String title, String description, String imagePath, String artist, int creationYear, double width,
 			double height, double depth, String material, List<String> photos) {
 		super(title, description, imagePath, artist, creationYear);
@@ -47,14 +94,26 @@ public class Sculpture extends Artwork implements Validatable {
 		MegaDB.addArtwork(this);
 	}
 
+	/**
+	 * Get the width of this sculpture.
+	 * @return the sculpture width in cm
+	 */
 	public double getWidth() {
 		return width;
 	}
 
+	/**
+	 * Get the height of this sculpture.
+	 * @return the sculpture height in cm
+	 */
 	public double getHeight() {
 		return height;
 	}
 
+	/**
+	 * Get the depth of this sculpture.
+	 * @return the sculpture depth in cm
+	 */
 	public double getDepth() {
 		return depth;
 	}
