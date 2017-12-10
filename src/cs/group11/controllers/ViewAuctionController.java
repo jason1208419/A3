@@ -367,19 +367,34 @@ public class ViewAuctionController {
 
 	}
 
+	/**
+	 * Switches to screen displaying all auctions
+	 * @throws IOException Thrown if fxml file fails to load
+	 */
 	public void viewAuctionClick() throws IOException {
 		onHeaderAction.browseAuctionsClick();
 	}
 
-	@FXML
+	/**
+	 * Switches to create auction screen
+	 * @throws IOException Thrown if fxml file fails to load
+	 */
 	public void createAuctionClick() throws IOException {
 		onHeaderAction.createAuctionsClick();
 	}
 
+	/**
+	 * Switches to screen showing a user's profile
+	 * @throws IOException Thrown if fxml file fails to load
+	 */
 	public void avatarClick() throws IOException {
 		onHeaderAction.browseProfileClick();
 	}
 
+	/**
+	 * Logs a user out and switches them to the login screen
+	 * @throws IOException Thrown if fxml file fails to load
+	 */
 	public void logoutClick() throws IOException {
 		onHeaderAction.logoutClick();
 	}
