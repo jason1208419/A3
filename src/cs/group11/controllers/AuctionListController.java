@@ -188,7 +188,7 @@ public class AuctionListController {
     }
 
     /**
-     * Logs a user out when they
+     * Logs a user out and switches them to the login screen
      * @throws IOException Thrown if fxml file fails to load
      */
     public void logoutClick() throws IOException {
