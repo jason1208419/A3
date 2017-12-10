@@ -111,6 +111,11 @@ public class AuctionListController {
         refilterAuctions(null);
     }
 
+    /**
+     * refilter the list
+     *
+     * @param event action
+     */
     private void refilterAuctions(Event event) {
         boolean paintSelected = paintBtn.isSelected();
         boolean sculptureSelected = sculptBtn.isSelected();
