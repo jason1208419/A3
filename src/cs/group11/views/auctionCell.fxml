@@ -9,7 +9,7 @@
       xmlns="http://javafx.com/javafx/8.0.121" fx:controller="cs.group11.controllers.AuctionCellController">
     <children>
         <ImageView fx:id="artImage" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"/>
-        <VBox prefHeight="111.0" prefWidth="153.0">
+        <VBox prefHeight="111.0" prefWidth="153.0" HBox.hgrow="ALWAYS">
             <children>
                 <Label fx:id="artTitle" text="Title"/>
                 <Label fx:id="artCurPrice" layoutX="10.0" layoutY="10.0" text="Current price (£)"/>
@@ -17,7 +17,7 @@
                 <Label fx:id="artistName" layoutX="10.0" layoutY="44.0" text="Artist name"/>
             </children>
         </VBox>
-        <VBox prefHeight="111.0" prefWidth="178.0">
+        <VBox prefHeight="111.0" prefWidth="178.0" HBox.hgrow="ALWAYS">
             <children>
                 <Label fx:id="startPrice" text="Starting price (£)"/>
                 <Label fx:id="bidsLeft" layoutX="10.0" layoutY="10.0" text="Bids remaining"/>
