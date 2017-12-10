@@ -27,6 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Handles fxml file that lets user sign in to their account.
+ *
+ * @author Kieran
+ */
 public class SignInController {
 
     @FXML

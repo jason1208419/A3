@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Handles fxml file that allows user to create a new account.
+ *
+ * @author Nasir
+ */
 public class SignUpController {
 
     @FXML private ImageView avatarImg;
@@ -54,6 +59,7 @@ public class SignUpController {
 
     @FXML
     public void initialize() {
+        //Checks phone number is a valid length and removes any non-numeric character from it
         phoneNoInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 phoneNoInput.setText(newValue.replaceAll("[^\\d]", ""));
@@ -63,14 +69,25 @@ public class SignUpController {
         });
     }
 
+    /**
+     * Sets actions to be performed when cancel is selected.
+     * @param onCancelClick The actions to be performed when cancel is selected.
+     */
     public void setOnCancelClick(OnCancelClick onCancelClick) {
         this.onCancelClick = onCancelClick;
     }
 
+    /**
+     * Sets actions to be performed when signup data submitted.
+     * @param onSubmitClick The actions to be performed when signup data submitted.
+     */
     public void setOnSubmitClick(OnSubmitClick onSubmitClick) {
         this.onSubmitClick = onSubmitClick;
     }
 
+    /**
+     * Selects avatar to use from file system.
+     */
     public void uploadClick() {
         avatarPath = userSelectImage();
 
@@ -82,6 +99,10 @@ public class SignUpController {
         }
     }
 
+    /**
+     * Lets user draw a custom avatar to use.
+     * @throws IOException Thrown if fxml file fails to load.
+     */
     public void drawAvatarClick() throws IOException {
         Stage drawingStage = new Stage();
 
@@ -109,10 +130,16 @@ public class SignUpController {
         drawingStage.show();
     }
 
+    /**
+     * Handles actions when cancel is clicked
+     */
     public void cancelClick() {
         onCancelClick.cancel(null);
     }
 
+    /**
+     * Handles actions when submit is clicked
+     */
     public void submitClick() {
         String username = usernameInput.getText().toLowerCase();
         String firstname = firstnameInput.getText();
@@ -127,6 +154,7 @@ public class SignUpController {
 
         User user = null;
 
+        //Checks that new user data is valid, displaying an error if it isn't
         try {
             Address address = new Address(lines, postcode);
             user = new User(username, firstname, lastname, phoneNo, address, avatarPath);
@@ -152,6 +180,9 @@ public class SignUpController {
         onSubmitClick.submit(user);
     }
 
+    /**
+     * Clears all the data in the forms in case another user needs to create an account later
+     */
     private void clearAll() {
         usernameInput.clear();
         firstnameInput.clear();
@@ -189,6 +220,10 @@ public class SignUpController {
         stage.show();
     }
 
+    /**
+     * Lets a user select their image through a popup window.
+     * @return The path of the user's avatar.
+     */
     private String userSelectImage() {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(IMAGE_FILE_EXTENTIONS);
