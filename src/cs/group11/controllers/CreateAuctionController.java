@@ -105,8 +105,8 @@ public class CreateAuctionController {
 	@FXML
 	private ListView<Pair<String, Image>> extraImages;
 	@FXML
-	private TextArea description;
-	@FXML
+    private TextField description;
+    @FXML
 	private RadioButton sculptureRadio;
 	@FXML
 	private RadioButton paintingRadio;
