@@ -10,16 +10,13 @@ public class CircleBrush extends AbstractDrawingBrush {
 	
 	/**
 	 * Initialize the brush with a specific initial size.
-	 * @param initialSize
+	 * @param initialSize the default size.
 	 */
 	public CircleBrush(int initialSize) {
 		super("Circle Brush", "Click and drag your cursor to draw a trail of circles!", initialSize);
 	}
 
 	@Override
-	/**
-	 * Determines whether to draw with filled circles or squares with empty circles.
-	 */
 	public void handleDraw(GraphicsContext on, int x, int y) {
 		if (isFilled()) {
 			on.fillOval(x, y, getRelativeToolSize(), getRelativeToolSize());
