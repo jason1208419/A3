@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -97,44 +98,50 @@ public class AuctionListController {
 
         //Handles event when a filter is clicked
         EventHandler<ActionEvent> onCheckboxClick = (ActionEvent event) -> {
-            boolean paintSelected = paintBtn.isSelected();
-            boolean sculptureSelected = sculptBtn.isSelected();
-
-            boolean myAuctionSelected = myAuctionsBtn.isSelected();
-
-            if (event.getTarget() == myAuctionsBtn) {
-                paintBtn.setSelected(false);
-                sculptBtn.setSelected(false);
-            }
-
-            if (paintSelected) {
-                myAuctionsBtn.setSelected(false);
-            }
-
-            filteredAuctions.setPredicate((Auction a) -> {
-                if (paintSelected == sculptureSelected && !myAuctionSelected) {
-                    return !a.isCompleted();
-                }
-
-                if (paintSelected) {
-                    return a.getArtwork() instanceof Painting && !a.isCompleted();
-                }
-
-                if (myAuctionSelected) {
-                    return a.getCreator().equals(user);
-                }
-
-                return a.getArtwork() instanceof Sculpture && !a.isCompleted();
-            });
+            refilterAuctions(event);
         };
 
-		paintBtn.setOnAction(onCheckboxClick);
-		sculptBtn.setOnAction(onCheckboxClick);
+        paintBtn.setOnAction(onCheckboxClick);
+        sculptBtn.setOnAction(onCheckboxClick);
         myAuctionsBtn.setOnAction(onCheckboxClick);
 
 
-		filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
-	}
+        filterAuc.getSelectionModel().selectedItemProperty().addListener(auctionClicked);
+
+        refilterAuctions(null);
+    }
+
+    private void refilterAuctions(Event event) {
+        boolean paintSelected = paintBtn.isSelected();
+        boolean sculptureSelected = sculptBtn.isSelected();
+
+        boolean myAuctionSelected = myAuctionsBtn.isSelected();
+
+        if (event != null && event.getTarget() == myAuctionsBtn) {
+            paintBtn.setSelected(false);
+            sculptBtn.setSelected(false);
+        }
+
+        if (paintSelected) {
+            myAuctionsBtn.setSelected(false);
+        }
+
+        filteredAuctions.setPredicate((Auction a) -> {
+            if (paintSelected == sculptureSelected && !myAuctionSelected) {
+                return !a.isCompleted();
+            }
+
+            if (paintSelected) {
+                return a.getArtwork() instanceof Painting && !a.isCompleted();
+            }
+
+            if (myAuctionSelected) {
+                return a.getCreator().equals(user);
+            }
+
+            return a.getArtwork() instanceof Sculpture && !a.isCompleted();
+        });
+    }
 
     /**
      * Adds list of filtered auctions into GUI
@@ -143,6 +150,7 @@ public class AuctionListController {
         currentAuctions = FXCollections.observableArrayList(MegaDB.getAuctions());
         filteredAuctions = new FilteredList<>(currentAuctions, s -> true);
         filterAuc.setItems(filteredAuctions);
+        refilterAuctions(null);
     }
 
     /**
