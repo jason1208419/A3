@@ -6,6 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Help to make functions of buttons for the buildInAvatar.fxml
+ *
+ * @Author Kin Wah Lee 689591
+ */
 public class BuildInAvatarController {
     private final String AVATAR0_PATH = "res/avatars/avatar0.png";
     private final String AVATAR1_PATH = "res/avatars/avatar1.png";
@@ -47,7 +52,6 @@ public class BuildInAvatarController {
         avatar0.setOnMouseClicked((MouseEvent e) -> {
             System.out.println("0 Clicked!");
             onViewSubmit.submit(AVATAR0_PATH);
-            //onAvatarSubmit.onSubmit(AVATAR0_PATH);
         });
 
         avatar1.setOnMouseClicked((MouseEvent e) -> {
@@ -76,11 +80,12 @@ public class BuildInAvatarController {
         });
     }
 
+    /**
+     * Sets actions to be performed when an ImageView is clicked
+     *
+     * @param onViewSubmit A collection of actions to perform when an ImageView is clicked.
+     */
     public void setOnAvatarSubmit(OnSubmitClick onViewSubmit) {
         this.onViewSubmit = onViewSubmit;
     }
-
-    /*public interface OnAvatarSubmit {
-        void onSubmit(String avatarPath);
-    }*/
 }
