@@ -417,13 +417,6 @@ public class EditProfileController {
         removeFavouriteUsers.setItems(favouriteUsersList);
     }
 
-    public void setTestUsers() {
-        User df = new User("ggg", "asas", "kijlkl", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "http://pixabay.com/static/img/no_hotlinking.png");
-        User abc = new User("abc", "Jason", "Lee", "07481173742", new Address(new String[]{"29 Flintstones Avenue", "Ding Dong Street", "UK"}, "PDT 0KL"), "https://www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/Van-Gogh.-Starry-Night-469x376.jpg");
-        viewingUser.addFavouriteUser(abc);
-        viewingUser.addFavouriteUser(df);
-    }
-
     /**
      * Open a window for the user to use custom image file as their own avatar
      *
